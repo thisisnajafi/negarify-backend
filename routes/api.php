@@ -1,0 +1,165 @@
+<?php
+
+use App\Http\Controllers\Api\AuthController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
+
+// Public routes
+Route::prefix('v1')->group(function () {
+    // Authentication routes
+    Route::prefix('auth')->group(function () {
+        Route::post('request-otp', [AuthController::class, 'requestOtp']);
+        Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
+        Route::post('resend-otp', [AuthController::class, 'resendOtp']);
+    });
+});
+
+// Protected routes
+Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+    // User routes
+    Route::get('user', [AuthController::class, 'profile']);
+    Route::post('auth/logout', [AuthController::class, 'logout']);
+
+    // Token routes
+    Route::prefix('tokens')->group(function () {
+        Route::get('bundles', [\App\Http\Controllers\Api\TokenController::class, 'getBundles']);
+        Route::get('balance', [\App\Http\Controllers\Api\TokenController::class, 'getBalance']);
+        Route::get('history', [\App\Http\Controllers\Api\TokenController::class, 'getHistory']);
+        Route::post('purchase', [\App\Http\Controllers\Api\TokenController::class, 'purchase']);
+        Route::post('consume', [\App\Http\Controllers\Api\TokenController::class, 'consume']);
+        Route::post('add', [\App\Http\Controllers\Api\TokenController::class, 'add']);
+    });
+
+    // Image generation routes
+    Route::prefix('generate')->group(function () {
+        Route::post('/', function (Request $request) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Image generation endpoint - to be implemented',
+            ]);
+        });
+        
+        Route::get('{job_id}/status', function (Request $request, $jobId) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Job status endpoint - to be implemented',
+                'job_id' => $jobId,
+            ]);
+        });
+        
+        Route::get('{job_id}/result', function (Request $request, $jobId) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Job result endpoint - to be implemented',
+                'job_id' => $jobId,
+            ]);
+        });
+        
+        Route::post('{job_id}/retry', function (Request $request, $jobId) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Job retry endpoint - to be implemented',
+                'job_id' => $jobId,
+            ]);
+        });
+    });
+
+    // Gallery routes
+    Route::prefix('gallery')->group(function () {
+        Route::post('post', function (Request $request) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Gallery post endpoint - to be implemented',
+            ]);
+        });
+        
+        Route::get('feed', function (Request $request) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Gallery feed endpoint - to be implemented',
+            ]);
+        });
+        
+        Route::post('{post_id}/like', function (Request $request, $postId) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Like post endpoint - to be implemented',
+                'post_id' => $postId,
+            ]);
+        });
+        
+        Route::post('{post_id}/comment', function (Request $request, $postId) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Comment post endpoint - to be implemented',
+                'post_id' => $postId,
+            ]);
+        });
+    });
+});
+
+// Admin routes
+Route::prefix('v1/admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::prefix('sales')->group(function () {
+        Route::get('summary', function (Request $request) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Sales summary endpoint - to be implemented',
+            ]);
+        });
+    });
+    
+    Route::prefix('models')->group(function () {
+        Route::get('usage', function (Request $request) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Models usage endpoint - to be implemented',
+            ]);
+        });
+    });
+    
+    Route::prefix('tokens')->group(function () {
+        Route::get('summary', function (Request $request) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Tokens summary endpoint - to be implemented',
+            ]);
+        });
+    });
+    
+    Route::prefix('users')->group(function () {
+        Route::get('summary', function (Request $request) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Users summary endpoint - to be implemented',
+            ]);
+        });
+    });
+    
+    Route::prefix('cost-profit')->group(function () {
+        Route::get('summary', function (Request $request) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Cost profit summary endpoint - to be implemented',
+            ]);
+        });
+    });
+    
+    Route::get('system-health', function (Request $request) {
+        return response()->json([
+            'success' => true,
+            'message' => 'System health endpoint - to be implemented',
+        ]);
+    });
+});

@@ -1,0 +1,284 @@
+IMAGE GENERATION PLATFORM
+Backend: Laravel 10
+Frontend: Vue.js 3 + Vite
+Mobile: Flutter
+
+DOCUMENT INTRODUCTION
+
+Purpose:
+This document describes the architecture, features, APIs, data models, and operational dashboards for an Image Generation platform that aggregates multiple image-generation APIs (DALL·E, Stability, Google Imagen, getimg, Replicate, etc.) and sells usage through a token-based economy. The app has three delivery channels: a Laravel-based backend API, a Vue.js web frontend, and a Flutter mobile app. The platform focuses on monetization, observability, extensibility, and user engagement.
+
+Audience:
+
+* Backend engineers (Laravel)
+* Frontend engineers (Vue.js)
+* Mobile engineers (Flutter)
+* DevOps / SRE teams
+* Product & Business stakeholders
+
+Scope:
+This initial document covers: feature descriptions; token-based economics; OTP integration (Melipayamak) for user authentication; gallery and social feed; prompt templates/structures; leaderboards; AI Wallpaper Creator; required dashboards (sales, users, models usage, token counts, cost/profit, system health); DB schema outline; API endpoints; security & privacy; deployment; and testing strategy.
+
+ASSUMPTIONS AND KEY DECISIONS
+
+* Token model: 1 token = $0.01 (configurable). The backend stores token balances per user and per provider. Admin can set conversion rules.
+* Providers: The backend supports multiple AI providers. For each generation request the backend chooses provider based on user selection, availability, cost, and admin rules.
+* Billing: Tokens are charged on request completion (or immediately on request depending on policy). Refunds/rollbacks supported for failed requests.
+* Authentication: JWT for API tokens. Users sign up via phone using Melipayamak OTP. Admin area uses stronger 2FA (optional).
+* Media storage: Generated images are stored in object storage (S3-compatible). Thumbnails and derivatives created using background job workers.
+* Queueing: Laravel queues (Redis) for asynchronous generation, provider call retries, and media processing.
+
+FEATURE LIST (REQUIRED IN APP + DOC)
+
+1. Token-based economy
+
+   * Buy token bundles via payment gateways (Stripe, PayPal, local gateways). Tokens credited to user account.
+   * Token consumption rules by AI provider, quality, and size.
+   * Admin configurable token pricing (tokens per model/quality) and provider cost mapping.
+
+2. OTP with Melipayamak
+
+   * Phone-based OTP authentication
+   * Endpoints: request_otp, verify_otp, resend_otp
+   * Rate limiting, country code handling, audit logging.
+
+3. Gallery & Social Feed
+
+   * Public gallery: users can publish images to public feed.
+   * Post metadata: title, description, tags, model, prompt, settings, likes, comments.
+   * Privacy options: public / friends only / private.
+   * Follow system, notifications (in-app + push), reporting, and moderation queue.
+
+4. Prompt Structures (templates and examples)
+
+   * Basic structure: SUBJECT + STYLE + ENVIRONMENT + LIGHTING + CAMERA + COLOR + DETAIL
+   * Example template: "[SUBJECT], in the style of [ARTIST], [ENVIRONMENT], cinematic lighting, ultra-detailed, 8k".
+   * Prebuilt categories: Portrait, Landscape, Sci-Fi, Fantasy, Product Mockup, Logo, Wallpaper.
+   * Prompt variables and randomized seeds for Daily Prompt Challenge.
+
+5. Leaderboard
+
+   * Metrics: most generated images, most liked images, highest earnings (creators selling images), top remixes.
+   * Time windows: daily, weekly, monthly, all-time.
+   * Badges for milestones.
+
+6. AI Wallpaper Creator
+
+   * One-click generate wallpaper presets for common sizes (mobile: 1080x2400, ipad / tablet, desktop 1920x1080, ultrawide).
+   * Auto-crop/scale and preview tool, set as device wallpaper (mobile app integration), and direct download.
+
+BACKEND ARCHITECTURE
+
+* Laravel 10 API with Sanctum or JWT for auth.
+* MySQL / PostgreSQL as primary relational DB.
+* Redis for cache and queue driver.
+* S3-compatible object storage for images and thumbnails.
+* Worker pool: Laravel queue workers to process: provider requests, image processing, thumbnails, analytics aggregation.
+* Scheduler: Laravel scheduler for maintenance tasks, daily reports, token expiry, and leaderboards computation.
+
+DATABASE / CORE MODELS (HIGH LEVEL)
+
+* users (id, phone, email, name, avatar_url, password_hash, is_verified, tokens_balance, role, created_at, updated_at)
+* providers (id, name, api_base_url, api_key_encrypted, cost_per_image_usd_override, enabled, created_at)
+* models (id, provider_id, model_name, quality_profile, base_cost_usd, default_tokens)
+* token_transactions (id, user_id, provider_id, amount_tokens, amount_usd, type [purchase|consume|refund], reference_id, created_at)
+* image_jobs (id, user_id, provider_id, model_id, prompt, params_json, status, tokens_consumed, cost_usd, result_url, created_at, completed_at)
+* gallery_posts (id, user_id, image_job_id, title, description, tags_json, visibility, likes_count, comments_count, created_at)
+* likes (id, user_id, gallery_post_id, created_at)
+* comments (id, user_id, gallery_post_id, body, parent_id, created_at)
+* sales (id, buyer_id, seller_id, gallery_post_id, price_tokens, price_usd, status, created_at)
+* analytics_models_usage (id, model_id, requests_count, tokens_consumed, cost_usd, month)
+* system_health (id, metric_name, value, recorded_at)
+
+TOKEN CONSUMPTION (RULES & EXAMPLES)
+
+* Tokens are configured per model + quality. Example table (configurable):
+  • DALL·E3_HD : 20 tokens
+  • DALL·E3_STD : 14 tokens
+  • SDXL_HD : 10 tokens
+  • SD_STANDARD : 5 tokens
+  • GETIMG_BUDGET : 2 tokens
+* Admin UI allows changing tokens per model and mapping to provider cost. A scheduled job recalculates profit and cost per model once daily and stores historical snapshots.
+
+API ENDPOINTS (HIGHEST PRIORITY)
+Authentication
+
+* POST /api/v1/auth/request-otp {phone} -> returns request_id
+* POST /api/v1/auth/verify-otp {request_id, code} -> returns JWT
+* POST /api/v1/auth/resend-otp {request_id}
+
+User & Tokens
+
+* GET /api/v1/user -> user profile & balances
+* POST /api/v1/tokens/purchase {bundle_id, payment_method} -> creates order
+* POST /api/v1/tokens/consume {image_job_id} -> used internally
+* GET /api/v1/tokens/history -> transactions
+
+Image Generation
+
+* POST /api/v1/generate {model_id, provider_id (optional), prompt, params (size, quality, variations), callback_url (optional)}
+  -> returns job_id (image_jobs)
+* GET /api/v1/generate/{job_id}/status
+* GET /api/v1/generate/{job_id}/result
+* POST /api/v1/generate/{job_id}/retry
+
+Gallery & Social
+
+* POST /api/v1/gallery/post {image_job_id, title, description, tags, visibility}
+* GET /api/v1/gallery/feed {filters, pagination}
+* POST /api/v1/gallery/{post_id}/like
+* POST /api/v1/gallery/{post_id}/comment {body, parent_id}
+
+Admin / Dashboard
+
+* GET /api/v1/admin/sales/summary {range}
+* GET /api/v1/admin/models/usage {range, model_id}
+* GET /api/v1/admin/tokens/summary {provider_id}
+* GET /api/v1/admin/users/summary {range}
+* GET /api/v1/admin/cost-profit/summary {range}
+* GET /api/v1/admin/system-health {range}
+
+OTP (MELIPAYAMAK) INTEGRATION
+
+* Integration via Melipayamak SMS API.
+* Flow:
+
+  1. User requests OTP -> backend creates OTP code (store hashed) and sends SMS via Melipayamak API.
+  2. User verifies -> backend checks code and issues JWT if valid.
+* Security: store OTP hashed (e.g., HMAC with secret), TTL 5 minutes, retry limits, per-phone rate limits.
+* Webhook: Melipayamak webhook support is optional; prefer direct API call to send SMS.
+
+GALLERY, SOCIAL FEED & MODERATION
+
+* Content moderation pipeline using: a) automated filter for offensive content (third-party moderation API or open-source classifier), b) human review queue for flagged items.
+* Abuse reporting system with escalation rules.
+* Pagination: cursor-based pagination for feeds.
+* Cached feed for trending posts. Use Redis caching & invalidation when new post is promoted.
+
+PROMPT STRUCTURES AND TEMPLATES
+
+* Templates are stored as JSON with variables. Example template:
+  {
+  "id": "portrait_cinematic",
+  "label": "Cinematic Portrait",
+  "template": "A portrait of {subject}, in the style of {artist}, cinematic lighting, shallow depth of field, 85mm, ultra-detailed, high dynamic range"
+  }
+* Prompt builder UI: allow user to fill variables and preview final prompt. Include toggles: seed, steps, CFG scale (if provider supports), negative prompts.
+* Prompt packs: themed packs sold as additional content (Halloween pack, Product shoot pack, Retro pack).
+
+LEADERBOARD & GAMIFICATION
+
+* Leaderboard API computes metrics from user-generated data and caches top results.
+* Levels: XP earned per action (generate images, publish to gallery, get likes). Level thresholds, cosmetic rewards, and token bonuses for level-ups.
+* Achievements: milestone badges (e.g., "100 Images Created", "Top Liked Creator").
+
+AI WALLPAPER CREATOR (DETAILED)
+
+* Presets for sizes and aspect ratios.
+* In-app preview & cropping using Flutter image widgets and backend thumbnails.
+* Generate multiple variations (n outputs) and combine into a wallpaper pack.
+* One-click set-as-wallpaper on mobile: leverage platform channels to set wallpaper (Android Intent / iOS share sheet). Note: iOS has restrictions; provide easy download/instructions.
+
+DASHBOARDS (ADMIN) — METRICS & DETAILS
+Design each admin dashboard as API-driven Vue components with charts, tables, and exportable CSVs.
+
+1. Token Count for Each API
+
+   * Real time tokens remaining (if providers use prepaid credits) and tokens consumed per provider daily.
+   * Show mapping: provider -> tokens consumed -> cost USD -> profit USD.
+
+2. Token Count Increase or Decrease (by feature)
+
+   * Time-series: tokens consumed by generation feature attributes (size, quality, variations, wallpaper, remix).
+   * Filter by date range and provider.
+
+3. Sales Dashboard
+
+   * Revenue by day/week/month
+   * Top selling token bundles
+   * Refunds & chargeback reports
+   * Customer lifetime value (LTV) estimates
+
+4. Users Dashboard
+
+   * Active users (DAU/WAU/MAU)
+   * Top users by generation count & spending
+   * Cohort analysis (retention)
+   * Churn / reactivation metrics
+
+5. Full Detailed Models Usage Dashboard
+
+   * For each model: requests_count, avg_cost_usd, tokens_consumed, avg_latency, failures, repeat usage
+   * Map model → provider → region (if multi-region)
+
+6. Full Detailed Cost and Profit Dashboard
+
+   * Cost of goods sold (COGS) per model and provider
+   * Profit per model and overall profit margins over time
+   * Breakdowns by bundle, marketing campaign, and other channels
+
+7. System Health Dashboard
+
+   * Queue lengths, worker status, failed jobs, error rates
+   * API latency to providers, average response times, outage indicators
+   * Storage usage (S3), bandwidth usage, cost burn rate
+
+IMPLEMENTATION NOTES (PRIORITY)
+
+* Use feature flags for provider switching and token mapping.
+* Implement idempotency for generation requests (idempotency keys) to avoid double charging.
+* Use background workers for provider calls; return quick job acknowledgment to user.
+* Implement optimistic token reservation at request time and final token consumption on job completion. Provide timeouts and auto-release if job remains pending for too long.
+* All financial transactions must be logged with immutable audit trails.
+
+SECURITY AND PRIVACY
+
+* PCI scope: do not store payment card data. Use third-party payment processors.
+* Sensitive info: encrypt provider API keys in DB (KMS) and audit access.
+* Rate limiting & abuse protection for generation APIs to prevent spam/mass generation.
+* Compliance: consider GDPR/CCPA if operating in those regions. Provide image deletion and export endpoints.
+
+MONITORING & ALERTING
+
+* Metrics emitted: request rates, token consumption rates, per-provider latency, job failure rates, revenue per hour.
+* Alerts: on-call channel for worker failures beyond threshold, provider downtime, negative profit trends.
+
+DEPLOYMENT & SCALING
+
+* Containerize with Docker; use Kubernetes for scaling. Use horizontal autoscaling for workers and API pods.
+* Use multi-AZ deployment for S3 & DB for high availability.
+* Warm-up and cold-start strategies for heavy models (SDXL / DALL·E) by pre-warming specific worker pools.
+
+TESTING STRATEGY
+
+* Unit tests for token math, auth flows, and critical business logic.
+* Integration tests that mock provider responses and verify token accounting.
+* End-to-end tests (Cypress for web, integration tests for mobile flows) for purchase → generate → gallery publish.
+
+OPERATIONAL RUNBOOK (SHORT)
+
+* On provider outage: failover to alternative provider per admin failover rules.
+* On double-charging incident: refund process and manual token adjustments with audit log.
+* Monthly reconciliation: reconcile provider invoices with token consumption logs to calculate COGS and profit.
+
+NEXT STEPS (FOR DEVELOPMENT)
+
+1. Finalize token-per-model table and store as admin-configurable resource.
+2. Implement Melipayamak OTP module + test in staging.
+3. Implement token purchase flow and integrate payment gateway.
+4. Build generation job pipeline and first provider integration (choose 1 cheap provider + OpenAI DALL·E).
+5. Launch MVP with core features: token economy, generate, gallery, and basic dashboards.
+
+APPENDIX: SUGGESTED TOKEN TABLE (DEFAULT)
+
+* DALL·E3_HD : 20
+* DALL·E3_STD : 14
+* DALL·E2_LOW: 4
+* SDXL_HD : 10
+* SD_STANDARD : 5
+* GETIMG_BUDGET : 2
+* GETIMG_PREMIUM : 8
+* HOTPOT_BUDGET : 2
+* HOTPOT_PREMIUM : 12
+
+-- END OF DOCUMENT --
