@@ -85,6 +85,9 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         Route::delete('{id}/like', [\App\Http\Controllers\Api\V1\LikeController::class, 'destroy']);
         Route::post('{id}/comment', [\App\Http\Controllers\Api\V1\CommentController::class, 'store']);
         Route::delete('comments/{id}', [\App\Http\Controllers\Api\V1\CommentController::class, 'destroy']);
+        
+        // Reporting
+        Route::post('posts/{id}/report', [\App\Http\Controllers\Api\V1\ReportController::class, 'store']);
     });
 
     // Notification routes
@@ -141,4 +144,14 @@ Route::prefix('v1/admin')->middleware(['auth:sanctum', 'admin'])->group(function
     });
     
     Route::get('system-health', [\App\Http\Controllers\Api\V1\AdminSystemHealthController::class, 'index']);
+    
+    // Moderation routes
+    Route::prefix('moderation')->group(function () {
+        Route::get('queue', [\App\Http\Controllers\Api\V1\AdminModerationController::class, 'queue']);
+        Route::get('reports', [\App\Http\Controllers\Api\V1\AdminModerationController::class, 'reports']);
+        Route::post('posts/{id}/approve', [\App\Http\Controllers\Api\V1\AdminModerationController::class, 'approve']);
+        Route::post('posts/{id}/reject', [\App\Http\Controllers\Api\V1\AdminModerationController::class, 'reject']);
+        Route::post('reports/{id}/resolve', [\App\Http\Controllers\Api\V1\AdminModerationController::class, 'resolveReport']);
+        Route::post('reports/{id}/dismiss', [\App\Http\Controllers\Api\V1\AdminModerationController::class, 'dismissReport']);
+    });
 });
