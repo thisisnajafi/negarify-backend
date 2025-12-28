@@ -128,5 +128,62 @@ class GenerationController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Generate video (async)
+     */
+    public function generateVideo(\App\Http\Requests\Api\V1\GenerateVideoRequest $request): JsonResponse
+    {
+        $user = auth()->user();
+        $validated = $request->validated();
+
+        $model = \App\Models\Model::lockForUpdate()->findOrFail($validated['model_id']);
+
+        if (!$model->isAvailable() || $model->model_type !== 'video') {
+            return response()->json(['success' => false, 'message' => 'Model not available'], 400);
+        }
+
+        $tokenCost = $model->default_tokens;
+        $user->refresh();
+
+        if (!$user->hasTokens($tokenCost)) {
+            return response()->json(['success' => false, 'message' => 'Insufficient tokens'], 400);
+        }
+
+        try {
+            DB::beginTransaction();
+            $user->tokens_balance -= $tokenCost;
+            $user->save();
+
+            $job = GenerationJob::create([
+                'user_id' => $user->id,
+                'provider_id' => $model->provider_id,
+                'model_id' => $model->id,
+                'job_type' => 'video',
+                'prompt' => $validated['prompt'],
+                'negative_prompt' => $validated['negative_prompt'] ?? null,
+                'params_json' => [
+                    'duration' => $validated['duration'] ?? null,
+                    'resolution' => $validated['resolution'] ?? null,
+                    'fps' => $validated['fps'] ?? null,
+                    'seed' => $validated['seed'] ?? null,
+                ],
+                'status' => 'pending',
+                'tokens_consumed' => $tokenCost,
+            ]);
+
+            DB::commit();
+            \App\Jobs\GenerateVideoJob::dispatch($job->id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Video generation job created',
+                'data' => ['job_id' => $job->id, 'status' => 'pending', 'estimated_tokens' => $tokenCost],
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Failed to create job'], 500);
+        }
+    }
 }
 

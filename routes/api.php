@@ -56,6 +56,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     // Generation routes
     Route::prefix('generate')->group(function () {
         Route::post('image', [\App\Http\Controllers\Api\V1\GenerationController::class, 'generateImage']);
+        Route::post('video', [\App\Http\Controllers\Api\V1\GenerationController::class, 'generateVideo']);
     });
 
     // Gallery routes
