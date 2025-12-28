@@ -10,3 +10,8 @@ Artisan::command('inspire', function () {
 
 // Schedule: Cleanup expired OTPs hourly
 Schedule::command('otp:cleanup --hours=1')->hourly();
+
+// Schedule: Fetch USD to Toman rate from TGJU.org every 5 minutes
+Schedule::call(function () {
+    app(\App\Services\TgjuScraperService::class)->fetchUsdRate();
+})->everyFiveMinutes();

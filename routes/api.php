@@ -26,6 +26,9 @@ Route::prefix('v1')->group(function () {
     
     // Public token bundle listing (no auth required)
     Route::get('tokens/bundles', [\App\Http\Controllers\Api\V1\TokenBundleController::class, 'index']);
+    
+    // Public currency rate endpoint (no auth required)
+    Route::get('currency/rate', [\App\Http\Controllers\Api\V1\CurrencyController::class, 'getRate']);
 });
 
 // Protected routes
