@@ -19,17 +19,16 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     // Authentication routes
     Route::prefix('auth')->group(function () {
-        Route::post('request-otp', [AuthController::class, 'requestOtp']);
-        Route::post('verify-otp', [AuthController::class, 'verifyOtp']);
-        Route::post('resend-otp', [AuthController::class, 'resendOtp']);
+        Route::post('request-otp', [\App\Http\Controllers\Api\V1\AuthController::class, 'requestOtp']);
+        Route::post('verify-otp', [\App\Http\Controllers\Api\V1\AuthController::class, 'verifyOtp']);
+        Route::post('resend-otp', [\App\Http\Controllers\Api\V1\AuthController::class, 'resendOtp']);
     });
 });
 
 // Protected routes
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
-    // User routes
-    Route::get('user', [AuthController::class, 'profile']);
-    Route::post('auth/logout', [AuthController::class, 'logout']);
+    // Authentication routes
+    Route::post('auth/logout', [\App\Http\Controllers\Api\V1\AuthController::class, 'logout']);
 
     // Token routes
     Route::prefix('tokens')->group(function () {
