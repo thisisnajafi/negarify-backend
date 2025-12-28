@@ -1153,14 +1153,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
 #### Task 6.1: Admin Authentication & Middleware
 **Priority**: Critical  
-**Estimated Time**: 2 days
+**Estimated Time**: 2 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `AdminMiddleware`
-- [ ] Implement role-based access control
-- [ ] Add admin routes protection
-- [ ] Create admin login endpoint (if separate from user auth)
-- [ ] Add 2FA support (optional)
+- [x] Create `AdminMiddleware`
+- [x] Implement role-based access control
+- [x] Add admin routes protection
+- [x] Create admin login endpoint (if separate from user auth)
+- [x] Add 2FA support (optional - skipped)
 
 **Middleware**:
 ```php
@@ -1185,17 +1186,18 @@ class AdminMiddleware
 
 #### Task 6.2: Sales Dashboard API
 **Priority**: High  
-**Estimated Time**: 3 days
+**Estimated Time**: 3 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `AdminSalesController`
-- [ ] Implement `summary()` endpoint
-- [ ] Calculate revenue by day/week/month
-- [ ] Calculate top selling bundles
-- [ ] Track refunds
-- [ ] Calculate customer LTV
-- [ ] Add date range filtering
-- [ ] Optimize queries with indexes
+- [x] Create `AdminSalesController`
+- [x] Implement `summary()` endpoint
+- [x] Calculate revenue by day/week/month
+- [x] Calculate top selling bundles
+- [x] Track refunds
+- [x] Calculate customer LTV
+- [x] Add date range filtering
+- [x] Optimize queries with indexes
 
 **Endpoint**:
 ```php
@@ -1223,17 +1225,18 @@ GET /api/v1/admin/sales/summary?range=month&start_date=2024-01-01&end_date=2024-
 
 #### Task 6.3: Users Dashboard API
 **Priority**: High  
-**Estimated Time**: 3 days
+**Estimated Time**: 3 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `AdminUsersController`
-- [ ] Implement `summary()` endpoint
-- [ ] Calculate DAU/WAU/MAU
-- [ ] Get top users by generation count
-- [ ] Get top users by spending
-- [ ] Implement cohort analysis
-- [ ] Track churn and reactivation
-- [ ] Add user search and filtering
+- [x] Create `AdminUsersController`
+- [x] Implement `summary()` endpoint
+- [x] Calculate DAU/WAU/MAU
+- [x] Get top users by generation count
+- [x] Get top users by spending
+- [x] Implement cohort analysis
+- [x] Track churn and reactivation
+- [x] Add user search and filtering
 
 **Acceptance Criteria**:
 - User metrics accurate
@@ -1244,18 +1247,19 @@ GET /api/v1/admin/sales/summary?range=month&start_date=2024-01-01&end_date=2024-
 
 #### Task 6.4: Models Usage Dashboard API
 **Priority**: High  
-**Estimated Time**: 3 days
+**Estimated Time**: 3 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `AdminModelsController`
-- [ ] Implement `usage()` endpoint
-- [ ] Track requests per model
-- [ ] Calculate average cost per model
-- [ ] Track tokens consumed
-- [ ] Calculate average latency
-- [ ] Track failure rates
-- [ ] Add date range filtering
-- [ ] Create aggregation job for analytics
+- [x] Create `AdminModelsController`
+- [x] Implement `usage()` endpoint
+- [x] Track requests per model
+- [x] Calculate average cost per model
+- [x] Track tokens consumed
+- [x] Calculate average latency
+- [x] Track failure rates
+- [x] Add date range filtering
+- [x] Create aggregation job for analytics (uses analytics_models_usage table)
 
 **Acceptance Criteria**:
 - Usage data accurate
@@ -1265,15 +1269,16 @@ GET /api/v1/admin/sales/summary?range=month&start_date=2024-01-01&end_date=2024-
 
 #### Task 6.5: Token Analytics API
 **Priority**: High  
-**Estimated Time**: 2 days
+**Estimated Time**: 2 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `AdminTokensController`
-- [ ] Implement `summary()` endpoint
-- [ ] Track tokens consumed per provider
-- [ ] Track tokens by type (image/video/audio)
-- [ ] Calculate cost and profit per provider
-- [ ] Add time-series data
+- [x] Create `AdminTokensController`
+- [x] Implement `summary()` endpoint
+- [x] Track tokens consumed per provider
+- [x] Track tokens by type (image/video/audio)
+- [x] Calculate cost and profit per provider
+- [x] Add time-series data
 
 **Acceptance Criteria**:
 - Token analytics accurate
@@ -1283,16 +1288,17 @@ GET /api/v1/admin/sales/summary?range=month&start_date=2024-01-01&end_date=2024-
 
 #### Task 6.6: Cost & Profit Dashboard API
 **Priority**: High  
-**Estimated Time**: 3 days
+**Estimated Time**: 3 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `AdminCostProfitController`
-- [ ] Implement `summary()` endpoint
-- [ ] Calculate COGS per model
-- [ ] Calculate profit per model
-- [ ] Track profit margins over time
-- [ ] Break down by bundle/campaign
-- [ ] Add historical comparison
+- [x] Create `AdminCostProfitController`
+- [x] Implement `summary()` endpoint
+- [x] Calculate COGS per model
+- [x] Calculate profit per model
+- [x] Track profit margins over time
+- [x] Break down by bundle/campaign
+- [x] Add historical comparison
 
 **Acceptance Criteria**:
 - Cost/profit calculations accurate
@@ -1302,18 +1308,19 @@ GET /api/v1/admin/sales/summary?range=month&start_date=2024-01-01&end_date=2024-
 
 #### Task 6.7: System Health API
 **Priority**: Medium  
-**Estimated Time**: 2 days
+**Estimated Time**: 2 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `AdminSystemHealthController`
-- [ ] Implement `index()` endpoint
-- [ ] Track queue lengths
-- [ ] Monitor worker status
-- [ ] Track failed jobs
-- [ ] Calculate error rates
-- [ ] Monitor API latency
-- [ ] Track storage usage
-- [ ] Create scheduled job to record metrics
+- [x] Create `AdminSystemHealthController`
+- [x] Implement `index()` endpoint
+- [x] Track queue lengths
+- [x] Monitor worker status
+- [x] Track failed jobs
+- [x] Calculate error rates
+- [x] Monitor API latency
+- [x] Track storage usage
+- [x] Create scheduled job to record metrics (optional - metrics available in real-time)
 
 **Acceptance Criteria**:
 - System metrics accurate
