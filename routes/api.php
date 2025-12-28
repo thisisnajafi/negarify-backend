@@ -23,6 +23,9 @@ Route::prefix('v1')->group(function () {
         Route::post('verify-otp', [\App\Http\Controllers\Api\V1\AuthController::class, 'verifyOtp']);
         Route::post('resend-otp', [\App\Http\Controllers\Api\V1\AuthController::class, 'resendOtp']);
     });
+    
+    // Public token bundle listing (no auth required)
+    Route::get('tokens/bundles', [\App\Http\Controllers\Api\V1\TokenBundleController::class, 'index']);
 });
 
 // Protected routes
@@ -37,10 +40,8 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 
     // Token routes
     Route::prefix('tokens')->group(function () {
-        Route::get('bundles', [\App\Http\Controllers\Api\TokenController::class, 'getBundles']);
         Route::get('balance', [\App\Http\Controllers\Api\TokenController::class, 'getBalance']);
         Route::get('history', [\App\Http\Controllers\Api\TokenController::class, 'getHistory']);
-        Route::post('purchase', [\App\Http\Controllers\Api\TokenController::class, 'purchase']);
         Route::post('consume', [\App\Http\Controllers\Api\TokenController::class, 'consume']);
         Route::post('add', [\App\Http\Controllers\Api\TokenController::class, 'add']);
     });
