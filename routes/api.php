@@ -116,6 +116,15 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 
 // Admin routes
 Route::prefix('v1/admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
+    // Token bundle management
+    Route::prefix('tokens/bundles')->group(function () {
+        Route::post('/', [\App\Http\Controllers\Api\V1\TokenBundleController::class, 'store']);
+        Route::put('/{id}', [\App\Http\Controllers\Api\V1\TokenBundleController::class, 'update']);
+        Route::delete('/{id}', [\App\Http\Controllers\Api\V1\TokenBundleController::class, 'destroy']);
+        Route::post('/{id}/activate', [\App\Http\Controllers\Api\V1\TokenBundleController::class, 'activate']);
+        Route::post('/{id}/deactivate', [\App\Http\Controllers\Api\V1\TokenBundleController::class, 'deactivate']);
+    });
+    
     Route::prefix('sales')->group(function () {
         Route::get('summary', function (Request $request) {
             return response()->json([
