@@ -86,6 +86,15 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         Route::post('{id}/comment', [\App\Http\Controllers\Api\V1\CommentController::class, 'store']);
         Route::delete('comments/{id}', [\App\Http\Controllers\Api\V1\CommentController::class, 'destroy']);
     });
+
+    // Notification routes
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Api\V1\NotificationController::class, 'index']);
+        Route::get('{id}', [\App\Http\Controllers\Api\V1\NotificationController::class, 'show']);
+        Route::put('{id}/read', [\App\Http\Controllers\Api\V1\NotificationController::class, 'markAsRead']);
+        Route::put('{id}/unread', [\App\Http\Controllers\Api\V1\NotificationController::class, 'markAsUnread']);
+        Route::put('read-all', [\App\Http\Controllers\Api\V1\NotificationController::class, 'markAllAsRead']);
+    });
 });
 
 // Admin routes

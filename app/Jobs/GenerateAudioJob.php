@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\GenerationJob;
 use App\Models\TokenTransaction;
+use App\Services\NotificationService;
 use App\Services\Segmind\SegmindAudioService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -98,6 +99,19 @@ class GenerateAudioJob implements ShouldQueue
             $job->save();
 
             $this->consumeTokens($job);
+
+            Log::info('Audio generation completed', [
+                'job_id' => $job->id,
+                'user_id' => $job->user_id,
+                'result_url' => $resultUrl,
+            ]);
+
+            // Notify user of completion
+            app(NotificationService::class)->notifyGenerationCompleted(
+                $job->user_id,
+                $job->id,
+                'audio'
+            );
         } catch (\Exception $e) {
             throw new \RuntimeException("Failed to process audio: {$e->getMessage()}", 0, $e);
         }

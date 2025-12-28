@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\GenerationJob;
 use App\Models\TokenTransaction;
+use App\Services\NotificationService;
 use App\Services\Segmind\SegmindImageService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -166,6 +167,13 @@ class GenerateImageJob implements ShouldQueue
                 'user_id' => $job->user_id,
                 'result_url' => $resultUrl,
             ]);
+
+            // Notify user of completion
+            app(NotificationService::class)->notifyGenerationCompleted(
+                $job->user_id,
+                $job->id,
+                'image'
+            );
         } catch (\Exception $e) {
             throw new \RuntimeException("Failed to process image result: {$e->getMessage()}", 0, $e);
         }

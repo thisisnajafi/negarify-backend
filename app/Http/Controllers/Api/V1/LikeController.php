@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\GalleryPost;
 use App\Models\Like;
+use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -58,6 +59,16 @@ class LikeController extends Controller
                 'post_id' => $post->id,
                 'user_id' => $user->id,
             ]);
+
+            // Notify post owner (if not self-like)
+            if ($post->user_id !== $user->id) {
+                app(NotificationService::class)->notifyPostLiked(
+                    $post->user_id,
+                    $post->id,
+                    $user->id,
+                    $user->name
+                );
+            }
 
             return response()->json([
                 'success' => true,

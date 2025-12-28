@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\BulkCurationRequest;
 use App\Models\GalleryPost;
+use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -57,6 +58,9 @@ class AdminGalleryController extends Controller
                 'post_id' => $post->id,
                 'admin_id' => $admin->id,
             ]);
+
+            // Notify post owner
+            app(NotificationService::class)->notifyPostCurated($post->user_id, $post->id);
 
             return response()->json([
                 'success' => true,

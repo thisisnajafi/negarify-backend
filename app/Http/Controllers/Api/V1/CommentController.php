@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreCommentRequest;
 use App\Models\Comment;
 use App\Models\GalleryPost;
+use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -58,6 +59,35 @@ class CommentController extends Controller
                 'post_id' => $post->id,
                 'user_id' => $user->id,
             ]);
+
+            // Notify post owner (if not self-comment)
+            if ($post->user_id !== $user->id) {
+                $parentCommentOwnerId = isset($validated['parent_id']) && $parentComment
+                    ? $parentComment->user_id
+                    : null;
+
+                // Notify post owner
+                app(NotificationService::class)->notifyCommentAdded(
+                    $post->user_id,
+                    $post->id,
+                    $comment->id,
+                    $user->id,
+                    $user->name,
+                    $validated['parent_id'] ?? null
+                );
+
+                // If this is a reply, also notify parent comment owner (if different from post owner)
+                if ($parentCommentOwnerId && $parentCommentOwnerId !== $post->user_id) {
+                    app(NotificationService::class)->notifyCommentAdded(
+                        $parentCommentOwnerId,
+                        $post->id,
+                        $comment->id,
+                        $user->id,
+                        $user->name,
+                        $validated['parent_id']
+                    );
+                }
+            }
 
             return response()->json([
                 'success' => true,

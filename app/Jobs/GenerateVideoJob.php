@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\GenerationJob;
 use App\Models\TokenTransaction;
+use App\Services\NotificationService;
 use App\Services\Segmind\SegmindVideoService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
