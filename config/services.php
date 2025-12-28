@@ -65,4 +65,15 @@ return [
         'mode' => env('PAYPAL_MODE', 'sandbox'), // sandbox or live
     ],
 
+    'segmind' => [
+        'api_key' => env('SEGMIND_API_KEY'),
+        'api_base_url' => env('SEGMIND_API_BASE_URL', 'https://api.segmind.com'),
+    ],
+
+    'zarinpal' => [
+        'merchant_id' => env('ZARINPAL_MERCHANT_ID'),
+        'sandbox' => env('ZARINPAL_SANDBOX', false),
+        'callback_url' => env('ZARINPAL_CALLBACK_URL'),
+    ],
+
 ];
