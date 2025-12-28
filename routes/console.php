@@ -15,3 +15,6 @@ Schedule::command('otp:cleanup --hours=1')->hourly();
 Schedule::call(function () {
     app(\App\Services\TgjuScraperService::class)->fetchUsdRate();
 })->everyFiveMinutes();
+
+// Schedule: Reset feed view limits daily at midnight
+Schedule::command('feed:reset-view-limits')->daily();

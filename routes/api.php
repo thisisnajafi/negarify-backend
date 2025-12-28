@@ -74,6 +74,11 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         Route::put('posts/{id}', [\App\Http\Controllers\Api\V1\GalleryPostController::class, 'update']);
         Route::delete('posts/{id}', [\App\Http\Controllers\Api\V1\GalleryPostController::class, 'destroy']);
         Route::get('my-posts', [\App\Http\Controllers\Api\V1\GalleryPostController::class, 'myPosts']);
+        
+        // Feed routes
+        Route::get('feed', [\App\Http\Controllers\Api\V1\FeedController::class, 'index']);
+        Route::post('feed/copy-prompt', [\App\Http\Controllers\Api\V1\FeedController::class, 'copyPrompt']);
+        Route::post('feed/copy-model', [\App\Http\Controllers\Api\V1\FeedController::class, 'copyModel']);
     });
 });
 
