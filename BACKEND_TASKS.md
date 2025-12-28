@@ -427,26 +427,27 @@ database/migrations/
 
 #### Task 1.3: Eloquent Models
 **Priority**: Critical  
-**Estimated Time**: 2 days
+**Estimated Time**: 2 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `User` model with relationships
-- [ ] Create `Provider` model with encryption for API key
-- [ ] Create `Model` model (AI model)
-- [ ] Create `TokenBundle` model
-- [ ] Create `Order` model
-- [ ] Create `TokenTransaction` model
-- [ ] Create `GenerationJob` model
-- [ ] Create `GalleryPost` model
-- [ ] Create `FeedViewLimit` model
-- [ ] Create `CurrencyRate` model
-- [ ] Create `OtpVerification` model
-- [ ] Create `AnalyticsModelsUsage` model
-- [ ] Create `SystemHealth` model
-- [ ] Create supporting models (Like, Comment, etc.)
-- [ ] Add all relationships (hasMany, belongsTo, etc.)
-- [ ] Add model scopes for common queries
-- [ ] Add accessors and mutators where needed
+- [x] Create `User` model with relationships
+- [x] Create `Provider` model with encryption for API key
+- [x] Create `Model` model (AI model)
+- [x] Create `TokenBundle` model
+- [x] Create `Order` model
+- [x] Create `TokenTransaction` model
+- [x] Create `GenerationJob` model
+- [x] Create `GalleryPost` model
+- [x] Create `FeedViewLimit` model
+- [x] Create `CurrencyRate` model
+- [x] Create `OtpVerification` model
+- [x] Create `AnalyticsModelsUsage` model
+- [x] Create `SystemHealth` model
+- [x] Create supporting models (Like, Comment, etc.)
+- [x] Add all relationships (hasMany, belongsTo, etc.)
+- [x] Add model scopes for common queries
+- [x] Add accessors and mutators where needed
 
 **Model Example**:
 ```php
