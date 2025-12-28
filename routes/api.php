@@ -29,6 +29,11 @@ Route::prefix('v1')->group(function () {
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     // Authentication routes
     Route::post('auth/logout', [\App\Http\Controllers\Api\V1\AuthController::class, 'logout']);
+    
+    // User profile routes
+    Route::get('user', [\App\Http\Controllers\Api\V1\UserController::class, 'show']);
+    Route::put('user', [\App\Http\Controllers\Api\V1\UserController::class, 'update']);
+    Route::post('user/avatar', [\App\Http\Controllers\Api\V1\UserController::class, 'uploadAvatar']);
 
     // Token routes
     Route::prefix('tokens')->group(function () {
