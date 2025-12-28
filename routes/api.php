@@ -119,12 +119,7 @@ Route::prefix('v1/admin')->middleware(['auth:sanctum', 'admin'])->group(function
     });
     
     Route::prefix('tokens')->group(function () {
-        Route::get('summary', function (Request $request) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Tokens summary endpoint - to be implemented',
-            ]);
-        });
+        Route::get('summary', [\App\Http\Controllers\Api\V1\AdminTokensController::class, 'summary']);
     });
     
     Route::prefix('users')->group(function () {
