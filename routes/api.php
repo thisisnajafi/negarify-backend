@@ -41,12 +41,16 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::put('user', [\App\Http\Controllers\Api\V1\UserController::class, 'update']);
     Route::post('user/avatar', [\App\Http\Controllers\Api\V1\UserController::class, 'uploadAvatar']);
 
-    // Token routes
+    // Token routes (legacy - to be migrated to V1)
     Route::prefix('tokens')->group(function () {
-        Route::get('balance', [\App\Http\Controllers\Api\TokenController::class, 'getBalance']);
-        Route::get('history', [\App\Http\Controllers\Api\TokenController::class, 'getHistory']);
         Route::post('consume', [\App\Http\Controllers\Api\TokenController::class, 'consume']);
         Route::post('add', [\App\Http\Controllers\Api\TokenController::class, 'add']);
+    });
+    
+    // Token transaction routes (V1)
+    Route::prefix('tokens')->group(function () {
+        Route::get('history', [\App\Http\Controllers\Api\V1\TokenTransactionController::class, 'index']);
+        Route::get('balance', [\App\Http\Controllers\Api\V1\TokenTransactionController::class, 'balance']);
     });
 
     // Image generation routes
