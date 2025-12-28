@@ -53,38 +53,9 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         Route::get('balance', [\App\Http\Controllers\Api\V1\TokenTransactionController::class, 'balance']);
     });
 
-    // Image generation routes
+    // Generation routes
     Route::prefix('generate')->group(function () {
-        Route::post('/', function (Request $request) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Image generation endpoint - to be implemented',
-            ]);
-        });
-        
-        Route::get('{job_id}/status', function (Request $request, $jobId) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Job status endpoint - to be implemented',
-                'job_id' => $jobId,
-            ]);
-        });
-        
-        Route::get('{job_id}/result', function (Request $request, $jobId) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Job result endpoint - to be implemented',
-                'job_id' => $jobId,
-            ]);
-        });
-        
-        Route::post('{job_id}/retry', function (Request $request, $jobId) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Job retry endpoint - to be implemented',
-                'job_id' => $jobId,
-            ]);
-        });
+        Route::post('image', [\App\Http\Controllers\Api\V1\GenerationController::class, 'generateImage']);
     });
 
     // Gallery routes
