@@ -128,18 +128,8 @@ Route::prefix('v1/admin')->middleware(['auth:sanctum', 'admin'])->group(function
     });
     
     Route::prefix('cost-profit')->group(function () {
-        Route::get('summary', function (Request $request) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Cost profit summary endpoint - to be implemented',
-            ]);
-        });
+        Route::get('summary', [\App\Http\Controllers\Api\V1\AdminCostProfitController::class, 'summary']);
     });
     
-    Route::get('system-health', function (Request $request) {
-        return response()->json([
-            'success' => true,
-            'message' => 'System health endpoint - to be implemented',
-        ]);
-    });
+    Route::get('system-health', [\App\Http\Controllers\Api\V1\AdminSystemHealthController::class, 'index']);
 });
