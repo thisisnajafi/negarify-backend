@@ -73,7 +73,7 @@ return [
     'zarinpal' => [
         'merchant_id' => env('ZARINPAL_MERCHANT_ID'),
         'sandbox' => env('ZARINPAL_SANDBOX', false),
-        'callback_url' => env('ZARINPAL_CALLBACK_URL'),
+        'callback_url' => env('ZARINPAL_CALLBACK_URL', env('APP_URL') . '/api/v1/tokens/purchase/callback'),
     ],
 
 ];
