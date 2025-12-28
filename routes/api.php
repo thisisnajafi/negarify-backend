@@ -88,6 +88,17 @@ Route::prefix('v1/admin')->middleware(['auth:sanctum', 'admin'])->group(function
         Route::post('/{id}/deactivate', [\App\Http\Controllers\Api\V1\TokenBundleController::class, 'deactivate']);
     });
     
+    // Gallery curation
+    Route::prefix('gallery')->group(function () {
+        Route::post('/{id}/curate', [\App\Http\Controllers\Api\V1\AdminGalleryController::class, 'curate']);
+        Route::post('/{id}/uncurate', [\App\Http\Controllers\Api\V1\AdminGalleryController::class, 'uncurate']);
+        Route::post('/{id}/feature', [\App\Http\Controllers\Api\V1\AdminGalleryController::class, 'feature']);
+        Route::post('/{id}/unfeature', [\App\Http\Controllers\Api\V1\AdminGalleryController::class, 'unfeature']);
+        Route::post('/bulk-curate', [\App\Http\Controllers\Api\V1\AdminGalleryController::class, 'bulkCurate']);
+        Route::post('/bulk-uncurate', [\App\Http\Controllers\Api\V1\AdminGalleryController::class, 'bulkUncurate']);
+        Route::get('/curated', [\App\Http\Controllers\Api\V1\AdminGalleryController::class, 'curated']);
+    });
+    
     Route::prefix('sales')->group(function () {
         Route::get('summary', function (Request $request) {
             return response()->json([
