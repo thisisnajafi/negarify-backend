@@ -26,8 +26,11 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
             
-            $table->index(['phone', 'is_verified']);
+            $table->index('phone');
+            $table->index('email');
             $table->index('tokens_balance');
+            $table->index('role');
+            $table->index('created_at');
         });
     }
 

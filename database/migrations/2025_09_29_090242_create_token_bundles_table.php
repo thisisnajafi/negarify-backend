@@ -13,18 +13,15 @@ return new class extends Migration
     {
         Schema::create('token_bundles', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->integer('tokens');
-            $table->decimal('price_usd', 8, 2);
-            $table->decimal('discount_percentage', 5, 2)->default(0);
-            $table->text('description')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->boolean('is_popular')->default(false);
-            $table->integer('sort_order')->default(0);
+            $table->string('name'); // "Starter Pack", "Standard Pack", etc.
+            $table->integer('token_amount'); // 100, 500, 1000, 2000
+            $table->decimal('price_usd', 10, 2); // Base price in USD
+            $table->integer('bonus_tokens')->default(0);
+            $table->boolean('is_active')->default(true)->index();
+            $table->integer('display_order')->default(0);
             $table->timestamps();
             
-            $table->index(['is_active', 'sort_order']);
-            $table->index('is_popular');
+            $table->index(['is_active', 'display_order']);
         });
     }
 

@@ -13,24 +13,24 @@ return new class extends Migration
     {
         Schema::create('gallery_posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('image_job_id')->constrained()->onDelete('cascade');
-            $table->string('title');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->index();
+            $table->foreignId('generation_job_id')->constrained()->onDelete('cascade')->unique();
+            $table->string('title')->nullable();
             $table->text('description')->nullable();
-            $table->json('tags_json')->nullable();
-            $table->enum('visibility', ['public', 'friends', 'private'])->default('public');
+            $table->json('tags_json')->nullable(); // Array of tags
+            $table->enum('visibility', ['public', 'private'])->default('public')->index();
+            $table->boolean('is_curated')->default(false)->index();
+            $table->boolean('is_featured')->default(false)->index();
             $table->integer('likes_count')->default(0);
             $table->integer('comments_count')->default(0);
             $table->integer('views_count')->default(0);
-            $table->boolean('is_featured')->default(false);
-            $table->boolean('is_moderated')->default(false);
-            $table->timestamp('published_at')->nullable();
+            $table->boolean('prompt_visible')->default(true);
+            $table->boolean('model_visible')->default(true);
+            $table->timestamp('curated_at')->nullable();
             $table->timestamps();
             
             $table->index(['user_id', 'visibility']);
-            $table->index(['visibility', 'published_at']);
-            $table->index('is_featured');
-            $table->index('likes_count');
+            $table->index('created_at');
         });
     }
 

@@ -13,21 +13,20 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->index();
             $table->foreignId('token_bundle_id')->constrained()->onDelete('cascade');
-            $table->string('order_number')->unique();
-            $table->integer('tokens');
-            $table->decimal('amount_usd', 8, 2);
-            $table->enum('status', ['pending', 'processing', 'completed', 'failed', 'cancelled', 'refunded'])->default('pending');
-            $table->string('payment_method')->nullable();
-            $table->string('payment_id')->nullable();
-            $table->json('payment_details')->nullable();
-            $table->timestamp('completed_at')->nullable();
+            $table->integer('amount_tokens');
+            $table->decimal('price_toman', 15, 2); // Calculated price in Toman
+            $table->decimal('price_usd', 10, 2); // Base price in USD
+            $table->decimal('dollar_rate', 15, 2); // USD to Toman rate at purchase time
+            $table->string('zarinpal_authority')->nullable()->unique()->index();
+            $table->string('zarinpal_ref_id')->nullable()->unique();
+            $table->enum('status', ['pending', 'paid', 'failed', 'cancelled'])->default('pending')->index();
+            $table->timestamp('paid_at')->nullable();
             $table->timestamps();
             
             $table->index(['user_id', 'status']);
-            $table->index('order_number');
-            $table->index('payment_id');
+            $table->index('created_at');
         });
     }
 

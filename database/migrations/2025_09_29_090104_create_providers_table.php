@@ -13,16 +13,14 @@ return new class extends Migration
     {
         Schema::create('providers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('api_base_url');
-            $table->text('api_key_encrypted');
-            $table->decimal('cost_per_image_usd_override', 8, 4)->nullable();
+            $table->string('name'); // "Segmind"
+            $table->string('api_base_url'); // "https://api.segmind.com"
+            $table->text('api_key_encrypted'); // Encrypted using Laravel encryption
+            $table->decimal('cost_per_image_usd', 10, 4)->nullable();
+            $table->decimal('cost_per_video_usd', 10, 4)->nullable();
+            $table->decimal('cost_per_audio_usd', 10, 4)->nullable();
             $table->boolean('enabled')->default(true);
-            $table->json('config')->nullable(); // Additional provider-specific config
-            $table->integer('priority')->default(0); // Provider selection priority
             $table->timestamps();
-            
-            $table->index(['enabled', 'priority']);
         });
     }
 

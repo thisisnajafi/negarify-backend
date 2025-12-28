@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('gallery_post_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
+            $table->timestamp('created_at');
             
             $table->unique(['user_id', 'gallery_post_id']);
-            $table->index('gallery_post_id');
         });
     }
 

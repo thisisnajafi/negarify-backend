@@ -13,18 +13,17 @@ return new class extends Migration
     {
         Schema::create('token_transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('provider_id')->nullable()->constrained()->onDelete('set null');
-            $table->decimal('amount_tokens', 15, 2);
-            $table->decimal('amount_usd', 8, 2)->nullable();
-            $table->enum('type', ['purchase', 'consume', 'refund', 'bonus', 'adjustment']);
-            $table->string('reference_id')->nullable(); // Order ID, job ID, etc.
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->index();
+            $table->foreignId('order_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('generation_job_id')->nullable()->constrained()->onDelete('set null');
+            $table->integer('amount_tokens'); // Positive for purchase, negative for consumption
+            $table->decimal('amount_usd', 10, 4)->nullable();
+            $table->enum('type', ['purchase', 'consume', 'refund', 'bonus', 'adjustment'])->index();
+            $table->string('reference_id')->nullable();
             $table->text('description')->nullable();
-            $table->json('metadata')->nullable(); // Additional transaction data
             $table->timestamps();
             
             $table->index(['user_id', 'type']);
-            $table->index(['reference_id', 'type']);
             $table->index('created_at');
         });
     }
