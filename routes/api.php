@@ -133,12 +133,8 @@ Route::prefix('v1/admin')->middleware(['auth:sanctum', 'admin'])->group(function
     });
     
     Route::prefix('users')->group(function () {
-        Route::get('summary', function (Request $request) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Users summary endpoint - to be implemented',
-            ]);
-        });
+        Route::get('summary', [\App\Http\Controllers\Api\V1\AdminUsersController::class, 'summary']);
+        Route::get('list', [\App\Http\Controllers\Api\V1\AdminUsersController::class, 'list']);
     });
     
     Route::prefix('cost-profit')->group(function () {
