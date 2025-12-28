@@ -495,19 +495,20 @@ class User extends Authenticatable
 
 #### Task 2.1: OTP Service (Melipayamak)
 **Priority**: Critical  
-**Estimated Time**: 3 days
+**Estimated Time**: 3 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `MelipayamakService` class
-- [ ] Implement SMS sending method
-- [ ] Add error handling and retry logic
-- [ ] Create OTP generation utility
-- [ ] Implement OTP hashing (HMAC)
-- [ ] Create OTP verification logic
-- [ ] Add rate limiting per phone number
-- [ ] Implement OTP expiration (5 minutes)
-- [ ] Add attempt limiting (max 3 attempts)
-- [ ] Create cleanup job for expired OTPs
+- [x] Create `MelipayamakService` class
+- [x] Implement SMS sending method
+- [x] Add error handling and retry logic
+- [x] Create OTP generation utility
+- [x] Implement OTP hashing (HMAC)
+- [x] Create OTP verification logic
+- [x] Add rate limiting per phone number
+- [x] Implement OTP expiration (5 minutes)
+- [x] Add attempt limiting (max 3 attempts)
+- [x] Create cleanup job for expired OTPs
 
 **Service Class**:
 ```php
@@ -536,17 +537,18 @@ class MelipayamakService
 
 #### Task 2.2: OTP Authentication Endpoints
 **Priority**: Critical  
-**Estimated Time**: 2 days
+**Estimated Time**: 2 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `AuthController`
-- [ ] Implement `requestOtp()` method
-- [ ] Implement `verifyOtp()` method
-- [ ] Implement `resendOtp()` method
-- [ ] Add rate limiting middleware
-- [ ] Generate JWT tokens on verification
-- [ ] Add validation rules
-- [ ] Add request/response logging
+- [x] Create `AuthController`
+- [x] Implement `requestOtp()` method
+- [x] Implement `verifyOtp()` method
+- [x] Implement `resendOtp()` method
+- [x] Add rate limiting middleware
+- [x] Generate JWT tokens on verification
+- [x] Add validation rules
+- [x] Add request/response logging
 
 **Routes**:
 ```php
@@ -592,17 +594,18 @@ public function verifyOtp(Request $request)
 
 #### Task 2.3: User Profile Endpoints
 **Priority**: High  
-**Estimated Time**: 2 days
+**Estimated Time**: 2 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `UserController`
-- [ ] Implement `show()` - get user profile
-- [ ] Implement `update()` - update profile
-- [ ] Implement `uploadAvatar()` - avatar upload
-- [ ] Add file validation for avatar
-- [ ] Store avatar in S3
-- [ ] Add Sanctum authentication middleware
-- [ ] Return token balance in profile
+- [x] Create `UserController`
+- [x] Implement `show()` - get user profile
+- [x] Implement `update()` - update profile
+- [x] Implement `uploadAvatar()` - avatar upload
+- [x] Add file validation for avatar
+- [x] Store avatar in S3
+- [x] Add Sanctum authentication middleware
+- [x] Return token balance in profile
 
 **Routes**:
 ```php
