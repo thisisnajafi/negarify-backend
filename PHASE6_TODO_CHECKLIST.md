@@ -3,71 +3,40 @@
 ## Task 6.1: Admin Authentication & Middleware
 
 ### Subtask 6.1.1: Verify AdminMiddleware Exists
-**Files to Check/Modify:**
-- `app/Http/Middleware/AdminMiddleware.php` (verify exists and is correct)
-- `bootstrap/app.php` (verify middleware alias registered)
+**Files to Check:**
+- `app/Http/Middleware/AdminMiddleware.php` (should already exist from Phase 5)
 
 **Routes & Middleware:**
 - All admin routes must use `auth:sanctum` + `admin` middleware
+- Middleware alias registered in `bootstrap/app.php`
 
 **DB Reads/Writes:**
-- Read: `users` (check role='admin')
+- Read: `users` (check role field)
 
 **Indexes Used:**
-- `users.role` (for admin check)
+- `users.role` (if indexed, for role checks)
 
 **Caching Decisions:**
-- None (auth checks must be real-time)
+- None (role check is fast, no caching needed)
 
 **Authorization Rules:**
-- Only users with `role='admin'` can access admin endpoints
+- Only users with `role = 'admin'` can access admin endpoints
 - Non-admin users receive 403 Forbidden
 
 **Acceptance Criteria:**
-- AdminMiddleware exists and enforces admin role
-- Middleware alias registered in bootstrap/app.php
+- AdminMiddleware exists and works correctly
 - All admin routes protected
-- Non-admin cannot access any admin endpoint
+- Non-admin users cannot access admin endpoints
 
 **Failure Cases & Security Pitfalls:**
 - Non-admin accesses admin endpoint → 403 Forbidden
-- Middleware not registered → 500 error
+- Middleware not applied → Security breach
 - Role check bypassed → Security breach
 
 **Test Coverage Expectations:**
 - Feature test: Non-admin cannot access admin endpoints
 - Feature test: Admin can access admin endpoints
 - Feature test: Unauthenticated user cannot access admin endpoints
-
----
-
-### Subtask 6.1.2: Add Admin Routes Protection
-**Files to Modify:**
-- `routes/api.php` (verify all admin routes use middleware)
-
-**Routes & Middleware:**
-- All routes under `/api/v1/admin/*` must use `auth:sanctum` + `admin`
-
-**DB Reads/Writes:**
-- None (routing only)
-
-**Indexes Used:**
-- None
-
-**Caching Decisions:**
-- None
-
-**Authorization Rules:**
-- All admin routes protected by middleware
-
-**Acceptance Criteria:**
-- All admin routes use correct middleware
-- No admin routes accessible without authentication
-- Consistent 403 response for unauthorized access
-
-**Failure Cases & Security Pitfalls:**
-- Admin route without middleware → Security breach
-- Inconsistent error responses → User confusion
 
 ---
 
@@ -81,106 +50,99 @@
 - GET `/api/v1/admin/sales/summary` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `orders` (WHERE status='paid')
-- Read: `token_bundles` (for top bundles)
+- Read: `orders` (WHERE status='paid', with date filtering)
+- Read: `token_bundles` (for bundle names in top bundles)
 
 **Indexes Used:**
 - `orders.status` (for filtering paid orders)
 - `orders.created_at` (for date filtering)
-- `orders.user_id` (for LTV calculation)
+- `orders.paid_at` (for date filtering on paid orders)
+- `orders.user_id` (for user-related queries)
 
 **Caching Decisions:**
-- Cache summary for 5 minutes
+- Cache summary results for 10 minutes
 - Cache key: `admin:sales:summary:{range}:{start_date}:{end_date}`
-- Invalidate on new paid order
+- Invalidate on new order creation (or accept stale data)
 
 **Authorization Rules:**
-- Admin only
+- Admin-only access
 
 **Acceptance Criteria:**
 - Controller exists with summary endpoint
-- Returns sales data in expected format
-- Date filtering works correctly
+- Returns sales summary data
 
 **Failure Cases & Security Pitfalls:**
 - Non-admin accesses endpoint → 403 Forbidden
-- Incorrect revenue calculation → Financial inaccuracy
-- Missing date filter → Performance issue
+- Slow query on large dataset → Performance issue
+- Incorrect revenue calculation → Financial error
 
 ---
 
 ### Subtask 6.2.2: Implement summary() Endpoint
 **Files to Create/Modify:**
 - `app/Http/Controllers/Api/V1/AdminSalesController.php` (summary method)
-- `app/Http/Requests/Api/V1/SalesSummaryRequest.php` (new - validation)
+- `app/Http/Requests/Api/V1/AdminSalesSummaryRequest.php` (new - validation)
 
 **Routes & Middleware:**
 - GET `/api/v1/admin/sales/summary` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `orders` (aggregate paid orders)
-- Read: `token_bundles` (for top bundles)
+- Read: `orders` (aggregate revenue, count orders)
+- Read: `token_bundles` (for bundle names)
 
 **Indexes Used:**
 - All indexes from previous subtask
 
 **Caching Decisions:**
-- Cache for 5 minutes
+- Cache for 10 minutes
 
 **Authorization Rules:**
-- Admin only
+- Admin-only
 
 **Acceptance Criteria:**
-- Returns total revenue (toman and USD)
-- Returns total orders count
-- Returns revenue by day/week/month
-- Returns top selling bundles
-- Returns refunds data
-- Returns customer LTV
-- Date filtering works (range or explicit dates)
+- Returns total_revenue_toman, total_revenue_usd, total_orders
+- Supports date range filtering (range parameter or start_date/end_date)
+- Returns revenue_by_day/week/month (time-series)
+- Returns top_bundles (top 10 selling bundles)
+- Returns refunds data (if applicable)
 
 **Failure Cases & Security Pitfalls:**
-- Revenue includes non-paid orders → Financial inaccuracy
-- Date filtering incorrect → Wrong metrics
-- Missing refunds → Incomplete data
-
-**Test Coverage Expectations:**
-- Feature test: Summary returns correct revenue
-- Feature test: Date filtering works
-- Feature test: Top bundles correct
-- Feature test: LTV calculation correct
+- Invalid date range → 400 Bad Request
+- Revenue includes non-paid orders → Financial error
+- Slow query → Performance issue
 
 ---
 
 ### Subtask 6.2.3: Calculate Revenue by Day/Week/Month
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminSalesController.php` (revenue breakdown logic)
-- `app/Services/AdminSalesService.php` (new - optional service)
+- `app/Http/Controllers/Api/V1/AdminSalesController.php` (revenue aggregation logic)
+- `app/Services/AdminSalesService.php` (new - optional service for complex logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `orders` (GROUP BY date period)
+- Read: `orders` (GROUP BY date, SUM(price_toman), SUM(price_usd))
 
 **Indexes Used:**
 - `orders.created_at` (for date grouping)
+- `orders.paid_at` (alternative for paid orders)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Revenue by day: Daily breakdown
-- Revenue by week: Weekly breakdown
-- Revenue by month: Monthly breakdown
-- Time-series data in chronological order
+- Revenue grouped by day/week/month based on range parameter
+- Returns array of {date, revenue_toman, revenue_usd, orders_count}
+- Dates in ISO format (YYYY-MM-DD)
+- Gaps filled with zeros (complete time series)
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect date grouping → Wrong metrics
-- Missing dates in series → Incomplete data
+- Incorrect date grouping → Data inconsistency
+- Missing dates in time series → Charting issues
 
 ---
 
@@ -189,30 +151,30 @@
 - `app/Http/Controllers/Api/V1/AdminSalesController.php` (top bundles logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `orders` (JOIN token_bundles, GROUP BY bundle)
-- Read: `token_bundles` (for bundle details)
+- Read: `orders` (GROUP BY token_bundle_id, SUM(price_toman), COUNT(*))
+- Read: `token_bundles` (for bundle names)
 
 **Indexes Used:**
 - `orders.token_bundle_id` (for grouping)
-- `orders.status` (for filtering paid)
+- `orders.status` (for filtering paid orders)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Top bundles sorted by order count or revenue
-- Includes bundle name, order count, revenue
-- Limited to top 10 bundles
+- Returns top 10 bundles by revenue
+- Includes bundle name, revenue_toman, revenue_usd, orders_count
+- Ordered by revenue DESC
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect sorting → Wrong top bundles
-- Missing bundle data → Incomplete response
+- Slow query → Performance issue
+- Incorrect grouping → Data inconsistency
 
 ---
 
@@ -221,30 +183,30 @@
 - `app/Http/Controllers/Api/V1/AdminSalesController.php` (refunds logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `orders` (WHERE status='refunded' or similar)
-- Read: `token_transactions` (WHERE type='refund')
+- Read: `orders` (WHERE status='refunded' or similar, if refund status exists)
+- Read: `token_transactions` (WHERE type='refund', SUM(amount_tokens))
 
 **Indexes Used:**
-- `orders.status` (for refunded orders)
+- `orders.status` (if refund status exists)
 - `token_transactions.type` (for refund transactions)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Refund count and amount tracked
-- Refunds included in revenue calculation (subtracted)
-- Refund breakdown by date if required
+- Returns refund count and refund amount
+- Separate from revenue (refunds excluded from revenue)
+- If no refund system, return zeros
 
 **Failure Cases & Security Pitfalls:**
-- Refunds not tracked → Incomplete financial data
-- Refunds not subtracted from revenue → Financial inaccuracy
+- Refunds included in revenue → Financial error
+- Missing refund data → Incomplete reporting
 
 ---
 
@@ -253,45 +215,44 @@
 - `app/Http/Controllers/Api/V1/AdminSalesController.php` (LTV logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `orders` (GROUP BY user_id, SUM revenue)
+- Read: `orders` (GROUP BY user_id, SUM(price_toman) WHERE status='paid')
 
 **Indexes Used:**
 - `orders.user_id` (for grouping)
-- `orders.status` (for filtering paid)
+- `orders.status` (for filtering paid orders)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Average LTV calculated (total revenue / unique customers)
-- Per-customer LTV available if required
-- LTV by cohort if required
+- Returns average LTV (average revenue per customer)
+- Returns median LTV (if possible)
+- Returns top customers by LTV (top 10)
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect LTV calculation → Wrong business metrics
-- Missing customer data → Incomplete LTV
+- Incorrect LTV calculation → Business decision error
+- Slow query → Performance issue
 
 ---
 
 ### Subtask 6.2.7: Add Date Range Filtering
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminSalesController.php` (date filtering logic)
-- `app/Http/Requests/Api/V1/SalesSummaryRequest.php` (date validation)
+- `app/Http/Requests/Api/V1/AdminSalesSummaryRequest.php` (date validation)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (validation only)
 
 **DB Reads/Writes:**
-- Read: `orders` (WHERE created_at BETWEEN start AND end)
+- None (validation only)
 
 **Indexes Used:**
-- `orders.created_at` (for date filtering)
+- None
 
 **Caching Decisions:**
 - Cache key includes date range
@@ -300,41 +261,46 @@
 - N/A
 
 **Acceptance Criteria:**
-- Range parameter works (day/week/month/year)
-- Explicit start_date/end_date works
-- Date filtering applied to all metrics
-- Timezone handled correctly (UTC)
+- Supports `range=day|week|month|year|all` parameter
+- Supports `start_date=YYYY-MM-DD&end_date=YYYY-MM-DD` parameters
+- Default to last 30 days if no range/date specified
+- Validates date format and range (start_date <= end_date)
 
 **Failure Cases & Security Pitfalls:**
-- Date filtering not applied → Wrong metrics
-- Timezone issues → Incorrect date ranges
+- Invalid date format → 422 Validation Error
+- start_date > end_date → 422 Validation Error
+- Date range too large → Performance issue (consider max range limit)
 
 ---
 
 ### Subtask 6.2.8: Optimize Queries with Indexes
 **Files to Create/Modify:**
-- Database migrations (verify indexes exist)
-- Query optimization in controller
+- Database migration (if indexes missing)
+- Verify indexes exist on orders table
 
 **Routes & Middleware:**
-- N/A (optimization only)
+- N/A (database optimization)
 
 **DB Reads/Writes:**
-- Read: `orders` (with optimized queries)
+- None (index creation)
 
 **Indexes Used:**
-- All indexes from previous subtasks
+- `orders.status` (for filtering paid orders)
+- `orders.created_at` (for date filtering)
+- `orders.paid_at` (for paid order date filtering)
+- `orders.user_id` (for user-related queries)
+- `orders.token_bundle_id` (for bundle grouping)
+- Composite: `(status, created_at)` (for common query pattern)
 
 **Caching Decisions:**
-- None (optimization only)
+- N/A
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- All date filters use indexes
-- Status filters use indexes
-- Queries execute in <300ms
+- All queries use indexes (verify with EXPLAIN)
+- Query execution time < 1 second for typical date ranges
 - No full table scans
 
 **Failure Cases & Security Pitfalls:**
@@ -342,8 +308,11 @@
 - Full table scans → Performance degradation
 
 **Test Coverage Expectations:**
-- Performance test: Query execution time <300ms
-- Verify indexes are used (EXPLAIN queries)
+- Feature test: Sales summary returns correct data
+- Feature test: Date range filtering works correctly
+- Feature test: Revenue calculation is accurate (only paid orders)
+- Feature test: Top bundles calculation is correct
+- Performance test: Query uses indexes, execution time acceptable
 
 ---
 
@@ -355,27 +324,30 @@
 
 **Routes & Middleware:**
 - GET `/api/v1/admin/users/summary` - `auth:sanctum`, `admin`
-- GET `/api/v1/admin/users/list` - `auth:sanctum`, `admin` (if required)
+- GET `/api/v1/admin/users` - `auth:sanctum`, `admin` (list/search)
 
 **DB Reads/Writes:**
-- Read: `users` (for user metrics)
+- Read: `users` (for user counts and lists)
 - Read: `generation_jobs` (for activity metrics)
 
 **Indexes Used:**
-- `users.created_at` (for signup date)
-- `generation_jobs.user_id` (for activity)
-- `generation_jobs.created_at` (for activity date)
+- `users.created_at` (for date filtering)
+- `users.role` (for role filtering)
+- `generation_jobs.user_id` (for user activity)
+- `generation_jobs.status` (for completed jobs)
+- `generation_jobs.completed_at` (for activity date)
 
 **Caching Decisions:**
-- Cache summary for 5 minutes
-- Cache key: `admin:users:summary:{range}`
+- Cache summary for 15 minutes
+- Cache key: `admin:users:summary:{date_range}`
+- User list not cached (real-time data)
 
 **Authorization Rules:**
-- Admin only
+- Admin-only access
 
 **Acceptance Criteria:**
-- Controller exists with summary endpoint
-- Returns user metrics in expected format
+- Controller exists with summary and list endpoints
+- Returns user metrics
 
 **Failure Cases & Security Pitfalls:**
 - Non-admin accesses endpoint → 403 Forbidden
@@ -386,72 +358,70 @@
 ### Subtask 6.3.2: Implement summary() Endpoint
 **Files to Create/Modify:**
 - `app/Http/Controllers/Api/V1/AdminUsersController.php` (summary method)
-- `app/Http/Requests/Api/V1/UsersSummaryRequest.php` (new - validation)
+- `app/Http/Requests/Api/V1/AdminUsersSummaryRequest.php` (new - validation)
 
 **Routes & Middleware:**
 - GET `/api/v1/admin/users/summary` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `users` (for DAU/WAU/MAU)
-- Read: `generation_jobs` (for activity)
+- Read: `users` (COUNT total users)
+- Read: `generation_jobs` (COUNT active users by period)
 
 **Indexes Used:**
 - All indexes from previous subtask
 
 **Caching Decisions:**
-- Cache for 5 minutes
+- Cache for 15 minutes
 
 **Authorization Rules:**
-- Admin only
+- Admin-only
 
 **Acceptance Criteria:**
-- Returns DAU/WAU/MAU
-- Returns top users by generation count
-- Returns top users by spending
-- Returns cohort analysis if required
-- Returns churn/reactivation metrics if required
+- Returns DAU (Daily Active Users)
+- Returns WAU (Weekly Active Users)
+- Returns MAU (Monthly Active Users)
+- Returns total_users
+- Returns new_users (in date range)
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect DAU/WAU/MAU calculation → Wrong metrics
-- Missing user data → Incomplete metrics
-
-**Test Coverage Expectations:**
-- Feature test: DAU/WAU/MAU correct
-- Feature test: Top users correct
-- Feature test: Cohort analysis correct
+- Incorrect DAU/WAU/MAU calculation → Metric error
+- Slow query → Performance issue
 
 ---
 
 ### Subtask 6.3.3: Calculate DAU/WAU/MAU
 **Files to Create/Modify:**
 - `app/Http/Controllers/Api/V1/AdminUsersController.php` (DAU/WAU/MAU logic)
+- `app/Services/AdminUsersService.php` (new - optional service)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `users` (for login activity)
-- Read: `generation_jobs` (for generation activity)
+- Read: `generation_jobs` (COUNT DISTINCT user_id WHERE status='completed' AND completed_at IN last 24h/7d/30d)
 
 **Indexes Used:**
-- `generation_jobs.created_at` (for activity date)
-- `users.last_login_at` (if exists, for login activity)
+- `generation_jobs.user_id` (for distinct counting)
+- `generation_jobs.status` (for filtering completed)
+- `generation_jobs.completed_at` (for date filtering)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- DAU: Users active in last 24 hours
-- WAU: Users active in last 7 days
-- MAU: Users active in last 30 days
-- Activity = login OR generation job creation
+- DAU: Users with completed generation in last 24 hours
+- WAU: Users with completed generation in last 7 days
+- MAU: Users with completed generation in last 30 days
+- Uses DISTINCT user_id to avoid duplicates
+- Accurate count (matches manual verification)
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect date ranges → Wrong metrics
-- Missing activity data → Incomplete metrics
+- Incorrect date range → Metric error
+- Duplicate users counted → Data inconsistency
 
 ---
 
@@ -460,30 +430,31 @@
 - `app/Http/Controllers/Api/V1/AdminUsersController.php` (top users logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `generation_jobs` (GROUP BY user_id, COUNT)
+- Read: `generation_jobs` (GROUP BY user_id, COUNT(*) WHERE status='completed')
+- Read: `users` (for user names)
 
 **Indexes Used:**
 - `generation_jobs.user_id` (for grouping)
-- `generation_jobs.created_at` (for date filtering)
+- `generation_jobs.status` (for filtering completed)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Top users sorted by generation count
-- Includes user name, generation count
-- Limited to top 10 users
-- Date filtering applied
+- Returns top 10 users by generation count
+- Includes user id, name, generation_count
+- Ordered by generation_count DESC
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect sorting → Wrong top users
-- Missing user data → Incomplete response
+- Slow query → Performance issue
+- Incorrect count → Data inconsistency
 
 ---
 
@@ -492,63 +463,66 @@
 - `app/Http/Controllers/Api/V1/AdminUsersController.php` (top spenders logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `orders` (GROUP BY user_id, SUM revenue)
+- Read: `orders` (GROUP BY user_id, SUM(price_toman) WHERE status='paid')
+- Read: `users` (for user names)
 
 **Indexes Used:**
 - `orders.user_id` (for grouping)
-- `orders.status` (for filtering paid)
-- `orders.created_at` (for date filtering)
+- `orders.status` (for filtering paid orders)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Top users sorted by total spending
-- Includes user name, total spending
-- Limited to top 10 users
-- Date filtering applied
+- Returns top 10 users by spending
+- Includes user id, name, total_spent_toman, total_spent_usd, orders_count
+- Ordered by total_spent DESC
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect sorting → Wrong top users
-- Missing order data → Incomplete response
+- Slow query → Performance issue
+- Includes non-paid orders → Financial error
 
 ---
 
 ### Subtask 6.3.6: Implement Cohort Analysis
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminUsersController.php` (cohort logic)
+- `app/Http/Controllers/Api/V1/AdminUsersController.php` (cohort method, optional)
+- `app/Services/AdminUsersService.php` (cohort calculation logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint, optional)
+- GET `/api/v1/admin/users/cohorts` - `auth:sanctum`, `admin` (optional endpoint)
 
 **DB Reads/Writes:**
-- Read: `users` (GROUP BY signup month)
-- Read: `generation_jobs` (for retention)
+- Read: `users` (GROUP BY signup month/week)
+- Read: `generation_jobs` (COUNT active users per cohort per period)
 
 **Indexes Used:**
 - `users.created_at` (for signup date)
-- `generation_jobs.user_id` (for activity)
+- `generation_jobs.user_id` (for user activity)
+- `generation_jobs.completed_at` (for activity date)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- Cache for 1 hour (cohort analysis is expensive)
 
 **Authorization Rules:**
-- N/A
+- Admin-only
 
 **Acceptance Criteria:**
-- Cohort analysis by signup month
-- Retention rates per cohort
-- Activity rates per cohort
+- Groups users by signup period (month/week)
+- Calculates retention for each cohort
+- Returns retention matrix (cohort x period)
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect cohort calculation → Wrong metrics
-- Missing retention data → Incomplete analysis
+- Very slow query → Performance issue (consider scheduled job)
+- Incorrect retention calculation → Business decision error
 
 ---
 
@@ -557,70 +531,73 @@
 - `app/Http/Controllers/Api/V1/AdminUsersController.php` (churn logic, optional)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint, optional)
+- N/A (handled in summary method, or separate endpoint)
 
 **DB Reads/Writes:**
-- Read: `users` (for last activity)
-- Read: `generation_jobs` (for activity)
+- Read: `users` (users with no activity in last 30 days = churned)
+- Read: `generation_jobs` (users with activity after churn = reactivated)
 
 **Indexes Used:**
-- `generation_jobs.user_id` (for activity)
-- `generation_jobs.created_at` (for activity date)
+- `generation_jobs.user_id` (for activity check)
+- `generation_jobs.completed_at` (for last activity date)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Churn: Users inactive for 30+ days
-- Reactivation: Users active after 30+ days inactive
-- Churn/reactivation rates calculated
+- Returns churned_users_count (no activity in last 30 days)
+- Returns reactivated_users_count (activity after 30 days of inactivity)
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect churn calculation → Wrong metrics
-- Missing activity data → Incomplete analysis
+- Incorrect churn definition → Metric error
+- Slow query → Performance issue
 
 ---
 
 ### Subtask 6.3.8: Add User Search and Filtering
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminUsersController.php` (list method)
-- `app/Http/Requests/Api/V1/UsersListRequest.php` (new - validation)
+- `app/Http/Controllers/Api/V1/AdminUsersController.php` (index method for list)
+- `app/Http/Requests/Api/V1/AdminUsersListRequest.php` (new - validation)
 
 **Routes & Middleware:**
-- GET `/api/v1/admin/users/list` - `auth:sanctum`, `admin`
+- GET `/api/v1/admin/users` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `users` (with search/filter)
+- Read: `users` (with search and filters, paginated)
 
 **Indexes Used:**
-- `users.name` (for name search)
 - `users.phone` (for phone search)
 - `users.email` (for email search)
+- `users.name` (for name search)
+- `users.role` (for role filtering)
 - `users.created_at` (for date filtering)
 
 **Caching Decisions:**
-- None (search results not cacheable)
+- None (real-time user data, not cacheable)
 
 **Authorization Rules:**
-- Admin only
+- Admin-only
 
 **Acceptance Criteria:**
-- User search by name/phone/email
-- Pagination works
-- Filtering by date/role works
-- Results ordered correctly
+- Supports search by phone, email, name
+- Supports filtering by role, date range
+- Paginated (15-50 per page)
+- Returns user list with basic info (id, name, phone, email, role, created_at, tokens_balance)
 
 **Failure Cases & Security Pitfalls:**
-- Non-admin accesses endpoint → 403 Forbidden
-- SQL injection risk → Security breach (use parameterized queries)
+- Unbounded query → Performance issue (must paginate)
+- Sensitive data exposed → Privacy breach (only return necessary fields)
 
 **Test Coverage Expectations:**
-- Feature test: User search works
-- Feature test: Pagination works
-- Feature test: Filtering works
+- Feature test: Users summary returns correct DAU/WAU/MAU
+- Feature test: Top users by generation count is accurate
+- Feature test: Top users by spending is accurate
+- Feature test: User search and filtering works
+- Feature test: Pagination works correctly
 
 ---
 
@@ -634,239 +611,243 @@
 - GET `/api/v1/admin/models/usage` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `analytics_models_usage` (preferred)
-- Read: `generation_jobs` (fallback if analytics table empty)
-- Read: `models` (for model details)
+- Read: `generation_jobs` (aggregate by model_id)
+- Read: `analytics_models_usage` (if aggregated table exists, prefer it)
+- Read: `models` (for model names)
 
 **Indexes Used:**
-- `analytics_models_usage.model_id` (for model filtering)
-- `analytics_models_usage.period_start` (for date filtering)
-- `generation_jobs.model_id` (for fallback queries)
+- `generation_jobs.model_id` (for grouping)
+- `generation_jobs.status` (for success/failure counts)
 - `generation_jobs.created_at` (for date filtering)
+- `analytics_models_usage.model_id` (if using aggregated table)
+- `analytics_models_usage.period_start` (for date filtering)
 
 **Caching Decisions:**
-- Cache usage for 10 minutes
-- Cache key: `admin:models:usage:{range}:{start_date}:{end_date}`
+- Cache for 15 minutes
+- Cache key: `admin:models:usage:{date_range}`
+- Prefer aggregated table (analytics_models_usage) for historical data
 
 **Authorization Rules:**
-- Admin only
+- Admin-only access
 
 **Acceptance Criteria:**
 - Controller exists with usage endpoint
-- Returns model usage data in expected format
+- Returns model usage statistics
 
 **Failure Cases & Security Pitfalls:**
 - Non-admin accesses endpoint → 403 Forbidden
-- Incorrect usage data → Wrong metrics
+- Slow query on large dataset → Performance issue
 
 ---
 
 ### Subtask 6.4.2: Implement usage() Endpoint
 **Files to Create/Modify:**
 - `app/Http/Controllers/Api/V1/AdminModelsController.php` (usage method)
-- `app/Http/Requests/Api/V1/ModelsUsageRequest.php` (new - validation)
+- `app/Http/Requests/Api/V1/AdminModelsUsageRequest.php` (new - validation)
 
 **Routes & Middleware:**
 - GET `/api/v1/admin/models/usage` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `analytics_models_usage` or `generation_jobs`
-- Read: `models` (for model details)
+- Read: `generation_jobs` or `analytics_models_usage` (aggregate by model)
+- Read: `models` (for model names)
 
 **Indexes Used:**
 - All indexes from previous subtask
 
 **Caching Decisions:**
-- Cache for 10 minutes
+- Cache for 15 minutes
+- Prefer aggregated table for historical data
 
 **Authorization Rules:**
-- Admin only
+- Admin-only
 
 **Acceptance Criteria:**
-- Returns requests per model
-- Returns success/failure rates
-- Returns average latency
-- Returns tokens consumed
-- Returns cost/revenue per model
-- Date filtering works
+- Returns usage statistics per model
+- Includes: requests_count, successful_count, failed_count, success_rate, failure_rate
+- Includes: tokens_consumed, cost_usd, avg_latency_ms
+- Supports date range filtering
+- Returns time-series data (daily/weekly/monthly)
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect aggregation → Wrong metrics
-- Missing model data → Incomplete response
-
-**Test Coverage Expectations:**
-- Feature test: Usage data correct
-- Feature test: Date filtering works
-- Feature test: Aggregation correct
+- Incorrect aggregation → Data inconsistency
+- Slow query → Performance issue
 
 ---
 
 ### Subtask 6.4.3: Track Requests per Model
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminModelsController.php` (requests logic)
+- `app/Http/Controllers/Api/V1/AdminModelsController.php` (request counting logic)
 
 **Routes & Middleware:**
-- N/A (handled in usage endpoint)
+- N/A (handled in usage method)
 
 **DB Reads/Writes:**
-- Read: `analytics_models_usage` (requests_count) or `generation_jobs` (COUNT)
+- Read: `generation_jobs` (COUNT(*) GROUP BY model_id WHERE status IN ('completed', 'failed'))
 
 **Indexes Used:**
-- `analytics_models_usage.model_id` (for grouping)
-- `generation_jobs.model_id` (for fallback grouping)
+- `generation_jobs.model_id` (for grouping)
+- `generation_jobs.status` (for filtering)
 
 **Caching Decisions:**
-- None (part of usage cache)
+- None (part of usage response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Request count per model
-- Grouped by model and job_type
-- Date filtering applied
+- Returns total requests per model
+- Includes completed and failed requests
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect counting → Wrong metrics
-- Missing requests → Incomplete data
+- Incorrect count → Data inconsistency
+- Includes cancelled/pending → Metric error
 
 ---
 
 ### Subtask 6.4.4: Calculate Average Cost per Model
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminModelsController.php` (cost logic)
+- `app/Http/Controllers/Api/V1/AdminModelsController.php` (cost calculation logic)
 
 **Routes & Middleware:**
-- N/A (handled in usage endpoint)
+- N/A (handled in usage method)
 
 **DB Reads/Writes:**
-- Read: `analytics_models_usage` (cost_usd) or `generation_jobs` (SUM cost_usd)
+- Read: `generation_jobs` (AVG(cost_usd) GROUP BY model_id WHERE status='completed')
 
 **Indexes Used:**
-- Same as previous subtask
+- `generation_jobs.model_id` (for grouping)
+- `generation_jobs.status` (for filtering completed)
+- `generation_jobs.cost_usd` (for averaging)
 
 **Caching Decisions:**
-- None (part of usage cache)
+- None (part of usage response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Average cost per model
-- Total cost per model
-- Cost breakdown by job_type
+- Returns average cost per model
+- Returns total cost per model (SUM)
+- Only includes completed jobs (status='completed')
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect cost calculation → Financial inaccuracy
-- Missing cost data → Incomplete metrics
+- Includes failed jobs → Cost calculation error
+- Incorrect average → Financial error
 
 ---
 
 ### Subtask 6.4.5: Track Tokens Consumed
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminModelsController.php` (tokens logic)
+- `app/Http/Controllers/Api/V1/AdminModelsController.php` (token tracking logic)
 
 **Routes & Middleware:**
-- N/A (handled in usage endpoint)
+- N/A (handled in usage method)
 
 **DB Reads/Writes:**
-- Read: `analytics_models_usage` (tokens_consumed) or `generation_jobs` (SUM tokens_consumed)
+- Read: `generation_jobs` (SUM(tokens_consumed) GROUP BY model_id WHERE status='completed')
 
 **Indexes Used:**
-- Same as previous subtask
+- `generation_jobs.model_id` (for grouping)
+- `generation_jobs.status` (for filtering completed)
+- `generation_jobs.tokens_consumed` (for summing)
 
 **Caching Decisions:**
-- None (part of usage cache)
+- None (part of usage response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Total tokens consumed per model
-- Tokens breakdown by job_type
-- Date filtering applied
+- Returns total tokens consumed per model
+- Only includes completed jobs
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect token count → Wrong metrics
-- Missing token data → Incomplete data
+- Includes failed jobs → Token count error
+- Mismatch with token_transactions → Data inconsistency
 
 ---
 
 ### Subtask 6.4.6: Calculate Average Latency
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminModelsController.php` (latency logic)
+- `app/Http/Controllers/Api/V1/AdminModelsController.php` (latency calculation logic)
 
 **Routes & Middleware:**
-- N/A (handled in usage endpoint)
+- N/A (handled in usage method)
 
 **DB Reads/Writes:**
-- Read: `analytics_models_usage` (avg_latency_ms) or calculate from `generation_jobs` (started_at, completed_at)
+- Read: `generation_jobs` (AVG(completed_at - started_at) GROUP BY model_id WHERE status='completed')
 
 **Indexes Used:**
-- Same as previous subtask
+- `generation_jobs.model_id` (for grouping)
+- `generation_jobs.status` (for filtering completed)
+- `generation_jobs.started_at` (for latency calculation)
+- `generation_jobs.completed_at` (for latency calculation)
 
 **Caching Decisions:**
-- None (part of usage cache)
+- None (part of usage response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Average latency per model
-- Latency in milliseconds
-- Date filtering applied
+- Returns average latency per model (in milliseconds)
+- Only includes completed jobs with started_at and completed_at
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect latency calculation → Wrong metrics
-- Missing latency data → Incomplete metrics
+- Missing started_at/completed_at → Incorrect latency
+- Includes failed jobs → Latency error
 
 ---
 
 ### Subtask 6.4.7: Track Failure Rates
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminModelsController.php` (failure rates logic)
+- `app/Http/Controllers/Api/V1/AdminModelsController.php` (failure rate logic)
 
 **Routes & Middleware:**
-- N/A (handled in usage endpoint)
+- N/A (handled in usage method)
 
 **DB Reads/Writes:**
-- Read: `analytics_models_usage` (failed_count, successful_count) or `generation_jobs` (COUNT by status)
+- Read: `generation_jobs` (COUNT(*) WHERE status='failed' GROUP BY model_id)
 
 **Indexes Used:**
-- Same as previous subtask
-- `generation_jobs.status` (for status filtering)
+- `generation_jobs.model_id` (for grouping)
+- `generation_jobs.status` (for filtering failed)
 
 **Caching Decisions:**
-- None (part of usage cache)
+- None (part of usage response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Failure rate per model (failed_count / total_count)
-- Success rate per model
-- Date filtering applied
+- Returns failed_count per model
+- Returns failure_rate (failed_count / total_count * 100)
+- Returns success_rate (successful_count / total_count * 100)
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect failure rate → Wrong metrics
-- Missing status data → Incomplete metrics
+- Incorrect rate calculation → Metric error
+- Division by zero → Error handling needed
 
 ---
 
 ### Subtask 6.4.8: Add Date Range Filtering
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminModelsController.php` (date filtering logic)
-- `app/Http/Requests/Api/V1/ModelsUsageRequest.php` (date validation)
+- `app/Http/Requests/Api/V1/AdminModelsUsageRequest.php` (date validation)
 
 **Routes & Middleware:**
-- N/A (handled in usage endpoint)
+- N/A (validation only)
 
 **DB Reads/Writes:**
-- Read: `analytics_models_usage` or `generation_jobs` (with date filter)
+- None (validation only)
 
 **Indexes Used:**
-- `analytics_models_usage.period_start` (for date filtering)
-- `generation_jobs.created_at` (for fallback date filtering)
+- None
 
 **Caching Decisions:**
 - Cache key includes date range
@@ -875,27 +856,28 @@
 - N/A
 
 **Acceptance Criteria:**
-- Range parameter works (day/week/month/year)
-- Explicit start_date/end_date works
-- Date filtering applied to all metrics
+- Supports `range=day|week|month|year|all` parameter
+- Supports `start_date=YYYY-MM-DD&end_date=YYYY-MM-DD` parameters
+- Default to last 30 days if no range/date specified
+- Validates date format and range
 
 **Failure Cases & Security Pitfalls:**
-- Date filtering not applied → Wrong metrics
-- Timezone issues → Incorrect date ranges
+- Invalid date format → 422 Validation Error
+- Date range too large → Performance issue
 
 ---
 
-### Subtask 6.4.9: Create Aggregation Job for Analytics (Optional)
+### Subtask 6.4.9: Create Aggregation Job for Analytics
 **Files to Create/Modify:**
-- `app/Console/Commands/AggregateModelsUsage.php` (new file, optional)
-- `routes/console.php` (schedule job, optional)
+- `app/Console/Commands/AggregateModelsUsage.php` (new - scheduled job)
+- `routes/console.php` (schedule job)
 
 **Routes & Middleware:**
 - N/A (scheduled job)
 
 **DB Reads/Writes:**
-- Read: `generation_jobs` (aggregate data)
-- Write: `analytics_models_usage` (store aggregated data)
+- Read: `generation_jobs` (aggregate by model, period)
+- Write: `analytics_models_usage` (INSERT/UPDATE aggregated data)
 
 **Indexes Used:**
 - All indexes from previous subtasks
@@ -907,17 +889,22 @@
 - N/A (system job)
 
 **Acceptance Criteria:**
-- Job aggregates generation_jobs into analytics_models_usage
-- Job runs daily (or as scheduled)
-- Aggregated data matches raw data
+- Job aggregates generation_jobs into analytics_models_usage table
+- Runs daily (or as specified)
+- Aggregates by model_id, job_type, period_type (daily/weekly/monthly)
+- Calculates all metrics (requests, success, failure, tokens, cost, latency)
 
 **Failure Cases & Security Pitfalls:**
-- Job fails → Stale analytics data
-- Incorrect aggregation → Wrong metrics
+- Job fails → Analytics data not updated
+- Duplicate aggregation → Data inconsistency (use UPSERT)
 
 **Test Coverage Expectations:**
-- Feature test: Aggregation job works
-- Feature test: Aggregated data correct
+- Feature test: Models usage returns correct statistics
+- Feature test: Success/failure rates are accurate
+- Feature test: Average latency is correct
+- Feature test: Tokens consumed matches generation_jobs
+- Feature test: Date range filtering works
+- Feature test: Aggregation job works correctly
 
 ---
 
@@ -931,168 +918,162 @@
 - GET `/api/v1/admin/tokens/summary` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `token_transactions` (for consumption)
-- Read: `generation_jobs` (for provider/job_type breakdown)
-- Read: `providers` (for provider details)
+- Read: `token_transactions` (aggregate by provider, type)
+- Read: `generation_jobs` (for provider/job_type mapping)
+- Read: `providers` (for provider names)
 
 **Indexes Used:**
-- `token_transactions.type` (for filtering consumptions)
+- `token_transactions.type` (for filtering consume transactions)
 - `token_transactions.created_at` (for date filtering)
+- `token_transactions.generation_job_id` (for joining with generation_jobs)
 - `generation_jobs.provider_id` (for provider grouping)
 - `generation_jobs.job_type` (for type grouping)
 
 **Caching Decisions:**
-- Cache summary for 10 minutes
-- Cache key: `admin:tokens:analytics:{range}:{start_date}:{end_date}`
+- Cache for 15 minutes
+- Cache key: `admin:tokens:summary:{date_range}`
 
 **Authorization Rules:**
-- Admin only
+- Admin-only access
 
 **Acceptance Criteria:**
 - Controller exists with summary endpoint
-- Returns token analytics in expected format
+- Returns token analytics data
 
 **Failure Cases & Security Pitfalls:**
 - Non-admin accesses endpoint → 403 Forbidden
-- Incorrect token data → Wrong metrics
+- Slow query → Performance issue
 
 ---
 
 ### Subtask 6.5.2: Implement summary() Endpoint
 **Files to Create/Modify:**
 - `app/Http/Controllers/Api/V1/AdminTokensController.php` (summary method)
-- `app/Http/Requests/Api/V1/TokenAnalyticsRequest.php` (new - validation)
+- `app/Http/Requests/Api/V1/AdminTokensSummaryRequest.php` (new - validation)
 
 **Routes & Middleware:**
 - GET `/api/v1/admin/tokens/summary` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `token_transactions` (for consumption)
-- Read: `generation_jobs` (for provider/job_type breakdown)
+- Read: `token_transactions` (aggregate consumption)
+- Read: `generation_jobs` (for provider/job_type mapping)
 
 **Indexes Used:**
 - All indexes from previous subtask
 
 **Caching Decisions:**
-- Cache for 10 minutes
+- Cache for 15 minutes
 
 **Authorization Rules:**
-- Admin only
+- Admin-only
 
 **Acceptance Criteria:**
 - Returns tokens consumed per provider
-- Returns tokens by type (image/video/audio)
-- Returns cost/profit per provider
-- Returns time-series data
-- Date filtering works
+- Returns tokens consumed by type (image/video/audio)
+- Returns cost and profit per provider
+- Returns time-series data (daily/weekly/monthly)
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect aggregation → Wrong metrics
-- Missing token data → Incomplete response
-
-**Test Coverage Expectations:**
-- Feature test: Token analytics correct
-- Feature test: Provider breakdown correct
-- Feature test: Time-series data correct
+- Incorrect aggregation → Data inconsistency
+- Mismatch with generation_jobs → Reconciliation error
 
 ---
 
 ### Subtask 6.5.3: Track Tokens Consumed per Provider
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminTokensController.php` (provider logic)
+- `app/Http/Controllers/Api/V1/AdminTokensController.php` (provider aggregation logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `generation_jobs` (GROUP BY provider_id, SUM tokens_consumed)
-- Read: `providers` (for provider details)
+- Read: `token_transactions` (JOIN generation_jobs, GROUP BY provider_id, SUM(amount_tokens) WHERE type='consume')
 
 **Indexes Used:**
+- `token_transactions.type` (for filtering consume)
+- `token_transactions.generation_job_id` (for joining)
 - `generation_jobs.provider_id` (for grouping)
-- `generation_jobs.status` (for filtering completed)
-- `generation_jobs.created_at` (for date filtering)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Tokens consumed per provider
-- Provider name included
-- Date filtering applied
+- Returns tokens consumed per provider
+- Includes provider name, tokens_consumed
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect grouping → Wrong metrics
-- Missing provider data → Incomplete response
+- Incorrect JOIN → Data inconsistency
+- Missing provider mapping → Null values
 
 ---
 
 ### Subtask 6.5.4: Track Tokens by Type (Image/Video/Audio)
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminTokensController.php` (type logic)
+- `app/Http/Controllers/Api/V1/AdminTokensController.php` (type aggregation logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `generation_jobs` (GROUP BY job_type, SUM tokens_consumed)
+- Read: `token_transactions` (JOIN generation_jobs, GROUP BY job_type, SUM(amount_tokens) WHERE type='consume')
 
 **Indexes Used:**
+- `token_transactions.type` (for filtering consume)
+- `token_transactions.generation_job_id` (for joining)
 - `generation_jobs.job_type` (for grouping)
-- `generation_jobs.status` (for filtering completed)
-- `generation_jobs.created_at` (for date filtering)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Tokens consumed by image
-- Tokens consumed by video
-- Tokens consumed by audio
-- Date filtering applied
+- Returns tokens consumed by job_type (image/video/audio)
+- Includes job_type, tokens_consumed
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect grouping → Wrong metrics
-- Missing type data → Incomplete response
+- Incorrect grouping → Data inconsistency
+- Missing job_type → Null values
 
 ---
 
 ### Subtask 6.5.5: Calculate Cost and Profit per Provider
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminTokensController.php` (cost/profit logic)
+- `app/Http/Controllers/Api/V1/AdminTokensController.php` (cost/profit calculation logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `generation_jobs` (SUM cost_usd per provider)
-- Read: `orders` (SUM revenue per provider, if provider-specific)
+- Read: `generation_jobs` (SUM(cost_usd) GROUP BY provider_id WHERE status='completed')
+- Read: `orders` (SUM(price_usd) for revenue per provider - complex, may need token consumption mapping)
 
 **Indexes Used:**
 - `generation_jobs.provider_id` (for grouping)
-- `generation_jobs.cost_usd` (for cost calculation)
-- `generation_jobs.created_at` (for date filtering)
+- `generation_jobs.status` (for filtering completed)
+- `generation_jobs.cost_usd` (for summing)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Cost per provider (from generation_jobs)
-- Profit per provider (revenue - cost, if provider-specific revenue available)
-- Date filtering applied
+- Returns cost_usd per provider (from generation_jobs)
+- Returns profit per provider (revenue - cost, if revenue can be calculated)
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect cost calculation → Financial inaccuracy
-- Missing cost data → Incomplete metrics
+- Incorrect cost calculation → Financial error
+- Revenue calculation complex → May need approximation
 
 ---
 
@@ -1101,30 +1082,38 @@
 - `app/Http/Controllers/Api/V1/AdminTokensController.php` (time-series logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `generation_jobs` (GROUP BY date, provider/type)
+- Read: `token_transactions` (GROUP BY DATE(created_at), provider_id/job_type, SUM(amount_tokens))
 
 **Indexes Used:**
-- `generation_jobs.created_at` (for date grouping)
-- All indexes from previous subtasks
+- `token_transactions.created_at` (for date grouping)
+- All previous indexes
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Time-series data by day/week/month
-- Tokens consumed over time
-- Cost over time
-- Chronological order
+- Returns daily/weekly/monthly token consumption trends
+- Returns array of {date, tokens_consumed, cost_usd} per provider/type
+- Gaps filled with zeros (complete time series)
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect date grouping → Wrong metrics
-- Missing dates in series → Incomplete data
+- Incorrect date grouping → Data inconsistency
+- Missing dates → Charting issues
+
+**Test Coverage Expectations:**
+- Feature test: Token analytics returns correct data
+- Feature test: Tokens consumed per provider is accurate
+- Feature test: Tokens consumed by type is accurate
+- Feature test: Cost per provider is correct
+- Feature test: Time-series data is correct
+- Feature test: Date range filtering works
 
 ---
 
@@ -1138,13 +1127,11 @@
 - GET `/api/v1/admin/cost-profit/summary` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `orders` (for revenue)
-- Read: `generation_jobs` (for cost)
-- Read: `models` (for model breakdown)
-- Read: `providers` (for provider breakdown)
+- Read: `orders` (for revenue - SUM(price_usd) WHERE status='paid')
+- Read: `generation_jobs` (for costs - SUM(cost_usd) WHERE status='completed')
 
 **Indexes Used:**
-- `orders.status` (for filtering paid)
+- `orders.status` (for filtering paid orders)
 - `orders.created_at` (for date filtering)
 - `generation_jobs.status` (for filtering completed)
 - `generation_jobs.created_at` (for date filtering)
@@ -1152,156 +1139,152 @@
 - `generation_jobs.provider_id` (for provider breakdown)
 
 **Caching Decisions:**
-- Cache summary for 5 minutes
-- Cache key: `admin:cost-profit:summary:{range}:{start_date}:{end_date}`
+- Cache for 10 minutes
+- Cache key: `admin:cost-profit:summary:{date_range}`
 
 **Authorization Rules:**
-- Admin only
+- Admin-only access
 
 **Acceptance Criteria:**
 - Controller exists with summary endpoint
-- Returns cost/profit data in expected format
+- Returns cost and profit data
 
 **Failure Cases & Security Pitfalls:**
 - Non-admin accesses endpoint → 403 Forbidden
-- Incorrect financial data → Financial inaccuracy
+- Incorrect financial calculations → Financial error
 
 ---
 
 ### Subtask 6.6.2: Implement summary() Endpoint
 **Files to Create/Modify:**
 - `app/Http/Controllers/Api/V1/AdminCostProfitController.php` (summary method)
-- `app/Http/Requests/Api/V1/CostProfitSummaryRequest.php` (new - validation)
+- `app/Http/Requests/Api/V1/AdminCostProfitSummaryRequest.php` (new - validation)
 
 **Routes & Middleware:**
 - GET `/api/v1/admin/cost-profit/summary` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `orders` (for revenue)
-- Read: `generation_jobs` (for cost)
+- Read: `orders` (revenue calculation)
+- Read: `generation_jobs` (cost calculation)
 
 **Indexes Used:**
 - All indexes from previous subtask
 
 **Caching Decisions:**
-- Cache for 5 minutes
+- Cache for 10 minutes
 
 **Authorization Rules:**
-- Admin only
+- Admin-only
 
 **Acceptance Criteria:**
-- Returns total revenue
-- Returns total cost
-- Returns profit (revenue - cost)
-- Returns profit margins
-- Returns breakdown by model
-- Returns breakdown by provider
-- Returns historical comparison
-- Date filtering works
+- Returns total_revenue_usd, total_cost_usd, total_profit_usd
+- Returns profit_margin (profit / revenue * 100)
+- Returns breakdown by model (revenue, cost, profit per model)
+- Returns breakdown by provider (revenue, cost, profit per provider)
+- Returns time-series data (profit margins over time)
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect profit calculation → Financial inaccuracy
-- Missing financial data → Incomplete metrics
-
-**Test Coverage Expectations:**
-- Feature test: Cost/profit calculations correct
-- Feature test: Profit = revenue - cost
-- Feature test: Breakdown by model/provider correct
+- Incorrect revenue (includes non-paid) → Financial error
+- Incorrect cost (includes failed jobs) → Financial error
+- Profit calculation error → Financial reporting error
 
 ---
 
 ### Subtask 6.6.3: Calculate COGS per Model
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminCostProfitController.php` (COGS logic)
+- `app/Http/Controllers/Api/V1/AdminCostProfitController.php` (COGS calculation logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `generation_jobs` (SUM cost_usd per model)
+- Read: `generation_jobs` (SUM(cost_usd) GROUP BY model_id WHERE status='completed')
 
 **Indexes Used:**
 - `generation_jobs.model_id` (for grouping)
 - `generation_jobs.status` (for filtering completed)
-- `generation_jobs.created_at` (for date filtering)
+- `generation_jobs.cost_usd` (for summing)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- COGS (Cost of Goods Sold) per model
-- Model name included
-- Date filtering applied
+- Returns cost of goods sold (COGS) per model
+- Only includes completed jobs
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect COGS calculation → Financial inaccuracy
-- Missing cost data → Incomplete metrics
+- Includes failed jobs → Cost error
+- Incorrect grouping → Data inconsistency
 
 ---
 
 ### Subtask 6.6.4: Calculate Profit per Model
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminCostProfitController.php` (profit logic)
+- `app/Http/Controllers/Api/V1/AdminCostProfitController.php` (profit calculation logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `generation_jobs` (for cost per model)
-- Read: `orders` (for revenue, if model-specific revenue available)
+- Read: `generation_jobs` (for costs per model)
+- Read: `token_transactions` (for revenue per model - complex mapping needed)
 
 **Indexes Used:**
-- Same as previous subtask
+- All previous indexes
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Profit per model (revenue - cost)
-- Profit margin per model
-- Date filtering applied
+- Returns profit per model (revenue - cost)
+- Revenue calculated from token consumption (if possible)
+- Cost from generation_jobs
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect profit calculation → Financial inaccuracy
-- Missing revenue/cost data → Incomplete metrics
+- Revenue calculation complex → May need approximation
+- Incorrect profit → Financial error
 
 ---
 
 ### Subtask 6.6.5: Track Profit Margins Over Time
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminCostProfitController.php` (margins logic)
+- `app/Http/Controllers/Api/V1/AdminCostProfitController.php` (margin tracking logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `orders` (for revenue over time)
-- Read: `generation_jobs` (for cost over time)
+- Read: `orders` (GROUP BY DATE(created_at), SUM(price_usd))
+- Read: `generation_jobs` (GROUP BY DATE(created_at), SUM(cost_usd))
 
 **Indexes Used:**
 - `orders.created_at` (for date grouping)
 - `generation_jobs.created_at` (for date grouping)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Profit margins by day/week/month
-- Margin = (profit / revenue) * 100
-- Time-series data in chronological order
+- Returns profit margins over time (daily/weekly/monthly)
+- Returns array of {date, revenue_usd, cost_usd, profit_usd, profit_margin}
+- Gaps filled with zeros
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect margin calculation → Financial inaccuracy
-- Missing time-series data → Incomplete metrics
+- Incorrect margin calculation → Financial error
+- Date misalignment → Data inconsistency
 
 ---
 
@@ -1310,60 +1293,72 @@
 - `app/Http/Controllers/Api/V1/AdminCostProfitController.php` (bundle breakdown logic, optional)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint, optional)
+- N/A (handled in summary method, or separate endpoint)
 
 **DB Reads/Writes:**
-- Read: `orders` (GROUP BY token_bundle_id)
+- Read: `orders` (GROUP BY token_bundle_id, SUM(price_usd) WHERE status='paid')
+- Read: `token_bundles` (for bundle names)
 
 **Indexes Used:**
 - `orders.token_bundle_id` (for grouping)
 - `orders.status` (for filtering paid)
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Profit breakdown by token bundle
-- Bundle name included
-- Date filtering applied
+- Returns revenue per bundle
+- Returns profit per bundle (if cost can be allocated)
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect breakdown → Wrong metrics
-- Missing bundle data → Incomplete response
+- Cost allocation complex → May not be feasible
+- Incorrect breakdown → Data inconsistency
 
 ---
 
 ### Subtask 6.6.7: Add Historical Comparison
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminCostProfitController.php` (historical logic)
+- `app/Http/Controllers/Api/V1/AdminCostProfitController.php` (comparison logic)
 
 **Routes & Middleware:**
-- N/A (handled in summary endpoint)
+- N/A (handled in summary method)
 
 **DB Reads/Writes:**
-- Read: `orders` (for previous period revenue)
-- Read: `generation_jobs` (for previous period cost)
+- Read: `orders` (compare current period vs previous period)
+- Read: `generation_jobs` (compare current period vs previous period)
 
 **Indexes Used:**
-- All indexes from previous subtasks
+- All previous indexes
 
 **Caching Decisions:**
-- None (part of summary cache)
+- None (part of summary response)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Current period vs previous period
-- Percentage change calculated
-- Historical trends available
+- Returns current period metrics
+- Returns previous period metrics (same duration, shifted back)
+- Returns growth rates (percentage change)
+- Supports date range filtering
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect comparison → Wrong metrics
-- Missing historical data → Incomplete comparison
+- Incorrect period calculation → Comparison error
+- Division by zero → Error handling needed
+
+**Test Coverage Expectations:**
+- Feature test: Cost-profit summary returns correct data
+- Feature test: Revenue calculation is accurate (only paid orders)
+- Feature test: Cost calculation is accurate (only completed jobs)
+- Feature test: Profit calculation is correct (revenue - cost)
+- Feature test: Profit margins are accurate
+- Feature test: Breakdown by model/provider is correct
+- Feature test: Historical comparison works
+- Feature test: Date range filtering works
 
 ---
 
@@ -1374,33 +1369,33 @@
 - `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (new file)
 
 **Routes & Middleware:**
-- GET `/api/v1/admin/system/health` - `auth:sanctum`, `admin`
+- GET `/api/v1/admin/system-health` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `system_health` (preferred, recent records)
-- Read: `jobs` (for queue length)
-- Read: `failed_jobs` (for failed jobs count)
+- Read: `generation_jobs` (for queue length, latency, error rates)
+- Read: `failed_jobs` (Laravel's failed_jobs table)
+- Read: Redis (for queue length, if using Redis queue)
 
 **Indexes Used:**
-- `system_health.recorded_at` (for recent records)
-- `system_health.metric_name` (for metric filtering)
-- `jobs.queue` (for queue length)
-- `failed_jobs.failed_at` (for failed jobs)
+- `generation_jobs.status` (for queue length - pending jobs)
+- `generation_jobs.created_at` (for recent jobs)
+- `generation_jobs.completed_at` (for latency calculation)
+- `failed_jobs.failed_at` (for failed jobs count)
 
 **Caching Decisions:**
-- Cache health for 1 minute (frequent updates)
-- Cache key: `admin:system:health`
+- Cache for 1 minute (system health changes frequently)
+- Cache key: `admin:system-health`
 
 **Authorization Rules:**
-- Admin only
+- Admin-only access
 
 **Acceptance Criteria:**
-- Controller exists with health endpoint
-- Returns system health metrics in expected format
+- Controller exists with index endpoint
+- Returns system health metrics
 
 **Failure Cases & Security Pitfalls:**
 - Non-admin accesses endpoint → 403 Forbidden
-- Incorrect health metrics → Wrong system status
+- Slow query → Performance issue
 
 ---
 
@@ -1409,12 +1404,12 @@
 - `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (index method)
 
 **Routes & Middleware:**
-- GET `/api/v1/admin/system/health` - `auth:sanctum`, `admin`
+- GET `/api/v1/admin/system-health` - `auth:sanctum`, `admin`
 
 **DB Reads/Writes:**
-- Read: `system_health` (recent records)
-- Read: `jobs` (queue length)
+- Read: `generation_jobs` (queue length, latency)
 - Read: `failed_jobs` (failed jobs count)
+- Read: Redis (queue length)
 
 **Indexes Used:**
 - All indexes from previous subtask
@@ -1423,84 +1418,80 @@
 - Cache for 1 minute
 
 **Authorization Rules:**
-- Admin only
+- Admin-only
 
 **Acceptance Criteria:**
-- Returns queue lengths
-- Returns worker status
-- Returns failed jobs count
-- Returns error rates
-- Returns API latency
-- Returns storage usage
+- Returns queue_length (pending jobs count)
+- Returns worker_status (if possible)
+- Returns failed_jobs_count
+- Returns error_rate (failed / total in last 24h)
+- Returns avg_api_latency_ms
+- Returns storage_usage (if available)
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect metrics → Wrong system status
-- Missing health data → Incomplete response
-
-**Test Coverage Expectations:**
-- Feature test: Health metrics correct
-- Feature test: Queue length accurate
-- Feature test: Failed jobs count accurate
+- Incorrect queue length → Operational error
+- Missing metrics → Incomplete monitoring
 
 ---
 
 ### Subtask 6.7.3: Track Queue Lengths
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (queue logic)
+- `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (queue length logic)
 
 **Routes & Middleware:**
-- N/A (handled in health endpoint)
+- N/A (handled in index method)
 
 **DB Reads/Writes:**
-- Read: `jobs` (COUNT by queue)
+- Read: `generation_jobs` (COUNT(*) WHERE status='pending')
+- Read: Redis (LLEN queue:default, if using Redis)
 
 **Indexes Used:**
-- `jobs.queue` (for queue grouping)
+- `generation_jobs.status` (for filtering pending)
 
 **Caching Decisions:**
-- None (part of health cache)
+- None (real-time metric)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Queue length per queue name
-- Total queue length
-- Real-time or cached (1 minute)
+- Returns queue_length (number of pending jobs)
+- Returns queue_length_by_type (pending jobs by job_type)
+- Real-time data (not cached)
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect queue count → Wrong system status
-- Missing queue data → Incomplete metrics
+- Incorrect count → Operational error
+- Slow query → Performance issue
 
 ---
 
 ### Subtask 6.7.4: Monitor Worker Status
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (worker logic)
+- `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (worker status logic, optional)
 
 **Routes & Middleware:**
-- N/A (handled in health endpoint)
+- N/A (handled in index method)
 
 **DB Reads/Writes:**
-- Read: `system_health` (worker status metric) or check queue workers directly
+- Read: System/Redis (check if workers are running, if possible)
 
 **Indexes Used:**
-- `system_health.metric_name` (for worker status)
+- None
 
 **Caching Decisions:**
-- None (part of health cache)
+- Cache for 5 minutes (worker status doesn't change frequently)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Worker status (running/stopped)
-- Number of active workers
-- Worker health status
+- Returns worker_status (active/inactive, if detectable)
+- Returns worker_count (number of active workers, if detectable)
+- If not detectable, return null or "unknown"
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect worker status → Wrong system status
-- Missing worker data → Incomplete metrics
+- Cannot detect worker status → Return null (don't throw error)
+- Incorrect status → Operational error
 
 ---
 
@@ -1509,60 +1500,60 @@
 - `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (failed jobs logic)
 
 **Routes & Middleware:**
-- N/A (handled in health endpoint)
+- N/A (handled in index method)
 
 **DB Reads/Writes:**
-- Read: `failed_jobs` (COUNT recent failures)
+- Read: `failed_jobs` (COUNT(*) WHERE failed_at >= last 24h)
 
 **Indexes Used:**
-- `failed_jobs.failed_at` (for recent failures)
+- `failed_jobs.failed_at` (for date filtering)
 
 **Caching Decisions:**
-- None (part of health cache)
+- None (real-time metric)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Failed jobs count (last 24 hours)
-- Failed jobs rate
-- Recent failure trends
+- Returns failed_jobs_count (last 24 hours)
+- Returns failed_jobs_today (today's failed jobs)
+- Returns recent_failed_jobs (last 10 failed jobs with details)
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect failed jobs count → Wrong system status
-- Missing failure data → Incomplete metrics
+- Incorrect count → Operational error
+- Missing failed_jobs table → Error handling needed
 
 ---
 
 ### Subtask 6.7.6: Calculate Error Rates
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (error rates logic)
+- `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (error rate logic)
 
 **Routes & Middleware:**
-- N/A (handled in health endpoint)
+- N/A (handled in index method)
 
 **DB Reads/Writes:**
-- Read: `generation_jobs` (COUNT by status)
-- Read: `failed_jobs` (for job failures)
+- Read: `generation_jobs` (COUNT(*) WHERE status='failed' / COUNT(*) WHERE created_at >= last 24h)
 
 **Indexes Used:**
-- `generation_jobs.status` (for status filtering)
-- `failed_jobs.failed_at` (for failure date)
+- `generation_jobs.status` (for filtering failed)
+- `generation_jobs.created_at` (for date filtering)
 
 **Caching Decisions:**
-- None (part of health cache)
+- None (real-time metric)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Error rate = failed_count / total_count
-- Error rate by time period
-- Error trends
+- Returns error_rate (failed / total * 100 in last 24h)
+- Returns error_count (number of failed jobs in last 24h)
+- Returns total_jobs (total jobs in last 24h)
+- Handles division by zero (if total_jobs = 0)
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect error rate → Wrong system status
-- Missing error data → Incomplete metrics
+- Division by zero → Error handling needed
+- Incorrect rate → Operational error
 
 ---
 
@@ -1571,73 +1562,77 @@
 - `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (latency logic)
 
 **Routes & Middleware:**
-- N/A (handled in health endpoint)
+- N/A (handled in index method)
 
 **DB Reads/Writes:**
-- Read: `system_health` (latency metric) or calculate from logs
+- Read: `generation_jobs` (AVG(completed_at - started_at) WHERE status='completed' AND completed_at >= last 24h)
 
 **Indexes Used:**
-- `system_health.metric_name` (for latency metric)
+- `generation_jobs.status` (for filtering completed)
+- `generation_jobs.completed_at` (for date filtering)
+- `generation_jobs.started_at` (for latency calculation)
 
 **Caching Decisions:**
-- None (part of health cache)
+- None (real-time metric)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Average API latency
-- P95/P99 latency if available
-- Latency trends
+- Returns avg_api_latency_ms (average latency in milliseconds)
+- Returns p95_latency_ms (95th percentile, if possible)
+- Returns p99_latency_ms (99th percentile, if possible)
+- Only includes completed jobs with started_at and completed_at
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect latency → Wrong system status
-- Missing latency data → Incomplete metrics
+- Missing started_at/completed_at → Incorrect latency
+- Includes failed jobs → Latency error
 
 ---
 
 ### Subtask 6.7.8: Track Storage Usage
 **Files to Create/Modify:**
-- `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (storage logic)
+- `app/Http/Controllers/Api/V1/AdminSystemHealthController.php` (storage logic, optional)
 
 **Routes & Middleware:**
-- N/A (handled in health endpoint)
+- N/A (handled in index method)
 
 **DB Reads/Writes:**
-- Read: `system_health` (storage metric) or calculate from S3
+- Read: `generation_jobs` (COUNT(*) WHERE result_url IS NOT NULL, estimate storage)
+- Read: S3 API (if available, get actual storage usage)
 
 **Indexes Used:**
-- `system_health.metric_name` (for storage metric)
+- `generation_jobs.result_url` (for counting files)
 
 **Caching Decisions:**
-- None (part of health cache)
+- Cache for 1 hour (storage doesn't change frequently)
 
 **Authorization Rules:**
 - N/A
 
 **Acceptance Criteria:**
-- Storage usage (GB)
-- Bandwidth usage if available
-- Storage trends
+- Returns storage_usage_mb (estimated or actual storage in MB)
+- Returns file_count (number of generated files)
+- If not available, return null or "unknown"
 
 **Failure Cases & Security Pitfalls:**
-- Incorrect storage data → Wrong system status
-- Missing storage data → Incomplete metrics
+- Cannot access S3 → Return null (don't throw error)
+- Incorrect estimation → Operational error
 
 ---
 
-### Subtask 6.7.9: Create Scheduled Job to Record Metrics (Optional)
+### Subtask 6.7.9: Create Scheduled Job to Record Metrics
 **Files to Create/Modify:**
-- `app/Console/Commands/RecordSystemHealth.php` (new file, optional)
-- `routes/console.php` (schedule job, optional)
+- `app/Console/Commands/RecordSystemHealth.php` (new - scheduled job)
+- `routes/console.php` (schedule job)
 
 **Routes & Middleware:**
 - N/A (scheduled job)
 
 **DB Reads/Writes:**
-- Read: `jobs` (for queue length)
-- Read: `failed_jobs` (for failed jobs)
-- Write: `system_health` (store metrics)
+- Read: `generation_jobs` (collect metrics)
+- Read: `failed_jobs` (collect metrics)
+- Write: `system_health` table (if exists, INSERT metrics)
 
 **Indexes Used:**
 - All indexes from previous subtasks
@@ -1649,64 +1644,63 @@
 - N/A (system job)
 
 **Acceptance Criteria:**
-- Job records system health metrics
-- Job runs every 5 minutes (or as scheduled)
-- Metrics stored in system_health table
+- Job records system health metrics every 5 minutes (or as specified)
+- Records: queue_length, failed_jobs_count, error_rate, avg_latency_ms
+- Stores in system_health table (if exists) or logs metrics
+- Job runs successfully without errors
 
 **Failure Cases & Security Pitfalls:**
-- Job fails → Missing health metrics
-- Incorrect metrics → Wrong system status
+- Job fails → Metrics not recorded (log error, don't crash)
+- Missing system_health table → Log metrics instead (or create table)
 
 **Test Coverage Expectations:**
-- Feature test: Health recording job works
-- Feature test: Metrics stored correctly
+- Feature test: System health returns correct metrics
+- Feature test: Queue length is accurate
+- Feature test: Failed jobs count is correct
+- Feature test: Error rate calculation is accurate
+- Feature test: API latency is correct
+- Feature test: Scheduled job records metrics correctly
 
 ---
 
 ## Summary
 
-**Total Files to Create:** 15+
+**Total Files to Create:** 20+
 - 7 Controllers (AdminSalesController, AdminUsersController, AdminModelsController, AdminTokensController, AdminCostProfitController, AdminSystemHealthController)
-- 7 Form Requests (SalesSummaryRequest, UsersSummaryRequest, ModelsUsageRequest, TokenAnalyticsRequest, CostProfitSummaryRequest, UsersListRequest)
-- 2 Optional Scheduled Jobs (AggregateModelsUsage, RecordSystemHealth)
+- 7 Form Requests (one per controller for validation)
+- 2 Scheduled Jobs (AggregateModelsUsage, RecordSystemHealth)
+- Optional Services (AdminSalesService, AdminUsersService for complex logic)
 
-**Total Files to Modify:** 2
+**Total Files to Modify:** 3
 - routes/api.php (add admin dashboard routes)
-- routes/console.php (add scheduled jobs if required)
+- routes/console.php (add scheduled jobs)
+- BACKEND_TASKS.md (mark tasks complete)
 
 **Dependencies:**
 - Environment variables: None new
-- Packages: None new
-- Infrastructure: Redis (for caching)
+- Packages: None new (use existing Laravel features)
+- Infrastructure: Redis (for queue monitoring, if applicable)
 
 **Authorization Checklist:**
-- [ ] All admin routes protected by auth:sanctum + admin middleware
-- [ ] Non-admin cannot access any admin endpoint
-- [ ] Consistent 403 response for unauthorized access
-
-**Financial Accuracy Checklist:**
-- [ ] Revenue only counts paid orders
-- [ ] Cost matches generation job costs
-- [ ] Profit = revenue - cost
-- [ ] All financial calculations use transactions
-- [ ] Date filtering respects timezone (UTC)
+- [ ] All admin endpoints protected with auth:sanctum + admin middleware
+- [ ] Non-admin users receive 403 Forbidden
+- [ ] No data leakage in error messages
 
 **Performance Checklist:**
-- [ ] All date filters use indexes
-- [ ] Queries execute in <500ms
-- [ ] No full table scans
-- [ ] Caching implemented for expensive queries
-- [ ] Pagination for large result sets
+- [ ] All queries use indexes
+- [ ] Date filtering uses indexed columns
+- [ ] Aggregations use database-level functions (SUM, COUNT, AVG)
+- [ ] Pagination on all list endpoints
+- [ ] Caching on summary endpoints (5-15 minute TTL)
+
+**Accuracy Checklist:**
+- [ ] Revenue only includes paid orders
+- [ ] Costs only include completed jobs
+- [ ] Token consumption matches generation_jobs
+- [ ] DAU/WAU/MAU definitions consistent
+- [ ] Profit = Revenue - Cost (correct calculation)
 
 **Test Coverage Minimum:**
-- 5+ feature tests for admin middleware
-- 10+ feature tests for sales dashboard
-- 10+ feature tests for users dashboard
-- 10+ feature tests for models usage
-- 8+ feature tests for token analytics
-- 8+ feature tests for cost/profit
-- 8+ feature tests for system health
-- Test authorization correctness
-- Test financial accuracy
-- Test query performance
-
+- 5+ feature tests per controller (authorization, data accuracy, date filtering)
+- Performance tests for slow queries
+- Security tests for access control

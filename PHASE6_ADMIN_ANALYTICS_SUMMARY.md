@@ -1,309 +1,207 @@
-# Phase 6: Admin Dashboard APIs - Admin Analytics Understanding
+# Phase 6: Admin Dashboard APIs - Analytics Understanding
 
-## Data Requirements & Why
+## Admin Analytics Requirements (Production-Grade Design)
 
-### 1. Sales Dashboard Data
-- **Total Revenue**: Sum of all paid orders (status='paid') - financially sensitive
-- **Revenue by Period**: Daily/weekly/monthly breakdown for trend analysis
-- **Top Selling Bundles**: Which token bundles sell most (informs pricing strategy)
-- **Refunds**: Track chargebacks and refunds (financial risk monitoring)
-- **Customer LTV**: Lifetime value per customer (business intelligence)
-- **Why**: Admins need to understand revenue trends, identify best-selling products, and monitor financial health
+### 1. What Data Admins Need and Why
+- **Sales Metrics**: Revenue tracking, order volumes, top-selling bundles - Critical for business decisions and financial planning
+- **User Metrics**: Active users (DAU/WAU/MAU), top users by activity/spending - Understand user engagement and identify power users
+- **Model Usage**: Per-model statistics (requests, success rates, latency, costs) - Optimize model selection and cost management
+- **Token Analytics**: Consumption by provider/type, cost/profit analysis - Track token economy health and profitability
+- **Cost & Profit**: Revenue vs costs, profit margins, breakdowns by model/provider - Financial health and optimization
+- **System Health**: Queue lengths, worker status, failed jobs, API latency, storage usage - Operational monitoring and reliability
 
-### 2. Users Dashboard Data
-- **DAU/WAU/MAU**: Daily/Weekly/Monthly Active Users (engagement metrics)
-  - DAU: Users who logged in or generated content in last 24 hours
-  - WAU: Users active in last 7 days
-  - MAU: Users active in last 30 days
-- **Top Users by Generation**: Power users who generate most content
-- **Top Users by Spending**: High-value customers (revenue focus)
-- **Cohort Analysis**: User retention by signup cohort
-- **Churn/Reactivation**: Users who stopped using vs returned
-- **Why**: Understand user engagement, identify power users, track retention
+### 2. Financially Sensitive Metrics
+- **Revenue Numbers**: Must be accurate (only count paid orders, correct currency conversion)
+- **Cost Calculations**: Must match actual API costs (from generation_jobs.cost_usd)
+- **Profit Margins**: Revenue - Cost must be correct (financial reporting depends on this)
+- **Token Consumption**: Must match ledger (token_transactions must reconcile)
+- **Refunds**: Must be tracked separately and excluded from revenue
+- **Customer LTV**: Lifetime value calculations must be accurate for business decisions
 
-### 3. Models Usage Dashboard Data
-- **Requests per Model**: How often each AI model is used
-- **Success/Failure Rates**: Model reliability metrics
-- **Average Latency**: Response time per model (performance monitoring)
-- **Tokens Consumed**: Cost tracking per model
-- **Cost/Revenue per Model**: Profitability analysis
-- **Why**: Optimize model selection, identify failing models, track costs
+### 3. Date Filtering Behaviors
+- **Range Parameter**: `range=day|week|month|year|all` - Predefined ranges for common queries
+- **Explicit Dates**: `start_date=YYYY-MM-DD&end_date=YYYY-MM-DD` - Custom date ranges
+- **Timezone Handling**: All dates in UTC, convert to local timezone for display (or document timezone)
+- **Default Behavior**: If no range/date specified, default to last 30 days (or document default)
+- **Date Boundaries**: start_date inclusive (>=), end_date inclusive (<=) or exclusive (<) - Document behavior
+- **Performance**: Date filtering must use indexed columns (created_at, paid_at, completed_at)
 
-### 4. Token Analytics Dashboard Data
-- **Consumption by Provider**: Which AI provider consumes most tokens
-- **Consumption by Type**: Image vs video vs audio usage patterns
-- **Cost/Profit per Provider**: Provider profitability
-- **Time-Series Trends**: Token consumption over time
-- **Why**: Understand usage patterns, optimize provider selection, track costs
+### 4. Accuracy vs Performance Tradeoffs
+- **Raw Queries**: Direct aggregation from source tables (orders, token_transactions, generation_jobs) - Accurate but potentially slow
+- **Aggregated Tables**: Pre-computed metrics in analytics_models_usage, system_health - Fast but must be kept in sync
+- **Hybrid Approach**: Use aggregated tables for historical data, raw queries for recent data (last 24 hours)
+- **Caching**: Cache aggregated results for 5-15 minutes (balance freshness vs performance)
+- **Scheduled Aggregation**: Daily job to pre-compute metrics (reduces query load during business hours)
+- **Real-Time vs Batch**: Real-time for critical metrics (queue length), batch for historical analytics
 
-### 5. Cost & Profit Dashboard Data
-- **Total Revenue**: Sum of all paid orders
-- **Total Cost**: Sum of all provider costs (from generation jobs)
-- **Profit**: Revenue - Cost (financially sensitive)
-- **Profit Margins**: Profit as percentage of revenue
-- **Breakdown by Model/Provider**: Where profit comes from
-- **Historical Comparison**: Profit trends over time
-- **Why**: Financial health monitoring, identify profitable/unprofitable models
+### 5. Avoiding Expensive Full-Table Scans
+- **Indexes Required**: 
+  - orders: status, created_at, paid_at, user_id
+  - token_transactions: type, created_at, user_id, generation_job_id
+  - generation_jobs: status, created_at, completed_at, model_id, provider_id, job_type
+  - users: created_at, role
+- **Query Patterns**: Always filter by date range first (uses created_at index), then aggregate
+- **Limit Aggregations**: Use GROUP BY with date truncation (DATE(created_at)) for time-series
+- **Pagination**: All list endpoints must be paginated (max 100 items per page)
+- **Selective Columns**: SELECT only needed columns (avoid SELECT *)
+- **Eager Loading**: Use with() for relationships, but avoid N+1 queries
 
-### 6. System Health Dashboard Data
-- **Queue Length**: Number of pending jobs (system load)
-- **Worker Status**: Are queue workers running?
-- **Failed Jobs**: Error rate monitoring
-- **API Latency**: Response time metrics
-- **Storage Usage**: Disk/bandwidth consumption
-- **Why**: Monitor system performance, identify bottlenecks, prevent outages
+### 6. Authorization Model and RBAC
+- **Admin-Only Access**: All admin endpoints require `auth:sanctum` + `admin` middleware
+- **Role Check**: Verify `user->role === 'admin'` (or `user->isAdmin()` method)
+- **Consistent Responses**: 403 Forbidden for non-admin users (don't reveal endpoint existence)
+- **Audit Trail**: Log all admin API access (who accessed what, when)
+- **No Data Leakage**: Non-admin users should not see any admin data (even in error messages)
+- **Moderator Role**: If moderator role exists, document what they can/cannot access
 
-## Financially Sensitive Metrics
+### 7. Query Optimization Strategies
+- **Date Range First**: Always filter by date range before aggregating (reduces dataset size)
+- **Index Usage**: Ensure queries use indexes (EXPLAIN queries to verify)
+- **Batch Aggregation**: Use SUM(), COUNT(), AVG() at database level (not in PHP)
+- **Avoid Subqueries**: Prefer JOINs over subqueries where possible
+- **Limit Result Sets**: Use LIMIT for top-N queries (top bundles, top users)
+- **Materialized Views**: Consider materialized views for complex aggregations (if PostgreSQL)
 
-### Critical Financial Numbers (Must Be Accurate)
-1. **Total Revenue**: Sum of paid orders only (status='paid')
-2. **Total Cost**: Sum of provider costs from generation jobs
-3. **Profit**: Revenue - Cost (must match financial records)
-4. **Refunds**: Chargeback and refund amounts
-5. **Customer LTV**: Lifetime value calculations
-6. **Token Consumption Costs**: Provider costs per token
+### 8. Caching Strategy
+- **Cache Keys**: `admin:sales:summary:{range}:{start_date}:{end_date}` (include all filter params)
+- **TTL**: 5-15 minutes for summary endpoints (balance freshness vs performance)
+- **Invalidation**: Invalidate on data changes (new orders, new generations) - or accept stale data
+- **Cache Tags**: Use Redis tags for bulk invalidation (e.g., `admin:sales:*`)
+- **User-Specific**: Admin endpoints are user-agnostic (same data for all admins), so cache is safe
 
-### Financial Accuracy Requirements
-- All financial calculations must use database transactions
-- Revenue must only count paid orders (not pending/cancelled)
-- Cost must match actual provider charges
-- Profit calculations must be auditable
-- Date filtering must respect timezone (UTC recommended)
-- Rounding must be consistent (4 decimal places for USD, 2 for Toman)
+### 9. Data Accuracy Requirements
+- **Revenue**: Only count orders with status='paid' (exclude pending/failed/cancelled)
+- **Costs**: Sum from generation_jobs.cost_usd where status='completed' (only successful generations)
+- **Token Consumption**: Sum from token_transactions where type='consume' (negative amounts)
+- **Refunds**: Track separately (orders with refund status, or token_transactions with type='refund')
+- **Reconciliation**: Token consumption must match generation_jobs.tokens_consumed (audit check)
 
-## Date Filtering Behaviors
+### 10. Time-Series Data
+- **Granularity**: Support daily, weekly, monthly aggregations
+- **Date Truncation**: Use DATE(created_at) for daily, DATE_FORMAT for weekly/monthly
+- **Gap Filling**: Return zeros for dates with no data (complete time series)
+- **Ordering**: Always order by date ASC for time-series responses
+- **Format**: Return as array of {date, value} objects for easy charting
 
-### Range Parameter (Quick Filters)
-- `range=day`: Last 24 hours
-- `range=week`: Last 7 days
-- `range=month`: Last 30 days
-- `range=year`: Last 365 days
-- Default: `range=month` (last 30 days)
+### 11. Top-N Queries
+- **Top Bundles**: Group by token_bundle_id, SUM(price_toman), ORDER BY SUM DESC, LIMIT 10
+- **Top Users by Generation**: COUNT(generation_jobs) GROUP BY user_id, ORDER BY COUNT DESC, LIMIT 10
+- **Top Users by Spending**: SUM(orders.price_toman) WHERE status='paid' GROUP BY user_id, ORDER BY SUM DESC, LIMIT 10
+- **Performance**: Use indexes on grouping columns, limit results to top 10-20
 
-### Explicit Date Filtering
-- `start_date`: YYYY-MM-DD format (inclusive)
-- `end_date`: YYYY-MM-DD format (inclusive)
-- If both provided, use explicit dates (ignore range)
-- Timezone: All dates stored in UTC, queries use UTC
+### 12. DAU/WAU/MAU Definitions
+- **DAU (Daily Active Users)**: Users who had at least one generation_job with status='completed' in last 24 hours
+- **WAU (Weekly Active Users)**: Users who had at least one generation_job with status='completed' in last 7 days
+- **MAU (Monthly Active Users)**: Users who had at least one generation_job with status='completed' in last 30 days
+- **Alternative**: Could use last_login, but generation activity is more accurate for "active"
+- **Consistency**: Use same definition across all endpoints (document clearly)
 
-### Date Filtering Logic
-```php
-if ($request->has('start_date') && $request->has('end_date')) {
-    // Use explicit dates
-    $start = Carbon::parse($request->start_date)->startOfDay();
-    $end = Carbon::parse($request->end_date)->endOfDay();
-} else {
-    // Use range parameter
-    $range = $request->get('range', 'month');
-    $end = now();
-    $start = match($range) {
-        'day' => $end->copy()->subDay(),
-        'week' => $end->copy()->subWeek(),
-        'month' => $end->copy()->subMonth(),
-        'year' => $end->copy()->subYear(),
-        default => $end->copy()->subMonth(),
-    };
-}
-```
+### 13. Cohort Analysis
+- **Cohort Definition**: Group users by signup month/week
+- **Retention**: For each cohort, calculate % of users who generated content in subsequent periods
+- **Implementation**: Complex query (users JOIN generation_jobs, group by signup period, count active in each period)
+- **Performance**: Consider pre-computing in scheduled job (daily aggregation)
 
-## Accuracy vs Performance Tradeoffs
+### 14. System Health Metrics
+- **Queue Length**: Count of pending jobs in queue (Redis LLEN or database COUNT where status='pending')
+- **Worker Status**: Check if queue workers are running (Supervisor status, or heartbeat mechanism)
+- **Failed Jobs**: COUNT from failed_jobs table (Laravel's failed_jobs table)
+- **API Latency**: Average from generation_jobs.completed_at - generation_jobs.started_at (where completed)
+- **Storage Usage**: Calculate from S3 (or estimate from generation_jobs count * avg file size)
+- **Error Rate**: COUNT(failed) / COUNT(total) from generation_jobs in last 24 hours
 
-### Raw Queries (High Accuracy, Lower Performance)
-- **Use When**: Real-time data required, small datasets, financial reports
-- **Approach**: Direct SQL aggregations (SUM, COUNT, GROUP BY)
-- **Performance Risk**: Full table scans on large tables
-- **Mitigation**: Ensure indexes on date columns, status columns
+### 15. Cost & Profit Calculation
+- **Revenue**: SUM(orders.price_toman) WHERE status='paid' (in Toman) or SUM(orders.price_usd) (in USD)
+- **Cost**: SUM(generation_jobs.cost_usd) WHERE status='completed' (API costs in USD)
+- **Profit**: Revenue - Cost (convert to same currency for comparison)
+- **Profit Margin**: (Profit / Revenue) * 100 (percentage)
+- **Breakdown by Model**: GROUP BY model_id, calculate revenue (from token consumption) and cost per model
+- **Breakdown by Provider**: GROUP BY provider_id, calculate revenue and cost per provider
 
-### Aggregated Tables (Lower Accuracy, Higher Performance)
-- **Use When**: Historical data, large datasets, dashboard views
-- **Approach**: Pre-aggregated data in analytics tables (analytics_models_usage, etc.)
-- **Performance Risk**: Stale data if aggregation job fails
-- **Mitigation**: Scheduled aggregation jobs, fallback to raw queries
+### 16. Token Analytics
+- **Consumption by Provider**: SUM(token_transactions.amount_tokens) WHERE type='consume' GROUP BY provider_id (from generation_jobs)
+- **Consumption by Type**: SUM(token_transactions.amount_tokens) WHERE type='consume' GROUP BY job_type (from generation_jobs)
+- **Cost per Provider**: SUM(generation_jobs.cost_usd) WHERE status='completed' GROUP BY provider_id
+- **Profit per Provider**: Revenue (from token sales) - Cost (from API calls) per provider
+- **Time-Series**: Daily/weekly/monthly token consumption trends
 
-### Hybrid Approach (Recommended)
-- **Real-time**: Use raw queries for current period (last 24 hours)
-- **Historical**: Use aggregated tables for older data (last 7+ days)
-- **Fallback**: If aggregated data missing, use raw queries
+### 17. Models Usage Analytics
+- **Requests per Model**: COUNT(generation_jobs) WHERE status IN ('completed', 'failed') GROUP BY model_id
+- **Success Rate**: COUNT(completed) / COUNT(total) * 100 per model
+- **Average Latency**: AVG(completed_at - started_at) WHERE status='completed' GROUP BY model_id
+- **Tokens Consumed**: SUM(tokens_consumed) WHERE status='completed' GROUP BY model_id
+- **Cost per Model**: SUM(cost_usd) WHERE status='completed' GROUP BY model_id
+- **Use Aggregated Table**: If analytics_models_usage exists, prefer it (faster), otherwise aggregate from generation_jobs
 
-## Avoiding Expensive Full-Table Scans
+### 18. Performance Risks and Mitigations
+- **Risk**: Full table scans on large tables (orders, token_transactions, generation_jobs)
+- **Mitigation**: Always filter by date range first, use indexes on created_at
+- **Risk**: Complex aggregations on millions of rows
+- **Mitigation**: Use aggregated tables (analytics_models_usage) for historical data, cache results
+- **Risk**: N+1 queries when loading relationships
+- **Mitigation**: Use eager loading (with()), select only needed columns
+- **Risk**: Slow top-N queries
+- **Mitigation**: Use indexes on grouping columns, limit results to top 10-20
 
-### Index Requirements
-- **Date Columns**: All date filters must have indexes
-  - `orders.created_at` (indexed)
-  - `generation_jobs.created_at` (indexed)
-  - `token_transactions.created_at` (indexed)
-- **Status Columns**: Filter by status before aggregating
-  - `orders.status` (indexed, filter status='paid')
-  - `generation_jobs.status` (indexed, filter status='completed')
-- **Foreign Keys**: Join columns must be indexed
-  - `orders.user_id` (indexed)
-  - `generation_jobs.model_id` (indexed)
-  - `token_transactions.provider_id` (indexed)
+### 19. Security Risks and Mitigations
+- **Risk**: Non-admin users accessing admin endpoints
+- **Mitigation**: Strict admin middleware, verify role on every request
+- **Risk**: Data leakage in error messages
+- **Mitigation**: Generic error messages, don't reveal table/column names
+- **Risk**: SQL injection
+- **Mitigation**: Use Eloquent ORM (parameterized queries), validate all inputs
+- **Risk**: Rate limiting abuse
+- **Mitigation**: Implement rate limiting on admin endpoints (if needed)
 
-### Query Optimization Strategies
-1. **Filter First**: Apply date/status filters before aggregating
-2. **Limit Results**: Use pagination for large result sets
-3. **Eager Loading**: Avoid N+1 queries with `with()`
-4. **Select Specific Columns**: Don't select `*` if not needed
-5. **Use Aggregated Tables**: Pre-aggregated data for historical periods
-6. **Cache Results**: Cache expensive queries (5-10 minute TTL)
+### 20. Testing Requirements
+- **Unit Tests**: Test aggregation logic, date filtering, currency conversion
+- **Feature Tests**: Test admin middleware blocks non-admin, test each endpoint returns correct shape
+- **Integration Tests**: Test with seeded data, verify aggregations match expected results
+- **Performance Tests**: Verify queries use indexes, check query execution time
+- **Security Tests**: Verify non-admin cannot access endpoints, test SQL injection prevention
 
-### Performance Monitoring
-- Monitor query execution time (target: <500ms per endpoint)
-- Use `EXPLAIN` to verify index usage
-- Log slow queries (>1 second)
-- Consider materialized views for complex aggregations
+### 21. Error Handling
+- **Invalid Date Ranges**: Return 400 Bad Request with clear error message
+- **Missing Data**: Return empty arrays/zeros (don't throw errors)
+- **Database Errors**: Log error, return 500 with generic message (don't expose DB details)
+- **Authorization Errors**: Return 403 Forbidden (consistent across all endpoints)
 
-## Authorization Model & RBAC
+### 22. Response Formats
+- **Consistent Structure**: All endpoints return {success: true, data: {...}, meta: {...}}
+- **Date Formats**: ISO 8601 format (YYYY-MM-DD or YYYY-MM-DDTHH:mm:ssZ)
+- **Currency Formats**: Decimal with 2-4 decimal places (document precision)
+- **Pagination**: {data: [...], meta: {current_page, last_page, per_page, total}}
+- **Time-Series**: {data: [{date: 'YYYY-MM-DD', value: 123.45}, ...]}
 
-### Role Hierarchy
-- **Admin**: Full access to all admin endpoints
-- **Moderator**: Limited admin access (if documented)
-- **User**: No admin access (403 Forbidden)
+### 23. Documentation Requirements
+- **Endpoint Documentation**: Document all query parameters, response formats, examples
+- **Metric Definitions**: Clearly define DAU/WAU/MAU, revenue, cost, profit calculations
+- **Date Filtering**: Document timezone, inclusive/exclusive boundaries, default ranges
+- **Performance Notes**: Document expected query times, caching behavior, aggregation schedules
+- **Authorization**: Document who can access endpoints, what data they see
 
-### Authorization Checks
-- **Middleware**: All admin routes protected by `auth:sanctum` + `admin` middleware
-- **Controller Level**: Additional `$user->isAdmin()` checks for sensitive operations
-- **Policy/Gate**: Use Laravel policies for fine-grained control (if needed)
+### 24. Monitoring and Alerting
+- **Slow Queries**: Alert if admin endpoint takes > 2 seconds
+- **High Error Rates**: Alert if admin endpoints return errors > 1%
+- **Cache Misses**: Monitor cache hit rates (should be > 80% for summary endpoints)
+- **Data Accuracy**: Periodic reconciliation checks (compare aggregated vs raw data)
 
-### Unauthorized Access Response
-```json
-{
-  "success": false,
-  "message": "Access denied. Admin privileges required."
-}
-```
-Status Code: 403 Forbidden
+### 25. Future Considerations
+- **Real-Time Dashboards**: Consider WebSocket updates for real-time metrics
+- **Export Functionality**: CSV/Excel export for detailed reports (future phase)
+- **Custom Date Ranges**: Support for custom date range picker in frontend
+- **Drill-Down**: Support for drilling down into specific metrics (e.g., click on model to see details)
+- **Comparative Analysis**: Compare current period vs previous period (growth rates)
 
-### Security Risks
-- **Leaking Admin Data**: Non-admins must not see any admin metrics
-- **Financial Data Exposure**: Revenue/cost/profit must be admin-only
-- **User Privacy**: User search must respect privacy (admin-only)
+---
 
-### Mitigations
-- Strict middleware enforcement (fail closed)
-- Explicit role checks in controllers
-- No admin data in error messages
-- Audit logging for admin actions
+## Critical Principles
 
-## Query Patterns & Aggregations
-
-### Revenue Calculation
-```sql
-SELECT 
-    SUM(total_amount_toman) as total_revenue_toman,
-    SUM(total_amount_usd) as total_revenue_usd,
-    COUNT(*) as total_orders
-FROM orders
-WHERE status = 'paid'
-    AND created_at >= ? AND created_at <= ?
-```
-
-### Token Consumption by Provider
-```sql
-SELECT 
-    p.name as provider_name,
-    SUM(gj.tokens_consumed) as tokens_consumed,
-    SUM(gj.cost_usd) as cost_usd
-FROM generation_jobs gj
-JOIN providers p ON gj.provider_id = p.id
-WHERE gj.status = 'completed'
-    AND gj.created_at >= ? AND gj.created_at <= ?
-GROUP BY p.id, p.name
-```
-
-### DAU/WAU/MAU Calculation
-```sql
--- DAU: Users active in last 24 hours
-SELECT COUNT(DISTINCT user_id) as dau
-FROM (
-    SELECT user_id FROM generation_jobs WHERE created_at >= NOW() - INTERVAL 24 HOUR
-    UNION
-    SELECT id as user_id FROM users WHERE last_login_at >= NOW() - INTERVAL 24 HOUR
-) as active_users
-
--- WAU: Users active in last 7 days
--- MAU: Users active in last 30 days
-```
-
-## Caching Strategy
-
-### Cacheable Endpoints
-- Sales summary (5 minute TTL)
-- Users summary (5 minute TTL)
-- Models usage (10 minute TTL)
-- Token analytics (10 minute TTL)
-- Cost/profit summary (5 minute TTL)
-- System health (1 minute TTL - more frequent updates)
-
-### Cache Keys
-- `admin:sales:summary:{range}:{start_date}:{end_date}`
-- `admin:users:summary:{range}`
-- `admin:models:usage:{range}:{start_date}:{end_date}`
-- `admin:tokens:analytics:{range}:{start_date}:{end_date}`
-- `admin:cost-profit:summary:{range}:{start_date}:{end_date}`
-- `admin:system:health`
-
-### Cache Invalidation
-- Invalidate on new orders (sales cache)
-- Invalidate on new generation jobs (models/tokens cache)
-- Invalidate on system health updates (health cache)
-- TTL-based expiration (fallback)
-
-## Performance Targets
-
-### Response Time Targets
-- Sales summary: <300ms
-- Users summary: <500ms
-- Models usage: <500ms
-- Token analytics: <500ms
-- Cost/profit: <300ms
-- System health: <200ms
-
-### Query Count Targets
-- Maximum 5 queries per endpoint
-- Use eager loading to prevent N+1
-- Prefer single aggregation query over multiple queries
-
-### Data Volume Considerations
-- Paginate large result sets (15-50 items per page)
-- Limit time ranges for expensive queries (max 1 year)
-- Use aggregated tables for historical data (>30 days)
-
-## Error Handling
-
-### Financial Calculation Errors
-- If calculation fails, return error (don't return incorrect data)
-- Log all financial calculation errors
-- Provide fallback to cached data if available
-
-### Query Timeout Handling
-- Set query timeout (30 seconds)
-- Return cached data if query times out
-- Log timeout errors for investigation
-
-### Missing Data Handling
-- Return 0 for missing metrics (not null)
-- Document which metrics may be unavailable
-- Provide data availability status in response
-
-## Testing Considerations
-
-### Financial Accuracy Tests
-- Verify revenue matches sum of paid orders
-- Verify cost matches sum of generation job costs
-- Verify profit = revenue - cost
-- Test with edge cases (no orders, all refunds, etc.)
-
-### Performance Tests
-- Test with large datasets (10k+ orders, 100k+ generation jobs)
-- Verify indexes are used (EXPLAIN queries)
-- Test query timeout handling
-- Test cache hit/miss scenarios
-
-### Authorization Tests
-- Verify non-admin cannot access any admin endpoint
-- Verify admin can access all endpoints
-- Test middleware enforcement
-- Test role-based filtering (if moderators exist)
-
+1. **Accuracy First**: Financial numbers must be correct (revenue, cost, profit)
+2. **Performance Second**: Optimize queries, use indexes, cache where appropriate
+3. **Security Always**: Strict admin-only access, no data leakage
+4. **Consistency**: Same metric definitions across all endpoints
+5. **Documentation**: Clearly document all calculations and assumptions
+6. **Testing**: Test with real data patterns, verify aggregations
+7. **Monitoring**: Track query performance, cache hit rates, error rates
+8. **Scalability**: Design for growth (millions of records)
