@@ -111,12 +111,7 @@ Route::prefix('v1/admin')->middleware(['auth:sanctum', 'admin'])->group(function
     });
     
     Route::prefix('sales')->group(function () {
-        Route::get('summary', function (Request $request) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Sales summary endpoint - to be implemented',
-            ]);
-        });
+        Route::get('summary', [\App\Http\Controllers\Api\V1\AdminSalesController::class, 'summary']);
     });
     
     Route::prefix('models')->group(function () {
