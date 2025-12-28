@@ -627,14 +627,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
 #### Task 3.1: Token Bundle Management
 **Priority**: Critical  
-**Estimated Time**: 2 days
+**Estimated Time**: 2 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `TokenBundleController`
-- [ ] Implement `index()` - list all active bundles
-- [ ] Calculate real-time prices in Toman
-- [ ] Add admin CRUD endpoints (protected)
-- [ ] Add bundle activation/deactivation
+- [x] Create `TokenBundleController`
+- [x] Implement `index()` - list all active bundles
+- [x] Calculate real-time prices in Toman
+- [x] Add admin CRUD endpoints (protected)
+- [x] Add bundle activation/deactivation
 
 **Routes**:
 ```php
@@ -656,19 +657,20 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 #### Task 3.2: Currency Rate Scraper
 **Priority**: Critical  
-**Estimated Time**: 4 days
+**Estimated Time**: 4 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `TgjuScraperService` class
-- [ ] Implement HTML scraping for TGJU.org
-- [ ] Extract USD to Rials rate
-- [ ] Convert Rials to Toman (divide by 10)
-- [ ] Store rate in database
-- [ ] Cache rate in Redis (5-minute TTL)
-- [ ] Create scheduled job (every 5 minutes)
-- [ ] Implement fallback to last known rate
-- [ ] Add error handling and logging
-- [ ] Create API endpoint to get current rate
+- [x] Create `TgjuScraperService` class
+- [x] Implement HTML scraping for TGJU.org
+- [x] Extract USD to Rials rate
+- [x] Convert Rials to Toman (divide by 10)
+- [x] Store rate in database
+- [x] Cache rate in Redis (5-minute TTL)
+- [x] Create scheduled job (every 5 minutes)
+- [x] Implement fallback to last known rate
+- [x] Add error handling and logging
+- [x] Create API endpoint to get current rate
 
 **Service Class**:
 ```php
@@ -712,22 +714,23 @@ protected function schedule(Schedule $schedule)
 
 #### Task 3.3: Zarinpal Payment Integration
 **Priority**: Critical  
-**Estimated Time**: 5 days
+**Estimated Time**: 5 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Install or create Zarinpal SDK
-- [ ] Create `ZarinpalService` class
-- [ ] Implement payment request method
-- [ ] Implement payment verification method
-- [ ] Create `OrderController`
-- [ ] Implement `purchase()` - create order and payment request
-- [ ] Implement `callback()` - handle Zarinpal callback
-- [ ] Calculate price in Toman using current rate
-- [ ] Create order with pending status
-- [ ] Credit tokens on successful payment
-- [ ] Create transaction log
-- [ ] Handle payment failures
-- [ ] Add idempotency for payments
+- [x] Install or create Zarinpal SDK
+- [x] Create `ZarinpalService` class
+- [x] Implement payment request method
+- [x] Implement payment verification method
+- [x] Create `OrderController`
+- [x] Implement `purchase()` - create order and payment request
+- [x] Implement `callback()` - handle Zarinpal callback
+- [x] Calculate price in Toman using current rate
+- [x] Create order with pending status
+- [x] Credit tokens on successful payment
+- [x] Create transaction log
+- [x] Handle payment failures
+- [x] Add idempotency for payments
 
 **Service Class**:
 ```php
@@ -789,16 +792,17 @@ Route::middleware('auth:sanctum')->group(function () {
 
 #### Task 3.4: Token Transaction System
 **Priority**: Critical  
-**Estimated Time**: 2 days
+**Estimated Time**: 2 days  
+**Status**: ✅ Completed
 
 **Subtasks**:
-- [ ] Create `TokenTransactionController`
-- [ ] Implement transaction logging methods
-- [ ] Create `getHistory()` endpoint
-- [ ] Add filtering (type, date range)
-- [ ] Add pagination
-- [ ] Implement balance calculation from transactions
-- [ ] Add transaction types: purchase, consume, refund, bonus
+- [x] Create `TokenTransactionController`
+- [x] Implement transaction logging methods
+- [x] Create `getHistory()` endpoint
+- [x] Add filtering (type, date range)
+- [x] Add pagination
+- [x] Implement balance calculation from transactions
+- [x] Add transaction types: purchase, consume, refund, bonus
 
 **Routes**:
 ```php
