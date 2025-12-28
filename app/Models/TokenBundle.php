@@ -11,22 +11,19 @@ class TokenBundle extends Model
 
     protected $fillable = [
         'name',
-        'tokens',
+        'token_amount',
         'price_usd',
-        'discount_percentage',
-        'description',
+        'bonus_tokens',
         'is_active',
-        'is_popular',
-        'sort_order',
+        'display_order',
     ];
 
     protected $casts = [
-        'tokens' => 'integer',
+        'token_amount' => 'integer',
         'price_usd' => 'decimal:2',
-        'discount_percentage' => 'decimal:2',
+        'bonus_tokens' => 'integer',
         'is_active' => 'boolean',
-        'is_popular' => 'boolean',
-        'sort_order' => 'integer',
+        'display_order' => 'integer',
     ];
 
     // Relationships
@@ -36,23 +33,11 @@ class TokenBundle extends Model
     }
 
     /**
-     * Get the effective price after discount
+     * Get total tokens including bonus
      */
-    public function getEffectivePriceAttribute(): float
+    public function getTotalTokensAttribute(): int
     {
-        if ($this->discount_percentage > 0) {
-            return $this->price_usd * (1 - $this->discount_percentage / 100);
-        }
-        
-        return $this->price_usd;
-    }
-
-    /**
-     * Get the savings amount
-     */
-    public function getSavingsAttribute(): float
-    {
-        return $this->price_usd - $this->effective_price;
+        return $this->token_amount + $this->bonus_tokens;
     }
 
     /**
@@ -72,18 +57,10 @@ class TokenBundle extends Model
     }
 
     /**
-     * Scope for popular bundles
-     */
-    public function scopePopular($query)
-    {
-        return $query->where('is_popular', true);
-    }
-
-    /**
-     * Scope for ordering by sort order
+     * Scope for ordering by display order
      */
     public function scopeOrdered($query)
     {
-        return $query->orderBy('sort_order')->orderBy('tokens');
+        return $query->orderBy('display_order')->orderBy('token_amount');
     }
 }

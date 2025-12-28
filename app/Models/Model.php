@@ -12,19 +12,22 @@ class Model extends Model
     protected $fillable = [
         'provider_id',
         'model_name',
+        'model_type',
+        'api_endpoint',
         'quality_profile',
         'base_cost_usd',
         'default_tokens',
-        'supported_sizes',
-        'supported_styles',
+        'supports_size',
+        'supports_style',
+        'max_resolution',
         'enabled',
     ];
 
     protected $casts = [
         'base_cost_usd' => 'decimal:4',
         'default_tokens' => 'integer',
-        'supported_sizes' => 'array',
-        'supported_styles' => 'array',
+        'supports_size' => 'boolean',
+        'supports_style' => 'boolean',
         'enabled' => 'boolean',
     ];
 
@@ -34,9 +37,9 @@ class Model extends Model
         return $this->belongsTo(Provider::class);
     }
 
-    public function imageJobs()
+    public function generationJobs()
     {
-        return $this->hasMany(ImageJob::class);
+        return $this->hasMany(GenerationJob::class);
     }
 
     public function analyticsUsage()
@@ -60,37 +63,6 @@ class Model extends Model
         return $this->default_tokens;
     }
 
-    /**
-     * Get supported sizes
-     */
-    public function getSupportedSizes(): array
-    {
-        return $this->supported_sizes ?? [];
-    }
-
-    /**
-     * Get supported styles
-     */
-    public function getSupportedStyles(): array
-    {
-        return $this->supported_styles ?? [];
-    }
-
-    /**
-     * Check if size is supported
-     */
-    public function supportsSize(string $size): bool
-    {
-        return in_array($size, $this->getSupportedSizes());
-    }
-
-    /**
-     * Check if style is supported
-     */
-    public function supportsStyle(string $style): bool
-    {
-        return in_array($style, $this->getSupportedStyles());
-    }
 
     /**
      * Scope for available models
@@ -117,5 +89,37 @@ class Model extends Model
     public function scopeByQuality($query, $quality)
     {
         return $query->where('quality_profile', $quality);
+    }
+
+    /**
+     * Scope for models by type
+     */
+    public function scopeByType($query, $type)
+    {
+        return $query->where('model_type', $type);
+    }
+
+    /**
+     * Scope for image models
+     */
+    public function scopeImages($query)
+    {
+        return $query->where('model_type', 'image');
+    }
+
+    /**
+     * Scope for video models
+     */
+    public function scopeVideos($query)
+    {
+        return $query->where('model_type', 'video');
+    }
+
+    /**
+     * Scope for audio models
+     */
+    public function scopeAudio($query)
+    {
+        return $query->where('model_type', 'audio');
     }
 }

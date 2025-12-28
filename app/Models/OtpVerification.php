@@ -16,13 +16,14 @@ class OtpVerification extends Model
         'code_hash',
         'request_id',
         'attempts',
-        'is_verified',
+        'max_attempts',
         'expires_at',
         'verified_at',
     ];
 
     protected $casts = [
-        'is_verified' => 'boolean',
+        'attempts' => 'integer',
+        'max_attempts' => 'integer',
         'expires_at' => 'datetime',
         'verified_at' => 'datetime',
     ];
@@ -48,11 +49,11 @@ class OtpVerification extends Model
      */
     public function verify(string $code): bool
     {
-        if ($this->is_verified || $this->isExpired()) {
+        if ($this->isVerified() || $this->isExpired()) {
             return false;
         }
 
-        if ($this->attempts >= 3) {
+        if ($this->hasExceededMaxAttempts()) {
             return false;
         }
 
@@ -60,7 +61,6 @@ class OtpVerification extends Model
 
         if (Hash::check($code, $this->code_hash)) {
             $this->update([
-                'is_verified' => true,
                 'verified_at' => now(),
             ]);
             return true;
@@ -82,7 +82,7 @@ class OtpVerification extends Model
      */
     public function isVerified(): bool
     {
-        return $this->is_verified;
+        return $this->verified_at !== null;
     }
 
     /**
@@ -90,7 +90,7 @@ class OtpVerification extends Model
      */
     public function hasExceededMaxAttempts(): bool
     {
-        return $this->attempts >= 3;
+        return $this->attempts >= $this->max_attempts;
     }
 
     /**

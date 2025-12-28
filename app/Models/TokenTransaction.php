@@ -11,19 +11,18 @@ class TokenTransaction extends Model
 
     protected $fillable = [
         'user_id',
-        'provider_id',
+        'order_id',
+        'generation_job_id',
         'amount_tokens',
         'amount_usd',
         'type',
         'reference_id',
         'description',
-        'metadata',
     ];
 
     protected $casts = [
-        'amount_tokens' => 'decimal:2',
-        'amount_usd' => 'decimal:2',
-        'metadata' => 'array',
+        'amount_tokens' => 'integer',
+        'amount_usd' => 'decimal:4',
     ];
 
     // Relationships
@@ -32,9 +31,14 @@ class TokenTransaction extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function provider()
+    public function order()
     {
-        return $this->belongsTo(Provider::class);
+        return $this->belongsTo(Order::class);
+    }
+
+    public function generationJob()
+    {
+        return $this->belongsTo(GenerationJob::class);
     }
 
     /**
@@ -59,6 +63,22 @@ class TokenTransaction extends Model
     public function scopeRefunds($query)
     {
         return $query->where('type', 'refund');
+    }
+
+    /**
+     * Scope for bonus transactions
+     */
+    public function scopeBonuses($query)
+    {
+        return $query->where('type', 'bonus');
+    }
+
+    /**
+     * Scope for adjustment transactions
+     */
+    public function scopeAdjustments($query)
+    {
+        return $query->where('type', 'adjustment');
     }
 
     /**

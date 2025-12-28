@@ -102,9 +102,9 @@ class User extends Authenticatable
     }
 
     // Relationships
-    public function imageJobs()
+    public function generationJobs()
     {
-        return $this->hasMany(ImageJob::class);
+        return $this->hasMany(GenerationJob::class);
     }
 
     public function galleryPosts()
@@ -132,18 +132,44 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    public function sales()
+    public function feedViewLimits()
     {
-        return $this->hasMany(Sale::class, 'seller_id');
+        return $this->hasMany(FeedViewLimit::class);
     }
 
-    public function purchases()
+    public function notifications()
     {
-        return $this->hasMany(Sale::class, 'buyer_id');
+        return $this->hasMany(Notification::class);
     }
 
-    public function otpVerifications()
+    public function reports()
     {
-        return $this->hasMany(OtpVerification::class, 'phone', 'phone');
+        return $this->hasMany(Report::class);
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'following_id', 'follower_id');
+    }
+
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id');
+    }
+
+    // Scopes
+    public function scopeVerified($query)
+    {
+        return $query->where('is_verified', true);
+    }
+
+    public function scopeAdmins($query)
+    {
+        return $query->where('role', 'admin');
+    }
+
+    public function scopeModerators($query)
+    {
+        return $query->whereIn('role', ['admin', 'moderator']);
     }
 }
