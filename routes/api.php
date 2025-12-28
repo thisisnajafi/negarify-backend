@@ -79,6 +79,12 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         Route::get('feed', [\App\Http\Controllers\Api\V1\FeedController::class, 'index']);
         Route::post('feed/copy-prompt', [\App\Http\Controllers\Api\V1\FeedController::class, 'copyPrompt']);
         Route::post('feed/copy-model', [\App\Http\Controllers\Api\V1\FeedController::class, 'copyModel']);
+        
+        // Social features
+        Route::post('{id}/like', [\App\Http\Controllers\Api\V1\LikeController::class, 'store']);
+        Route::delete('{id}/like', [\App\Http\Controllers\Api\V1\LikeController::class, 'destroy']);
+        Route::post('{id}/comment', [\App\Http\Controllers\Api\V1\CommentController::class, 'store']);
+        Route::delete('comments/{id}', [\App\Http\Controllers\Api\V1\CommentController::class, 'destroy']);
     });
 });
 
