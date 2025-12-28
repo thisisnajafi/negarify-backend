@@ -68,35 +68,12 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 
     // Gallery routes
     Route::prefix('gallery')->group(function () {
-        Route::post('post', function (Request $request) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Gallery post endpoint - to be implemented',
-            ]);
-        });
-        
-        Route::get('feed', function (Request $request) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Gallery feed endpoint - to be implemented',
-            ]);
-        });
-        
-        Route::post('{post_id}/like', function (Request $request, $postId) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Like post endpoint - to be implemented',
-                'post_id' => $postId,
-            ]);
-        });
-        
-        Route::post('{post_id}/comment', function (Request $request, $postId) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Comment post endpoint - to be implemented',
-                'post_id' => $postId,
-            ]);
-        });
+        // Gallery post management
+        Route::post('post', [\App\Http\Controllers\Api\V1\GalleryPostController::class, 'store']);
+        Route::get('posts/{id}', [\App\Http\Controllers\Api\V1\GalleryPostController::class, 'show']);
+        Route::put('posts/{id}', [\App\Http\Controllers\Api\V1\GalleryPostController::class, 'update']);
+        Route::delete('posts/{id}', [\App\Http\Controllers\Api\V1\GalleryPostController::class, 'destroy']);
+        Route::get('my-posts', [\App\Http\Controllers\Api\V1\GalleryPostController::class, 'myPosts']);
     });
 });
 
