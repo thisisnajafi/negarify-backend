@@ -115,12 +115,7 @@ Route::prefix('v1/admin')->middleware(['auth:sanctum', 'admin'])->group(function
     });
     
     Route::prefix('models')->group(function () {
-        Route::get('usage', function (Request $request) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Models usage endpoint - to be implemented',
-            ]);
-        });
+        Route::get('usage', [\App\Http\Controllers\Api\V1\AdminModelsController::class, 'usage']);
     });
     
     Route::prefix('tokens')->group(function () {
