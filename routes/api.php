@@ -58,6 +58,12 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
         Route::post('image', [\App\Http\Controllers\Api\V1\GenerationController::class, 'generateImage']);
         Route::post('video', [\App\Http\Controllers\Api\V1\GenerationController::class, 'generateVideo']);
         Route::post('audio', [\App\Http\Controllers\Api\V1\GenerationController::class, 'generateAudio']);
+        
+        // Job management routes
+        Route::get('jobs', [\App\Http\Controllers\Api\V1\GenerationJobController::class, 'index']);
+        Route::get('jobs/{id}', [\App\Http\Controllers\Api\V1\GenerationJobController::class, 'show']);
+        Route::post('jobs/{id}/cancel', [\App\Http\Controllers\Api\V1\GenerationJobController::class, 'cancel']);
+        Route::post('jobs/{id}/retry', [\App\Http\Controllers\Api\V1\GenerationJobController::class, 'retry']);
     });
 
     // Gallery routes
