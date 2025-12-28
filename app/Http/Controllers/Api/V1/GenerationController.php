@@ -185,5 +185,61 @@ class GenerationController extends Controller
             return response()->json(['success' => false, 'message' => 'Failed to create job'], 500);
         }
     }
+
+    /**
+     * Generate audio (async)
+     */
+    public function generateAudio(\App\Http\Requests\Api\V1\GenerateAudioRequest $request): JsonResponse
+    {
+        $user = auth()->user();
+        $validated = $request->validated();
+
+        $model = \App\Models\Model::lockForUpdate()->findOrFail($validated['model_id']);
+
+        if (!$model->isAvailable() || $model->model_type !== 'audio') {
+            return response()->json(['success' => false, 'message' => 'Model not available'], 400);
+        }
+
+        $tokenCost = $model->default_tokens;
+        $user->refresh();
+
+        if (!$user->hasTokens($tokenCost)) {
+            return response()->json(['success' => false, 'message' => 'Insufficient tokens'], 400);
+        }
+
+        try {
+            DB::beginTransaction();
+            $user->tokens_balance -= $tokenCost;
+            $user->save();
+
+            $job = GenerationJob::create([
+                'user_id' => $user->id,
+                'provider_id' => $model->provider_id,
+                'model_id' => $model->id,
+                'job_type' => 'audio',
+                'prompt' => $validated['prompt'],
+                'params_json' => [
+                    'duration' => $validated['duration'] ?? null,
+                    'format' => $validated['format'] ?? null,
+                    'sample_rate' => $validated['sample_rate'] ?? null,
+                    'seed' => $validated['seed'] ?? null,
+                ],
+                'status' => 'pending',
+                'tokens_consumed' => $tokenCost,
+            ]);
+
+            DB::commit();
+            \App\Jobs\GenerateAudioJob::dispatch($job->id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Audio generation job created',
+                'data' => ['job_id' => $job->id, 'status' => 'pending', 'estimated_tokens' => $tokenCost],
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => 'Failed to create job'], 500);
+        }
+    }
 }
 
