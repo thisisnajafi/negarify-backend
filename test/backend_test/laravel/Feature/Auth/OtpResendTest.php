@@ -37,7 +37,7 @@ class OtpResendTest extends BackendTestCase
     {
         $this->setUpHttpFake();
         
-        $phone = '09373264601'; // Normalized format (what's stored in DB after +989373264601 normalization)
+        $phone = '09123456789';
         
         // Create initial OTP
         $firstResult = OtpVerification::generate($phone);
@@ -106,7 +106,7 @@ class OtpResendTest extends BackendTestCase
     {
         $this->setUpHttpFake();
         
-        $phone = '09373264601'; // Normalized format (what's stored in DB after +989373264601 normalization)
+        $phone = '09123456789';
         
         // Create and verify OTP
         $result = OtpVerification::generate($phone);
@@ -131,7 +131,7 @@ class OtpResendTest extends BackendTestCase
     {
         $this->setUpHttpFake();
         
-        $phone = '09373264601'; // Normalized format (what's stored in DB after +989373264601 normalization)
+        $phone = '09123456789';
         
         // Create OTP
         $result = OtpVerification::generate($phone);
@@ -180,7 +180,7 @@ class OtpResendTest extends BackendTestCase
     /** @test */
     public function it_handles_melipayamak_failure_on_resend(): void
     {
-        $phone = '09373264601'; // Normalized format (what's stored in DB after +989373264601 normalization)
+        $phone = '09123456789';
         $result = OtpVerification::generate($phone);
         $otp = $result['otp'];
         

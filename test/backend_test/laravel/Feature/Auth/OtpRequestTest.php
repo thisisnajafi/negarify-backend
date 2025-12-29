@@ -17,8 +17,13 @@ class OtpRequestTest extends BackendTestCase
         
         // Clear rate limiters before each test
         RateLimiter::clear('otp_request:*');
-        
-        // Fake HTTP for Melipayamak service
+    }
+    
+    /**
+     * Set up successful HTTP fake (can be overridden in tests)
+     */
+    protected function setUpHttpFake(): void
+    {
         Http::fake([
             'rest.payamak-panel.com/*' => Http::response([
                 'StrRetStatus' => 'Ok',
@@ -31,12 +36,12 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_can_request_otp_with_valid_phone_number(): void
     {
-        $phoneInput = '+989373264601';
-        // Phone is normalized to 09373264601 (removes +98 prefix, adds 0)
-        $normalizedPhone = '09373264601';
+        $this->setUpHttpFake();
+        
+        $phone = '09123456789';
         
         $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
-            'phone' => $phoneInput,
+            'phone' => $phone,
         ]);
 
         $response->assertStatus(200)
@@ -53,12 +58,12 @@ class OtpRequestTest extends BackendTestCase
                 'message' => 'OTP sent successfully',
             ]);
 
-        // Verify OTP stored in database (phone is normalized)
+        // Verify OTP stored in database
         $this->assertDatabaseHas('otp_verifications', [
-            'phone' => $normalizedPhone,
+            'phone' => $phone,
         ]);
 
-        $otp = OtpVerification::where('phone', $normalizedPhone)->first();
+        $otp = OtpVerification::where('phone', $phone)->first();
         $this->assertNotNull($otp);
         $this->assertNotNull($otp->request_id);
         $this->assertNotNull($otp->code_hash);
@@ -69,12 +74,12 @@ class OtpRequestTest extends BackendTestCase
         $this->assertNull($otp->verified_at);
 
         // Verify Melipayamak was called (check if any request matches the pattern)
-        Http::assertSent(function ($request) use ($normalizedPhone) {
+        Http::assertSent(function ($request) use ($phone) {
             $url = $request->url();
             $body = $request->body();
             // Check if URL contains melipayamak domain and body contains the phone
             return str_contains($url, 'rest.payamak-panel.com') &&
-                   str_contains($body, $normalizedPhone);
+                   str_contains($body, $phone);
         });
 
         // Verify no error logs
@@ -100,16 +105,23 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_enforces_rate_limiting_on_otp_requests(): void
     {
-        $phone = '+989373264601';
+        $this->setUpHttpFake();
+        
+        $phone = '09123456789';
         $phoneHash = hash('sha256', $phone . config('app.key'));
         $rateLimitKey = "otp_request:{$phoneHash}";
 
-        // Make 3 requests (should succeed)
+        // Make 3 requests (should succeed) - each request creates an active OTP, 
+        // so we need to delete the previous one to allow the next request to go through
         for ($i = 0; $i < 3; $i++) {
             $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
                 'phone' => $phone,
             ]);
             $response->assertStatus(200);
+            
+            // Delete the created OTP so the next request can create a new one
+            // This allows us to test rate limiting (3 requests allowed)
+            OtpVerification::where('phone', $phone)->delete();
         }
 
         // 4th request should be rate limited
@@ -135,7 +147,9 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_prevents_multiple_active_otps_for_same_phone(): void
     {
-        $phone = '+989373264601';
+        $this->setUpHttpFake();
+        
+        $phone = '09123456789';
         
         // Create first OTP
         $firstResponse = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
@@ -161,21 +175,22 @@ class OtpRequestTest extends BackendTestCase
                 ],
             ]);
 
-        // Verify first OTP still exists (phone is normalized to 09373264601)
-        $normalizedPhone = '09373264601';
+        // Verify first OTP still exists
         $this->assertDatabaseHas('otp_verifications', [
-            'phone' => $normalizedPhone,
+            'phone' => $phone,
             'request_id' => $firstRequestId,
         ]);
 
         // Verify only one OTP exists
-        $this->assertEquals(1, OtpVerification::where('phone', $normalizedPhone)->count());
+        $this->assertEquals(1, OtpVerification::where('phone', $phone)->count());
     }
 
     /** @test */
     public function it_allows_new_otp_after_previous_one_expires(): void
     {
-        $phone = '+989373264601';
+        $this->setUpHttpFake();
+        
+        $phone = '09123456789';
         
         // Create first OTP
         $firstResponse = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
@@ -211,7 +226,7 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_handles_melipayamak_service_failure_gracefully(): void
     {
-        // Fake HTTP to return failure
+        // Explicitly set up failure response (overrides default successful fake)
         Http::fake([
             'rest.payamak-panel.com/*' => Http::response([
                 'StrRetStatus' => 'Error',
@@ -219,7 +234,7 @@ class OtpRequestTest extends BackendTestCase
             ], 500),
         ]);
 
-        $phone = '+989373264601';
+        $phone = '09123456789';
         
         $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
             'phone' => $phone,
@@ -232,9 +247,8 @@ class OtpRequestTest extends BackendTestCase
             ]);
 
         // Verify OTP was cleaned up (deleted after SMS failure)
-        $normalizedPhone = '09373264601';
         $this->assertDatabaseMissing('otp_verifications', [
-            'phone' => $normalizedPhone,
+            'phone' => $phone,
         ]);
 
         // Allow error logs for SMS failure (expected in this test)
@@ -244,17 +258,19 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_normalizes_phone_number_format(): void
     {
-        // Test various phone formats that should normalize to 09373264601
+        $this->setUpHttpFake();
+        
+        // Test various phone formats that should normalize to 09123456789
         $formats = [
-            '09373264601',
-            '9373264601',
-            '989373264601',
-            '+989373264601',
-            '+98 937 326 4601',
+            '09123456789',
+            '9123456789',
+            '989123456789',
+            '+989123456789',
+            '+98 912 345 6789',
         ];
-        $normalizedPhone = '09373264601';
-        $normalizedPhoneHash = hash('sha256', $normalizedPhone . config('app.key'));
-        $rateLimitKey = "otp_request:{$normalizedPhoneHash}";
+        $phone = '09123456789';
+        $phoneHash = hash('sha256', $phone . config('app.key'));
+        $rateLimitKey = "otp_request:{$phoneHash}";
 
         foreach ($formats as $format) {
             // Clear rate limiter before each format test
@@ -266,21 +282,22 @@ class OtpRequestTest extends BackendTestCase
 
             $response->assertStatus(200);
 
-            // Verify normalized phone stored (removes +98, adds 0 prefix)
+            // Verify phone stored
             $this->assertDatabaseHas('otp_verifications', [
-                'phone' => $normalizedPhone,
+                'phone' => $phone,
             ]);
 
             // Clean up for next iteration
-            OtpVerification::where('phone', $normalizedPhone)->delete();
+            OtpVerification::where('phone', $phone)->delete();
         }
     }
 
     /** @test */
     public function it_sets_otp_expiration_to_5_minutes(): void
     {
-        $phone = '+989373264601';
-        $normalizedPhone = '09373264601';
+        $this->setUpHttpFake();
+        
+        $phone = '09123456789';
         $now = Carbon::now();
         Carbon::setTestNow($now);
         
@@ -290,7 +307,7 @@ class OtpRequestTest extends BackendTestCase
 
         $response->assertStatus(200);
 
-        $otp = OtpVerification::where('phone', $normalizedPhone)->first();
+        $otp = OtpVerification::where('phone', $phone)->first();
         $this->assertNotNull($otp);
         
         // Verify expiration is approximately 5 minutes from now
@@ -305,18 +322,16 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_generates_unique_request_ids(): void
     {
-        $phone = '+989373264601';
-        $normalizedPhone = '09373264601';
+        $this->setUpHttpFake();
+        
+        $phone = '09123456789';
         $requestIds = [];
 
-        // Create multiple OTPs (by expiring previous ones)
+        // Create multiple OTPs (by deleting previous ones)
         for ($i = 0; $i < 3; $i++) {
             if ($i > 0) {
-                // Expire previous OTP
-                $previousOtp = OtpVerification::where('phone', $normalizedPhone)->first();
-                if ($previousOtp) {
-                    $previousOtp->update(['expires_at' => Carbon::now()->subMinute()]);
-                }
+                // Delete previous OTP to allow creating a new one
+                OtpVerification::where('phone', $phone)->delete();
             }
 
             $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
