@@ -49,8 +49,8 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Invalid request_id handling
 
 ### Logout Tests
-- [ ] Token revocation
-- [ ] Unauthenticated request handling
+- [x] Token revocation
+- [x] Unauthenticated request handling
 
 ### Integration Tests
 - [ ] Melipayamak contract test (request payload structure)
