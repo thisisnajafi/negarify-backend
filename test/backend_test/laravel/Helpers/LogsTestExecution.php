@@ -3,7 +3,6 @@
 namespace Test\BackendTest\Laravel\Helpers;
 
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
 
 /**
  * Trait for automatic per-test-file logging
@@ -175,7 +174,7 @@ trait LogsTestExecution
     protected function writeToLog(string $message): void
     {
         if ($this->testLogPath) {
-            File::append($this->testLogPath, $message . PHP_EOL);
+            file_put_contents($this->testLogPath, $message . PHP_EOL, FILE_APPEND);
         }
     }
 

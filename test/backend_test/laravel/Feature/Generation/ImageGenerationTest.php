@@ -71,8 +71,8 @@ class ImageGenerationTest extends BackendTestCase
         $this->assertEquals(990, $user->tokens_balance); // 1000 - 10
 
         // Verify job dispatched
-        Queue::assertPushed(\App\Jobs\GenerateImageJob::class, function ($job) use ($job) {
-            return $job->generationJobId === $job->id;
+        Queue::assertPushed(\App\Jobs\GenerateImageJob::class, function ($queuedJob) use ($job) {
+            return $queuedJob->generationJobId === $job->id;
         });
 
         $this->assertNoErrorLogs();

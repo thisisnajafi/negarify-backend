@@ -29,7 +29,9 @@ abstract class BackendTestCase extends BaseTestCase
      */
     public function createApplication()
     {
-        return require __DIR__ . '/../../../../bootstrap/app.php';
+        $app = require \Illuminate\Foundation\Application::inferBasePath().'/bootstrap/app.php';
+        $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+        return $app;
     }
 
     /**
@@ -210,7 +212,7 @@ abstract class BackendTestCase extends BaseTestCase
     /**
      * Print failure details
      */
-    protected function onNotSuccessfulTest(\Throwable $t): void
+    protected function onNotSuccessfulTest(\Throwable $t): never
     {
         // Log exception
         $this->logException($t);
