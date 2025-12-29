@@ -74,7 +74,7 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Valid image upload
 - [x] File storage (S3 fake)
 - [x] Invalid file type validation
-- [ ] File size validation
+- [x] File size validation
 - [x] Old avatar deletion
 
 ---
