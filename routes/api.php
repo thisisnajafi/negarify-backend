@@ -49,6 +49,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     
     // Token transaction routes (V1)
     Route::prefix('tokens')->group(function () {
+        Route::post('purchase', [\App\Http\Controllers\Api\V1\OrderController::class, 'purchase']);
         Route::get('history', [\App\Http\Controllers\Api\V1\TokenTransactionController::class, 'index']);
         Route::get('balance', [\App\Http\Controllers\Api\V1\TokenTransactionController::class, 'balance']);
     });

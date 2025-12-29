@@ -17,6 +17,10 @@ class PurchaseTest extends BackendTestCase
     {
         parent::setUp();
         
+        // Set Zarinpal config for tests
+        config(['services.zarinpal.merchant_id' => 'test-merchant-id']);
+        config(['services.zarinpal.sandbox' => true]);
+        
         // Create currency rate
         CurrencyRate::create([
             'currency_from' => 'USD',
@@ -30,6 +34,12 @@ class PurchaseTest extends BackendTestCase
         
         // Mock Zarinpal
         Http::fake([
+            'sandbox.zarinpal.com/*' => Http::response([
+                'data' => [
+                    'code' => 100,
+                    'authority' => 'A00000000000000000000000000000000000',
+                ],
+            ], 200),
             'api.zarinpal.com/*' => Http::response([
                 'data' => [
                     'code' => 100,
@@ -88,8 +98,10 @@ class PurchaseTest extends BackendTestCase
 
         // Verify Zarinpal called
         Http::assertSent(function ($request) {
+            $data = $request->data();
             return str_contains($request->url(), 'zarinpal.com') &&
-                   $request->has('amount', 50000);
+                   isset($data['amount']) &&
+                   $data['amount'] == 50000;
         });
 
         $this->assertNoErrorLogs();
