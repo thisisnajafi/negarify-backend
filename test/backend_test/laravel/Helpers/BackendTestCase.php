@@ -2,7 +2,7 @@
 
 namespace Test\BackendTest\Laravel\Helpers;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Event;
@@ -20,10 +20,14 @@ use Carbon\Carbon;
  * - Per-test-file logging
  * - Response capture
  * - Queue failure detection
+ * 
+ * Uses LazilyRefreshDatabase instead of RefreshDatabase to avoid transaction nesting conflicts
+ * when controllers/jobs use DB::beginTransaction(). Migrations run once per test class,
+ * reducing transaction wrapping issues while maintaining test isolation.
  */
 abstract class BackendTestCase extends BaseTestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
     use LogsTestExecution;
 
     /**
