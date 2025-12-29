@@ -31,9 +31,9 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_can_request_otp_with_valid_phone_number(): void
     {
-        $phoneInput = '+989123456789';
-        // Phone is normalized to 09123456789 (removes + prefix)
-        $normalizedPhone = '09123456789';
+        $phoneInput = '+989373264601';
+        // Phone is normalized to 09373264601 (removes +98 prefix, adds 0)
+        $normalizedPhone = '09373264601';
         
         $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
             'phone' => $phoneInput,
@@ -100,7 +100,7 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_enforces_rate_limiting_on_otp_requests(): void
     {
-        $phone = '+989123456789';
+        $phone = '+989373264601';
         $phoneHash = hash('sha256', $phone . config('app.key'));
         $rateLimitKey = "otp_request:{$phoneHash}";
 
@@ -135,7 +135,7 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_prevents_multiple_active_otps_for_same_phone(): void
     {
-        $phone = '+989123456789';
+        $phone = '+989373264601';
         
         // Create first OTP
         $firstResponse = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
@@ -161,20 +161,21 @@ class OtpRequestTest extends BackendTestCase
                 ],
             ]);
 
-        // Verify first OTP still exists
+        // Verify first OTP still exists (phone is normalized to 09373264601)
+        $normalizedPhone = '09373264601';
         $this->assertDatabaseHas('otp_verifications', [
-            'phone' => $phone,
+            'phone' => $normalizedPhone,
             'request_id' => $firstRequestId,
         ]);
 
         // Verify only one OTP exists
-        $this->assertEquals(1, OtpVerification::where('phone', $phone)->count());
+        $this->assertEquals(1, OtpVerification::where('phone', $normalizedPhone)->count());
     }
 
     /** @test */
     public function it_allows_new_otp_after_previous_one_expires(): void
     {
-        $phone = '+989123456789';
+        $phone = '+989373264601';
         
         // Create first OTP
         $firstResponse = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
@@ -218,7 +219,7 @@ class OtpRequestTest extends BackendTestCase
             ], 500),
         ]);
 
-        $phone = '+989123456789';
+        $phone = '+989373264601';
         
         $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
             'phone' => $phone,
@@ -231,8 +232,9 @@ class OtpRequestTest extends BackendTestCase
             ]);
 
         // Verify OTP was cleaned up (deleted after SMS failure)
+        $normalizedPhone = '09373264601';
         $this->assertDatabaseMissing('otp_verifications', [
-            'phone' => $phone,
+            'phone' => $normalizedPhone,
         ]);
 
         // Allow error logs for SMS failure (expected in this test)
@@ -242,37 +244,44 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_normalizes_phone_number_format(): void
     {
-        // Test various phone formats that should normalize to +989123456789
+        // Test various phone formats that should normalize to 09373264601
         $formats = [
-            '09123456789',
-            '9123456789',
-            '989123456789',
-            '+98 912 345 6789',
-            '00989123456789',
+            '09373264601',
+            '9373264601',
+            '989373264601',
+            '+989373264601',
+            '+98 937 326 4601',
+            '00989373264601',
         ];
+        $normalizedPhone = '09373264601';
+        $normalizedPhoneHash = hash('sha256', $normalizedPhone . config('app.key'));
+        $rateLimitKey = "otp_request:{$normalizedPhoneHash}";
 
         foreach ($formats as $format) {
+            // Clear rate limiter before each format test
+            RateLimiter::clear($rateLimitKey);
+            
             $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
                 'phone' => $format,
             ]);
 
             $response->assertStatus(200);
 
-            // Verify normalized phone stored
+            // Verify normalized phone stored (removes +98, adds 0 prefix)
             $this->assertDatabaseHas('otp_verifications', [
-                'phone' => '+989123456789',
+                'phone' => $normalizedPhone,
             ]);
 
             // Clean up for next iteration
-            OtpVerification::where('phone', '+989123456789')->delete();
-            RateLimiter::clear('otp_request:*');
+            OtpVerification::where('phone', $normalizedPhone)->delete();
         }
     }
 
     /** @test */
     public function it_sets_otp_expiration_to_5_minutes(): void
     {
-        $phone = '+989123456789';
+        $phone = '+989373264601';
+        $normalizedPhone = '09373264601';
         $now = Carbon::now();
         Carbon::setTestNow($now);
         
@@ -282,7 +291,7 @@ class OtpRequestTest extends BackendTestCase
 
         $response->assertStatus(200);
 
-        $otp = OtpVerification::where('phone', $phone)->first();
+        $otp = OtpVerification::where('phone', $normalizedPhone)->first();
         $this->assertNotNull($otp);
         
         // Verify expiration is approximately 5 minutes from now
@@ -297,14 +306,15 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_generates_unique_request_ids(): void
     {
-        $phone = '+989123456789';
+        $phone = '+989373264601';
+        $normalizedPhone = '09373264601';
         $requestIds = [];
 
         // Create multiple OTPs (by expiring previous ones)
         for ($i = 0; $i < 3; $i++) {
             if ($i > 0) {
                 // Expire previous OTP
-                $previousOtp = OtpVerification::where('phone', $phone)->first();
+                $previousOtp = OtpVerification::where('phone', $normalizedPhone)->first();
                 if ($previousOtp) {
                     $previousOtp->update(['expires_at' => Carbon::now()->subMinute()]);
                 }

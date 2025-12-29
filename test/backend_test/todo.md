@@ -60,15 +60,15 @@ This file tracks the implementation progress of the test suite. Items are checke
 ## 2. User Profile Tests
 
 ### Get Profile
-- [ ] Returns authenticated user data
-- [ ] Includes tokens_balance
-- [ ] Unauthenticated request handling
+- [x] Returns authenticated user data
+- [x] Includes tokens_balance
+- [x] Unauthenticated request handling
 
 ### Update Profile
-- [ ] Updates allowed fields
-- [ ] Rejects forbidden fields
-- [ ] Email validation
-- [ ] Response structure
+- [x] Updates allowed fields
+- [x] Rejects forbidden fields
+- [x] Email validation
+- [x] Response structure
 
 ### Upload Avatar
 - [ ] Valid image upload
