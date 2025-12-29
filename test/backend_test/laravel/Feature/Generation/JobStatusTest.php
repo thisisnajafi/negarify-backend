@@ -429,5 +429,479 @@ class JobStatusTest extends BackendTestCase
                 'message' => 'Only failed jobs can be retried',
             ]);
     }
+
+    /** @test */
+    public function it_shows_status_transitions(): void
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('auth-token')->plainTextToken;
+        
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
+        
+        // Create jobs with different statuses
+        $pendingJob = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Pending job',
+            'params_json' => [],
+            'status' => 'pending',
+            'tokens_consumed' => 10,
+        ]);
+        
+        $processingJob = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Processing job',
+            'params_json' => [],
+            'status' => 'processing',
+            'tokens_consumed' => 10,
+            'started_at' => Carbon::now()->subMinutes(5),
+        ]);
+        
+        $completedJob = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Completed job',
+            'params_json' => [],
+            'status' => 'completed',
+            'tokens_consumed' => 10,
+            'started_at' => Carbon::now()->subMinutes(10),
+            'completed_at' => Carbon::now()->subMinutes(2),
+        ]);
+        
+        $failedJob = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Failed job',
+            'params_json' => [],
+            'status' => 'failed',
+            'tokens_consumed' => 10,
+            'started_at' => Carbon::now()->subMinutes(10),
+            'completed_at' => Carbon::now()->subMinutes(2),
+            'error_message' => 'Generation failed',
+        ]);
+        
+        $cancelledJob = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Cancelled job',
+            'params_json' => [],
+            'status' => 'cancelled',
+            'tokens_consumed' => 10,
+            'completed_at' => Carbon::now()->subMinutes(1),
+        ]);
+        
+        // Verify each status is correctly returned
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$pendingJob->id}");
+        
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'id' => $pendingJob->id,
+                    'status' => 'pending',
+                ],
+            ]);
+        
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$processingJob->id}");
+        
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'id' => $processingJob->id,
+                    'status' => 'processing',
+                ],
+            ])
+            ->assertJsonPath('data.started_at', function ($value) {
+                return $value !== null;
+            });
+        
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$completedJob->id}");
+        
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'id' => $completedJob->id,
+                    'status' => 'completed',
+                ],
+            ])
+            ->assertJsonPath('data.started_at', function ($value) {
+                return $value !== null;
+            })
+            ->assertJsonPath('data.completed_at', function ($value) {
+                return $value !== null;
+            });
+        
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$failedJob->id}");
+        
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'id' => $failedJob->id,
+                    'status' => 'failed',
+                    'error_message' => 'Generation failed',
+                ],
+            ]);
+        
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$cancelledJob->id}");
+        
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'id' => $cancelledJob->id,
+                    'status' => 'cancelled',
+                ],
+            ]);
+        
+        $this->assertNoErrorLogs();
+    }
+
+    /** @test */
+    public function it_tracks_progress_with_timestamps(): void
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('auth-token')->plainTextToken;
+        
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
+        
+        $startedAt = Carbon::now()->subMinutes(5);
+        $completedAt = Carbon::now()->subMinutes(1);
+        
+        $job = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Test progress',
+            'params_json' => [],
+            'status' => 'completed',
+            'tokens_consumed' => 10,
+            'started_at' => $startedAt,
+            'completed_at' => $completedAt,
+        ]);
+        
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$job->id}");
+        
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'success',
+                'data' => [
+                    'id',
+                    'status',
+                    'started_at',
+                    'completed_at',
+                    'created_at',
+                ],
+            ])
+            ->assertJsonPath('data.started_at', function ($value) {
+                return $value !== null && is_string($value);
+            })
+            ->assertJsonPath('data.completed_at', function ($value) {
+                return $value !== null && is_string($value);
+            });
+        
+        // Verify started_at is before completed_at
+        $data = $response->json('data');
+        $startedTimestamp = strtotime($data['started_at']);
+        $completedTimestamp = strtotime($data['completed_at']);
+        $this->assertLessThan($completedTimestamp, $startedTimestamp);
+        
+        $this->assertNoErrorLogs();
+    }
+
+    /** @test */
+    public function it_includes_result_urls_when_available(): void
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('auth-token')->plainTextToken;
+        
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
+        
+        // Job without results
+        $pendingJob = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Pending',
+            'params_json' => [],
+            'status' => 'pending',
+            'tokens_consumed' => 10,
+        ]);
+        
+        // Job with results
+        $completedJob = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Completed',
+            'params_json' => [],
+            'status' => 'completed',
+            'tokens_consumed' => 10,
+            'result_url' => 'https://s3.example.com/generations/image/1/123.png',
+            'result_thumbnail_url' => 'https://s3.example.com/generations/image/1/123_thumb.png',
+            'completed_at' => Carbon::now(),
+        ]);
+        
+        // Pending job should not have result URLs
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$pendingJob->id}");
+        
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'id' => $pendingJob->id,
+                    'status' => 'pending',
+                    'result_url' => null,
+                    'result_thumbnail_url' => null,
+                ],
+            ]);
+        
+        // Completed job should have result URLs
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$completedJob->id}");
+        
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'id' => $completedJob->id,
+                    'status' => 'completed',
+                    'result_url' => 'https://s3.example.com/generations/image/1/123.png',
+                    'result_thumbnail_url' => 'https://s3.example.com/generations/image/1/123_thumb.png',
+                ],
+            ]);
+        
+        $this->assertNoErrorLogs();
+    }
+
+    /** @test */
+    public function it_includes_error_message_when_job_failed(): void
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('auth-token')->plainTextToken;
+        
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
+        
+        // Job without error
+        $pendingJob = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Pending',
+            'params_json' => [],
+            'status' => 'pending',
+            'tokens_consumed' => 10,
+        ]);
+        
+        // Job with error
+        $failedJob = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Failed',
+            'params_json' => [],
+            'status' => 'failed',
+            'tokens_consumed' => 10,
+            'error_message' => 'API request failed: timeout',
+            'completed_at' => Carbon::now(),
+        ]);
+        
+        // Pending job should not have error message
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$pendingJob->id}");
+        
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'id' => $pendingJob->id,
+                    'status' => 'pending',
+                    'error_message' => null,
+                ],
+            ]);
+        
+        // Failed job should have error message
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$failedJob->id}");
+        
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'id' => $failedJob->id,
+                    'status' => 'failed',
+                    'error_message' => 'API request failed: timeout',
+                ],
+            ]);
+        
+        $this->assertNoErrorLogs();
+    }
+
+    /** @test */
+    public function it_paginates_job_listing(): void
+    {
+        $user = User::factory()->create();
+        $token = $user->createToken('auth-token')->plainTextToken;
+        
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
+        
+        // Create 20 jobs (more than default per_page of 15)
+        for ($i = 0; $i < 20; $i++) {
+            GenerationJob::create([
+                'user_id' => $user->id,
+                'provider_id' => $providerId,
+                'model_id' => $modelId,
+                'job_type' => 'image',
+                'prompt' => "Test job {$i}",
+                'params_json' => [],
+                'status' => 'completed',
+                'tokens_consumed' => 10,
+                'created_at' => Carbon::now()->subMinutes(20 - $i), // Ensure ordering
+            ]);
+        }
+        
+        // First page
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', '/api/v1/generate/jobs');
+        
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'success',
+                'data' => [],
+                'meta' => [
+                    'current_page',
+                    'last_page',
+                    'per_page',
+                    'total',
+                ],
+            ])
+            ->assertJson([
+                'success' => true,
+                'meta' => [
+                    'current_page' => 1,
+                    'per_page' => 15,
+                    'total' => 20,
+                    'last_page' => 2,
+                ],
+            ]);
+        
+        $data = $response->json('data');
+        $this->assertCount(15, $data);
+        
+        // Second page
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('GET', '/api/v1/generate/jobs', ['page' => 2]);
+        
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'meta' => [
+                    'current_page' => 2,
+                    'per_page' => 15,
+                    'total' => 20,
+                    'last_page' => 2,
+                ],
+            ]);
+        
+        $data = $response->json('data');
+        $this->assertCount(5, $data); // Remaining 5 jobs
+        
+        $this->assertNoErrorLogs();
+    }
+
+    /** @test */
+    public function it_handles_cancelling_processing_job(): void
+    {
+        $user = User::factory()->create(['tokens_balance' => 1000]);
+        $token = $user->createToken('auth-token')->plainTextToken;
+        
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, ['default_tokens' => 50]);
+        
+        $job = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Processing job',
+            'params_json' => [],
+            'status' => 'processing',
+            'tokens_consumed' => 50,
+            'started_at' => Carbon::now()->subMinutes(2),
+        ]);
+        
+        // Reserve tokens (simulate what happens when job starts)
+        $user->tokens_balance -= 50;
+        $user->save();
+        $initialBalance = $user->tokens_balance;
+        
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$token}",
+        ])->makeRequest('POST', "/api/v1/generate/jobs/{$job->id}/cancel");
+        
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'message' => 'Job cancelled successfully',
+                'data' => [
+                    'job_id' => $job->id,
+                    'status' => 'cancelled',
+                    'tokens_refunded' => 50,
+                ],
+            ]);
+        
+        // Verify job status
+        $job->refresh();
+        $this->assertEquals('cancelled', $job->status);
+        $this->assertNotNull($job->completed_at);
+        
+        // Verify tokens refunded
+        $user->refresh();
+        $this->assertEquals($initialBalance + 50, $user->tokens_balance);
+        
+        $this->assertNoErrorLogs();
+    }
 }
 
