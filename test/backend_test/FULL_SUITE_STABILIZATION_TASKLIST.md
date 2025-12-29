@@ -272,23 +272,23 @@
   - [ ] Add comment explaining the change and rationale
 
 ### C2. Remove Trait Overrides
-- [ ] **C2.1** Remove `DatabaseMigrations` override from:
-  - [ ] `test/backend_test/laravel/Feature/Payments/CallbackTest.php` (line 10, 17)
-  - [ ] `test/backend_test/laravel/Feature/Payments/PurchaseTest.php` (line 12, 21)
-  - [ ] `test/backend_test/laravel/Feature/Generation/JobStatusTest.php` (line 9, 14)
-  - [ ] `test/backend_test/laravel/Feature/Generation/ImageGenerationTest.php` (line 10, 14)
-  - [ ] `test/backend_test/laravel/Feature/Generation/QueueJobProcessingTest.php` (line 11, 20)
-  - [ ] `test/backend_test/laravel/Feature/Generation/VideoAudioGenerationTest.php` (line 10, 14)
-  - [ ] `test/backend_test/laravel/Feature/Gallery/GalleryPostTest.php` (line 8, 14)
-  - [ ] `test/backend_test/laravel/Feature/Gallery/GalleryPostManagementTest.php` (line 8, 14)
-  - [ ] `test/backend_test/laravel/Unit/Services/TgjuScraperServiceTest.php` (line 10, 15)
+- [x] **C2.1** Remove `DatabaseMigrations` override from:
+  - [x] `test/backend_test/laravel/Feature/Payments/CallbackTest.php` (line 10, 17)
+  - [x] `test/backend_test/laravel/Feature/Payments/PurchaseTest.php` (line 12, 21)
+  - [x] `test/backend_test/laravel/Feature/Generation/JobStatusTest.php` (line 9, 14)
+  - [x] `test/backend_test/laravel/Feature/Generation/ImageGenerationTest.php` (line 10, 14)
+  - [x] `test/backend_test/laravel/Feature/Generation/QueueJobProcessingTest.php` (line 11, 20)
+  - [x] `test/backend_test/laravel/Feature/Generation/VideoAudioGenerationTest.php` (line 10, 14)
+  - [x] `test/backend_test/laravel/Feature/Gallery/GalleryPostTest.php` (line 8, 14)
+  - [x] `test/backend_test/laravel/Feature/Gallery/GalleryPostManagementTest.php` (line 8, 14)
+  - [x] `test/backend_test/laravel/Unit/Services/TgjuScraperServiceTest.php` (line 10, 15)
 
-- [ ] **C2.2** Remove comments explaining `DatabaseMigrations` usage (no longer needed)
+- [x] **C2.2** Remove comments explaining `DatabaseMigrations` usage (no longer needed)
 
-- [ ] **C2.3** Verify no other test files have trait overrides:
-  - [ ] Search for `use.*DatabaseMigrations` in all test files
-  - [ ] Search for `use.*DatabaseTransactions` in all test files
-  - [ ] Document any remaining overrides
+- [x] **C2.3** Verify no other test files have trait overrides:
+  - [x] Search for `use.*DatabaseMigrations` in all test files
+  - [x] Search for `use.*DatabaseTransactions` in all test files
+  - [x] Document any remaining overrides
 
 ### C3. PHPUnit Configuration Changes
 - [ ] **C3.1** Modify `phpunit.xml` to add logical test suites:

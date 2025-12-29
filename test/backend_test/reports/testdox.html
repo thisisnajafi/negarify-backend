@@ -51,6 +51,17 @@
         </style>
     </head>
     <body>
+        <h2>Callback (Test\BackendTest\Laravel\Feature\Payments\Callback)</h2>
+        <ul>
+            <li class="success">It processes successful payment callback</li>
+            <li class="success">It is idempotent prevents double credit</li>
+            <li class="success">It handles failed payment status</li>
+            <li class="success">It handles missing authority parameter</li>
+            <li class="success">It handles invalid authority</li>
+            <li class="success">It handles zarinpal verification failure</li>
+            <li class="success">It prevents processing non pending orders</li>
+            <li class="success">It handles mismatched amount</li>
+        </ul>
         <h2>Gallery Post (Test\BackendTest\Laravel\Feature\Gallery\GalleryPost)</h2>
         <ul>
             <li class="success">It creates gallery post from completed job</li>
@@ -69,6 +80,62 @@
             <li class="success">It deletes gallery post</li>
             <li class="success">It rejects deleting other user post</li>
             <li class="success">It returns user own posts</li>
+        </ul>
+        <h2>Image Generation (Test\BackendTest\Laravel\Feature\Generation\ImageGeneration)</h2>
+        <ul>
+            <li class="success">It creates image generation job</li>
+            <li class="success">It rejects generation with insufficient tokens</li>
+            <li class="success">It rejects unavailable model</li>
+            <li class="success">It rejects wrong model type</li>
+            <li class="success">It validates required prompt</li>
+            <li class="success">It stores generation parameters</li>
+        </ul>
+        <h2>Job Status (Test\BackendTest\Laravel\Feature\Generation\JobStatus)</h2>
+        <ul>
+            <li class="success">It returns user generation jobs</li>
+            <li class="success">It filters jobs by type</li>
+            <li class="success">It filters jobs by status</li>
+            <li class="success">It returns single job details</li>
+            <li class="success">It rejects access to other user job</li>
+            <li class="success">It cancels pending job and refunds tokens</li>
+            <li class="success">It rejects cancelling completed job</li>
+            <li class="success">It retries failed job</li>
+            <li class="success">It rejects retrying non failed job</li>
+            <li class="success">It shows status transitions</li>
+            <li class="success">It tracks progress with timestamps</li>
+            <li class="success">It includes result urls when available</li>
+            <li class="success">It includes error message when job failed</li>
+            <li class="success">It paginates job listing</li>
+            <li class="success">It handles cancelling processing job</li>
+        </ul>
+        <h2>Purchase (Test\BackendTest\Laravel\Feature\Payments\Purchase)</h2>
+        <ul>
+            <li class="success">It creates order and requests payment</li>
+            <li class="success">It rejects inactive bundle purchase</li>
+            <li class="success">It calculates price using current rate</li>
+            <li class="success">It includes bonus tokens in order</li>
+            <li class="success">It handles zarinpal failure gracefully</li>
+            <li class="success">It rejects purchase for unauthenticated user</li>
+        </ul>
+        <h2>Queue Job Processing (Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessing)</h2>
+        <ul>
+            <li class="success">It processes image generation job successfully</li>
+            <li class="success">It handles image generation failure and refunds tokens</li>
+            <li class="success">It processes video generation job successfully</li>
+            <li class="success">It processes audio generation job successfully</li>
+            <li class="success">It is idempotent and skips already completed jobs</li>
+            <li class="success">It is idempotent and skips already failed jobs</li>
+            <li class="success">It updates job status to processing when handling</li>
+            <li class="success">It handles retries safely without duplicate operations</li>
+        </ul>
+        <h2>Video Audio Generation (Test\BackendTest\Laravel\Feature\Generation\VideoAudioGeneration)</h2>
+        <ul>
+            <li class="success">It creates video generation job</li>
+            <li class="success">It rejects video generation with wrong model type</li>
+            <li class="success">It creates audio generation job</li>
+            <li class="success">It rejects audio generation with wrong model type</li>
+            <li class="success">It stores video generation parameters</li>
+            <li class="success">It stores audio generation parameters</li>
         </ul>
     </body>
 </html>
