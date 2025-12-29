@@ -290,10 +290,10 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Date filtering
 
 ### Token Analytics Dashboard
-- [ ] Consumption by provider
-- [ ] Consumption by type
-- [ ] Cost and profit per provider
-- [ ] Time-series data
+- [x] Consumption by provider
+- [x] Consumption by type
+- [x] Cost and profit per provider
+- [x] Time-series data
 
 ### Cost & Profit Dashboard
 - [ ] Revenue, cost, profit calculation

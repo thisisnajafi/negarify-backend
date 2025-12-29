@@ -1,11 +1,9 @@
-Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)
- [x] It returns usage statistics per model
- [x] It calculates success and failure rates
- [x] It calculates average latency
- [x] It tracks tokens consumed per model
- [x] It tracks cost and revenue per model
+Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)
+ [x] It returns tokens consumption by provider
+ [x] It returns tokens consumption by type
+ [x] It returns cost per provider
+ [x] It returns time series data
  [x] It supports date range filtering
  [x] It supports range parameter
- [x] It caches models usage data
- [x] It handles breakdown by job type
+ [x] It caches token analytics data
 

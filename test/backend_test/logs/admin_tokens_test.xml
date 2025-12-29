@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Nadali\Documents\GitHub\negarify-backend\phpunit.xml" tests="7" assertions="49" errors="0" failures="0" skipped="0" time="1.954246">
+    <testsuite name="BackendTest" tests="7" assertions="49" errors="0" failures="0" skipped="0" time="1.954246">
+      <testsuite name="Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest" file="Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)" tests="7" assertions="49" errors="0" failures="0" skipped="0" time="1.954246">
+        <testcase name="It returns tokens consumption by provider" file="Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)::It returns tokens consumption by provider" class="Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminTokensTest" assertions="21" time="1.798518"/>
+        <testcase name="It returns tokens consumption by type" file="Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)::It returns tokens consumption by type" class="Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminTokensTest" assertions="6" time="0.025032"/>
+        <testcase name="It returns cost per provider" file="Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)::It returns cost per provider" class="Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminTokensTest" assertions="3" time="0.026425"/>
+        <testcase name="It returns time series data" file="Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)::It returns time series data" class="Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminTokensTest" assertions="8" time="0.025358"/>
+        <testcase name="It supports date range filtering" file="Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)::It supports date range filtering" class="Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminTokensTest" assertions="4" time="0.028171"/>
+        <testcase name="It supports range parameter" file="Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)::It supports range parameter" class="Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminTokensTest" assertions="6" time="0.024050"/>
+        <testcase name="It caches token analytics data" file="Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)::It caches token analytics data" class="Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminTokensTest" assertions="1" time="0.026693"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
