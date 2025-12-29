@@ -52,16 +52,21 @@ class AdminSalesController extends Controller
             ->first();
         
         // Get revenue by day
-        $revenueByDay = Order::where('status', 'paid')
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('
-                DATE(created_at) as date,
-                SUM(price_toman) as revenue_toman,
-                SUM(price_usd) as revenue_usd,
+        // Use database-agnostic date extraction
+        $dateFormat = DB::getDriverName() === 'sqlite' 
+            ? "strftime('%Y-%m-%d', orders.created_at)" 
+            : "DATE(orders.created_at)";
+        
+        $revenueByDay = Order::where('orders.status', 'paid')
+            ->whereBetween('orders.created_at', [$startDate, $endDate])
+            ->selectRaw("
+                {$dateFormat} as date,
+                SUM(orders.price_toman) as revenue_toman,
+                SUM(orders.price_usd) as revenue_usd,
                 COUNT(*) as orders_count
-            ')
-            ->groupBy(DB::raw('DATE(created_at)'))
-            ->orderBy(DB::raw('DATE(created_at)'), 'asc')
+            ")
+            ->groupBy(DB::raw($dateFormat))
+            ->orderBy(DB::raw($dateFormat), 'asc')
             ->get();
         
         // Get top selling bundles

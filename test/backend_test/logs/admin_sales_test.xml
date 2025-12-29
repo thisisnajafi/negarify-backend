@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Nadali\Documents\GitHub\negarify-backend\phpunit.xml" tests="6" assertions="32" errors="0" failures="0" skipped="0" time="1.953080">
+    <testsuite name="BackendTest" tests="6" assertions="32" errors="0" failures="0" skipped="0" time="1.953080">
+      <testsuite name="Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest" file="Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)" tests="6" assertions="32" errors="0" failures="0" skipped="0" time="1.953080">
+        <testcase name="It returns revenue by period" file="Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)::It returns revenue by period" class="Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminSalesTest" assertions="9" time="1.819165"/>
+        <testcase name="It calculates total revenue correctly" file="Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)::It calculates total revenue correctly" class="Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminSalesTest" assertions="2" time="0.026531"/>
+        <testcase name="It returns top selling bundles" file="Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)::It returns top selling bundles" class="Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminSalesTest" assertions="3" time="0.027527"/>
+        <testcase name="It tracks refunds" file="Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)::It tracks refunds" class="Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminSalesTest" assertions="3" time="0.023964"/>
+        <testcase name="It supports date range filtering" file="Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)::It supports date range filtering" class="Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminSalesTest" assertions="14" time="0.028569"/>
+        <testcase name="It caches sales summary" file="Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)::It caches sales summary" class="Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminSalesTest" assertions="1" time="0.027323"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
