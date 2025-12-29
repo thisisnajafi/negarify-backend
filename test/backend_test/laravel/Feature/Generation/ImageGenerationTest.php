@@ -3,18 +3,52 @@
 namespace Test\BackendTest\Laravel\Feature\Generation;
 
 use App\Models\GenerationJob;
-use App\Models\Model as AiModel;
-use App\Models\Provider;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ImageGenerationTest extends BackendTestCase
 {
+    use DatabaseMigrations; // Use DatabaseMigrations to avoid transaction conflicts
+
     protected function setUp(): void
     {
         parent::setUp();
         Queue::fake();
+    }
+
+    /**
+     * Helper method to create a provider using DB::table to avoid factory/Model class conflicts
+     */
+    private function createProvider(array $attributes = []): int
+    {
+        return DB::table('providers')->insertGetId(array_merge([
+            'name' => 'Test Provider',
+            'api_base_url' => 'https://api.example.com',
+            'api_key_encrypted' => 'test-api-key-encrypted',
+            'enabled' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $attributes));
+    }
+
+    /**
+     * Helper method to create a model using DB::table to avoid Model class name conflict
+     */
+    private function createModel(int $providerId, array $attributes = []): int
+    {
+        return DB::table('models')->insertGetId(array_merge([
+            'provider_id' => $providerId,
+            'model_name' => 'Test Model',
+            'model_type' => 'image',
+            'api_endpoint' => '/test',
+            'default_tokens' => 10,
+            'enabled' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $attributes));
     }
 
     /** @test */
@@ -23,18 +57,17 @@ class ImageGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'image',
             'default_tokens' => 10,
-            'is_available' => true,
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('POST', '/api/v1/generation/image', [
-            'model_id' => $model->id,
+        ])->makeRequest('POST', '/api/v1/generate/image', [
+            'model_id' => $modelId,
             'prompt' => 'A beautiful sunset over mountains',
             'negative_prompt' => 'blurry, low quality',
             'size' => '1024x1024',
@@ -72,7 +105,10 @@ class ImageGenerationTest extends BackendTestCase
 
         // Verify job dispatched
         Queue::assertPushed(\App\Jobs\GenerateImageJob::class, function ($queuedJob) use ($job) {
-            return $queuedJob->generationJobId === $job->id;
+            $reflection = new \ReflectionClass($queuedJob);
+            $property = $reflection->getProperty('generationJobId');
+            $property->setAccessible(true);
+            return $property->getValue($queuedJob) === $job->id;
         });
 
         $this->assertNoErrorLogs();
@@ -84,18 +120,17 @@ class ImageGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 5]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'image',
             'default_tokens' => 10,
-            'is_available' => true,
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('POST', '/api/v1/generation/image', [
-            'model_id' => $model->id,
+        ])->makeRequest('POST', '/api/v1/generate/image', [
+            'model_id' => $modelId,
             'prompt' => 'A beautiful sunset',
         ]);
 
@@ -125,18 +160,17 @@ class ImageGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider(['enabled' => false]); // Provider disabled = model unavailable
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'image',
             'default_tokens' => 10,
-            'is_available' => false, // Unavailable
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('POST', '/api/v1/generation/image', [
-            'model_id' => $model->id,
+        ])->makeRequest('POST', '/api/v1/generate/image', [
+            'model_id' => $modelId,
             'prompt' => 'A beautiful sunset',
         ]);
 
@@ -153,18 +187,17 @@ class ImageGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'video', // Wrong type
             'default_tokens' => 10,
-            'is_available' => true,
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('POST', '/api/v1/generation/image', [
-            'model_id' => $model->id,
+        ])->makeRequest('POST', '/api/v1/generate/image', [
+            'model_id' => $modelId,
             'prompt' => 'A beautiful sunset',
         ]);
 
@@ -181,18 +214,17 @@ class ImageGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'image',
             'default_tokens' => 10,
-            'is_available' => true,
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('POST', '/api/v1/generation/image', [
-            'model_id' => $model->id,
+        ])->makeRequest('POST', '/api/v1/generate/image', [
+            'model_id' => $modelId,
             // Missing prompt
         ]);
 
@@ -206,18 +238,17 @@ class ImageGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'image',
             'default_tokens' => 10,
-            'is_available' => true,
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('POST', '/api/v1/generation/image', [
-            'model_id' => $model->id,
+        ])->makeRequest('POST', '/api/v1/generate/image', [
+            'model_id' => $modelId,
             'prompt' => 'A beautiful sunset',
             'negative_prompt' => 'blurry',
             'size' => '1024x1024',

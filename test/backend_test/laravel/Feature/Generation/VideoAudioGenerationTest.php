@@ -3,18 +3,52 @@
 namespace Test\BackendTest\Laravel\Feature\Generation;
 
 use App\Models\GenerationJob;
-use App\Models\Model as AiModel;
-use App\Models\Provider;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class VideoAudioGenerationTest extends BackendTestCase
 {
+    use DatabaseMigrations; // Use DatabaseMigrations to avoid transaction conflicts
+
     protected function setUp(): void
     {
         parent::setUp();
         Queue::fake();
+    }
+
+    /**
+     * Helper method to create a provider using DB::table to avoid factory/Model class conflicts
+     */
+    private function createProvider(array $attributes = []): int
+    {
+        return DB::table('providers')->insertGetId(array_merge([
+            'name' => 'Test Provider',
+            'api_base_url' => 'https://api.example.com',
+            'api_key_encrypted' => 'test-api-key-encrypted',
+            'enabled' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $attributes));
+    }
+
+    /**
+     * Helper method to create a model using DB::table to avoid Model class name conflict
+     */
+    private function createModel(int $providerId, array $attributes = []): int
+    {
+        return DB::table('models')->insertGetId(array_merge([
+            'provider_id' => $providerId,
+            'model_name' => 'Test Model',
+            'model_type' => 'image',
+            'api_endpoint' => '/test',
+            'default_tokens' => 10,
+            'enabled' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $attributes));
     }
 
     /** @test */
@@ -23,21 +57,20 @@ class VideoAudioGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'video',
             'default_tokens' => 50,
-            'is_available' => true,
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('POST', '/api/v1/generate/video', [
-            'model_id' => $model->id,
+            'model_id' => $modelId,
             'prompt' => 'A beautiful sunset video',
             'duration' => 10,
-            'resolution' => '1080p',
+            'resolution' => '1920x1080',
             'fps' => 30,
         ]);
 
@@ -82,18 +115,17 @@ class VideoAudioGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'image', // Wrong type
             'default_tokens' => 50,
-            'is_available' => true,
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('POST', '/api/v1/generate/video', [
-            'model_id' => $model->id,
+            'model_id' => $modelId,
             'prompt' => 'Test video',
         ]);
 
@@ -110,18 +142,17 @@ class VideoAudioGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'audio',
             'default_tokens' => 30,
-            'is_available' => true,
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('POST', '/api/v1/generate/audio', [
-            'model_id' => $model->id,
+            'model_id' => $modelId,
             'prompt' => 'A beautiful melody',
             'duration' => 30,
             'format' => 'mp3',
@@ -158,18 +189,17 @@ class VideoAudioGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'image', // Wrong type
             'default_tokens' => 30,
-            'is_available' => true,
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('POST', '/api/v1/generate/audio', [
-            'model_id' => $model->id,
+            'model_id' => $modelId,
             'prompt' => 'Test audio',
         ]);
 
@@ -186,21 +216,20 @@ class VideoAudioGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'video',
             'default_tokens' => 50,
-            'is_available' => true,
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('POST', '/api/v1/generate/video', [
-            'model_id' => $model->id,
+            'model_id' => $modelId,
             'prompt' => 'Test video',
             'duration' => 10,
-            'resolution' => '1080p',
+            'resolution' => '1920x1080',
             'fps' => 30,
             'seed' => 12345,
         ]);
@@ -209,7 +238,7 @@ class VideoAudioGenerationTest extends BackendTestCase
 
         $job = GenerationJob::where('user_id', $user->id)->first();
         $this->assertEquals(10, $job->params_json['duration']);
-        $this->assertEquals('1080p', $job->params_json['resolution']);
+        $this->assertEquals('1920x1080', $job->params_json['resolution']);
         $this->assertEquals(30, $job->params_json['fps']);
         $this->assertEquals(12345, $job->params_json['seed']);
     }
@@ -220,18 +249,17 @@ class VideoAudioGenerationTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
             'model_type' => 'audio',
             'default_tokens' => 30,
-            'is_available' => true,
+            'enabled' => true,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('POST', '/api/v1/generate/audio', [
-            'model_id' => $model->id,
+            'model_id' => $modelId,
             'prompt' => 'Test audio',
             'duration' => 30,
             'format' => 'mp3',

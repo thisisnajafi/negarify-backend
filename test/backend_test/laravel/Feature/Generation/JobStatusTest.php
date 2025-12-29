@@ -3,46 +3,82 @@
 namespace Test\BackendTest\Laravel\Feature\Generation;
 
 use App\Models\GenerationJob;
-use App\Models\Model as AiModel;
-use App\Models\Provider;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Carbon\Carbon;
 
 class JobStatusTest extends BackendTestCase
 {
+    use DatabaseMigrations; // Use DatabaseMigrations to avoid transaction conflicts
+
+    /**
+     * Helper method to create a provider using DB::table to avoid factory/Model class conflicts
+     */
+    private function createProvider(array $attributes = []): int
+    {
+        return DB::table('providers')->insertGetId(array_merge([
+            'name' => 'Test Provider',
+            'api_base_url' => 'https://api.example.com',
+            'api_key_encrypted' => 'test-api-key-encrypted',
+            'enabled' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $attributes));
+    }
+
+    /**
+     * Helper method to create a model using DB::table to avoid Model class name conflict
+     */
+    private function createModel(int $providerId, array $attributes = []): int
+    {
+        return DB::table('models')->insertGetId(array_merge([
+            'provider_id' => $providerId,
+            'model_name' => 'Test Model',
+            'model_type' => 'image',
+            'api_endpoint' => '/test',
+            'default_tokens' => 10,
+            'enabled' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $attributes));
+    }
+
     /** @test */
     public function it_returns_user_generation_jobs(): void
     {
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'tokens_consumed' => 10,
         ]);
         
         GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test prompt 2',
+            'params_json' => [],
             'status' => 'pending',
             'tokens_consumed' => 10,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('GET', '/api/v1/generation/jobs');
+        ])->makeRequest('GET', '/api/v1/generate/jobs');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -81,32 +117,34 @@ class JobStatusTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test',
+            'params_json' => [],
             'status' => 'completed',
             'tokens_consumed' => 10,
         ]);
         
         GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'video',
             'prompt' => 'Test',
+            'params_json' => [],
             'status' => 'completed',
             'tokens_consumed' => 10,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('GET', '/api/v1/generation/jobs', [
+        ])->makeRequest('GET', '/api/v1/generate/jobs', [
             'type' => 'image',
         ]);
 
@@ -121,32 +159,34 @@ class JobStatusTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test',
+            'params_json' => [],
             'status' => 'completed',
             'tokens_consumed' => 10,
         ]);
         
         GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test',
+            'params_json' => [],
             'status' => 'pending',
             'tokens_consumed' => 10,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('GET', '/api/v1/generation/jobs', [
+        ])->makeRequest('GET', '/api/v1/generate/jobs', [
             'status' => 'completed',
         ]);
 
@@ -161,13 +201,13 @@ class JobStatusTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         $job = GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test prompt',
             'negative_prompt' => 'Test negative',
@@ -182,7 +222,7 @@ class JobStatusTest extends BackendTestCase
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('GET', "/api/v1/generation/jobs/{$job->id}");
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$job->id}");
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -219,22 +259,23 @@ class JobStatusTest extends BackendTestCase
         $user2 = User::factory()->create();
         $token1 = $user1->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
-        $job = GenerationJob::create([
+        $job =         GenerationJob::create([
             'user_id' => $user2->id, // Different user
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test',
+            'params_json' => [],
             'status' => 'completed',
             'tokens_consumed' => 10,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token1}",
-        ])->makeRequest('GET', "/api/v1/generation/jobs/{$job->id}");
+        ])->makeRequest('GET', "/api/v1/generate/jobs/{$job->id}");
 
         $response->assertStatus(404);
     }
@@ -245,25 +286,23 @@ class JobStatusTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 990]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
-            'default_tokens' => 10,
-        ]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, ['default_tokens' => 10]);
         
         $job = GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test',
+            'params_json' => [],
             'status' => 'pending',
             'tokens_consumed' => 10,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('POST', "/api/v1/generation/jobs/{$job->id}/cancel");
+        ])->makeRequest('POST', "/api/v1/generate/jobs/{$job->id}/cancel");
 
         $response->assertStatus(200)
             ->assertJson([
@@ -288,22 +327,23 @@ class JobStatusTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         $job = GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test',
+            'params_json' => [],
             'status' => 'completed',
             'tokens_consumed' => 10,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('POST', "/api/v1/generation/jobs/{$job->id}/cancel");
+        ])->makeRequest('POST', "/api/v1/generate/jobs/{$job->id}/cancel");
 
         $response->assertStatus(400)
             ->assertJson([
@@ -318,25 +358,23 @@ class JobStatusTest extends BackendTestCase
         $user = User::factory()->create(['tokens_balance' => 1000]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create([
-            'provider_id' => $provider->id,
-            'default_tokens' => 10,
-        ]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, ['default_tokens' => 10]);
         
         $oldJob = GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'failed',
             'tokens_consumed' => 10,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('POST', "/api/v1/generation/jobs/{$oldJob->id}/retry");
+        ])->makeRequest('POST', "/api/v1/generate/jobs/{$oldJob->id}/retry");
 
         $response->assertStatus(201)
             ->assertJson([
@@ -367,22 +405,23 @@ class JobStatusTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         $job = GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test',
+            'params_json' => [],
             'status' => 'completed',
             'tokens_consumed' => 10,
         ]);
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('POST', "/api/v1/generation/jobs/{$job->id}/retry");
+        ])->makeRequest('POST', "/api/v1/generate/jobs/{$job->id}/retry");
 
         $response->assertStatus(400)
             ->assertJson([

@@ -49,7 +49,7 @@ class GenerationJob extends Model
 
     public function model()
     {
-        return $this->belongsTo(Model::class);
+        return $this->belongsTo(\App\Models\Model::class, 'model_id');
     }
 
     public function galleryPost()
