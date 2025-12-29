@@ -42,3 +42,5 @@ class SalesSummaryRequest extends FormRequest
     }
 }
 
+
+
