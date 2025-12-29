@@ -371,11 +371,11 @@ This file tracks the implementation progress of the test suite. Items are checke
 
 ## Test Fixtures
 
-- [ ] TGJU HTML sample
-- [ ] Segmind image response sample
-- [ ] Segmind video response sample
-- [ ] Segmind audio response sample
-- [ ] Zarinpal payment response sample
+- [x] TGJU HTML sample
+- [x] Segmind image response sample
+- [x] Segmind video response sample
+- [x] Segmind audio response sample
+- [x] Zarinpal payment response sample
 
 ---
 
