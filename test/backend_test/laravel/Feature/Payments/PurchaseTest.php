@@ -212,6 +212,9 @@ class PurchaseTest extends BackendTestCase
     /** @test */
     public function it_handles_zarinpal_failure_gracefully(): void
     {
+        // Allow expected error logs before making request
+        $this->allowErrorLogs(['Zarinpal payment request error', 'Zarinpal payment request failed']);
+        
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
@@ -250,8 +253,6 @@ class PurchaseTest extends BackendTestCase
         $this->assertDatabaseMissing('orders', [
             'user_id' => $user->id,
         ]);
-
-        $this->allowErrorLogs(['Zarinpal payment request failed']);
     }
 
     /** @test */

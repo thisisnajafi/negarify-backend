@@ -107,13 +107,13 @@ This file tracks the implementation progress of the test suite. Items are checke
 ## 4. Zarinpal Payment Tests
 
 ### Purchase Request
-- [ ] Creates pending order
-- [ ] Price calculation (Toman)
-- [ ] Dollar rate snapshot
-- [ ] Zarinpal payment request
-- [ ] Authority and payment_url returned
-- [ ] Invalid bundle handling
-- [ ] Inactive bundle rejection
+- [x] Creates pending order
+- [x] Price calculation (Toman)
+- [x] Dollar rate snapshot
+- [x] Zarinpal payment request
+- [x] Authority and payment_url returned
+- [x] Invalid bundle handling
+- [x] Inactive bundle rejection
 
 ### Payment Callback
 - [ ] Successful payment verification
