@@ -14,8 +14,10 @@ class TgjuScraperServiceTest extends BackendTestCase
     /** @test */
     public function it_fetches_and_stores_usd_rate_from_tgju(): void
     {
-        // Mock TGJU HTML response
-        $htmlFixture = $this->getTgjuHtmlFixture();
+        // Use a valid rate within parseRate validation range (10000-200000)
+        // 50000 Rials = 5000 Toman
+        $rialsRate = 50000;
+        $htmlFixture = $this->getTgjuHtmlFixture($rialsRate);
         
         Http::fake([
             'www.tgju.org/*' => Http::response($htmlFixture, 200),
@@ -27,16 +29,19 @@ class TgjuScraperServiceTest extends BackendTestCase
         $this->assertNotNull($rate);
         $this->assertIsFloat($rate);
         $this->assertGreaterThan(0, $rate);
+        $this->assertEquals(5000.0, $rate); // Should be Toman (50000 / 10)
         
         // Verify rate stored in database
         $this->assertDatabaseHas('currency_rates', [
             'currency_from' => 'USD',
             'currency_to' => 'IRR',
             'source' => 'tgju',
+            'rate' => (float) $rialsRate, // Stored as Rials
         ]);
         
         // Verify rate is in Toman (Rials / 10)
         $storedRate = CurrencyRate::latest('fetched_at')->first();
+        $this->assertEquals($rialsRate, $storedRate->rate); // Stored as Rials
         $this->assertEquals($rate * 10, $storedRate->rate); // Stored as Rials
     }
 
@@ -110,7 +115,10 @@ class TgjuScraperServiceTest extends BackendTestCase
     /** @test */
     public function it_converts_rials_to_toman_correctly(): void
     {
-        $htmlFixture = $this->getTgjuHtmlFixture(500000); // 500,000 Rials
+        // Use a valid rate within parseRate validation range (10000-200000)
+        // 100000 Rials = 10000 Toman
+        $rialsRate = 100000;
+        $htmlFixture = $this->getTgjuHtmlFixture($rialsRate);
         
         Http::fake([
             'www.tgju.org/*' => Http::response($htmlFixture, 200),
@@ -119,27 +127,27 @@ class TgjuScraperServiceTest extends BackendTestCase
         $service = app(TgjuScraperService::class);
         $rate = $service->fetchUsdRate();
         
-        // Should return 50,000 Toman (500,000 / 10)
-        $this->assertEquals(50000.0, $rate);
+        // Should return 10,000 Toman (100,000 / 10)
+        $this->assertEquals(10000.0, $rate);
         
         // Database should store Rials rate
         $storedRate = CurrencyRate::latest('fetched_at')->first();
-        $this->assertEquals(500000, $storedRate->rate);
+        $this->assertEquals($rialsRate, $storedRate->rate);
     }
 
     /**
      * Get TGJU HTML fixture for testing
      */
-    private function getTgjuHtmlFixture(int $rialsRate = 500000): string
+    private function getTgjuHtmlFixture(int $rialsRate = 50000): string
     {
-        // Simplified HTML structure - adjust based on actual TGJU.org structure
+        // Use Method 1 (data-price attribute) which is the most reliable
+        // Format: <div data-price="50000"></div>
         return <<<HTML
 <!DOCTYPE html>
 <html>
 <head><title>TGJU - Dollar Price</title></head>
 <body>
-    <div class="price-value">{$rialsRate}</div>
-    <span class="price">{$rialsRate}</span>
+    <div data-price="{$rialsRate}"></div>
 </body>
 </html>
 HTML;

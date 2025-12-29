@@ -95,12 +95,12 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Public endpoint (no auth)
 
 ### TGJU Scraper Service Tests
-- [x] HTML parsing
-- [x] Rials to Toman conversion
-- [x] Database storage
-- [x] Redis caching (5-min TTL)
-- [x] Fallback mechanism
-- [x] HTML fixture usage
+- [ ] HTML parsing
+- [ ] Rials to Toman conversion
+- [ ] Database storage
+- [ ] Redis caching (5-min TTL)
+- [ ] Fallback mechanism
+- [ ] HTML fixture usage
 
 ---
 
