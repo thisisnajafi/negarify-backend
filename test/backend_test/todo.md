@@ -282,12 +282,12 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] User search/filtering
 
 ### Models Usage Dashboard
-- [ ] Usage statistics per model
-- [ ] Success/failure rates
-- [ ] Average latency
-- [ ] Tokens consumed
-- [ ] Cost and revenue
-- [ ] Date filtering
+- [x] Usage statistics per model
+- [x] Success/failure rates
+- [x] Average latency
+- [x] Tokens consumed
+- [x] Cost and revenue
+- [x] Date filtering
 
 ### Token Analytics Dashboard
 - [ ] Consumption by provider

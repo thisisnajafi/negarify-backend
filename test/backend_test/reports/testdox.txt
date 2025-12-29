@@ -1,11 +1,11 @@
-Admin Users (Test\BackendTest\Laravel\Feature\Admin\AdminUsers)
- [x] It calculates dau wau mau correctly
- [x] It returns top users by generation
- [x] It returns top users by spending
- [x] It performs cohort analysis
- [x] It searches users by name phone or email
- [x] It filters users by role
- [x] It filters users by date range
- [x] It paginates users list
- [x] It caches users summary
+Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)
+ [x] It returns usage statistics per model
+ [x] It calculates success and failure rates
+ [x] It calculates average latency
+ [x] It tracks tokens consumed per model
+ [x] It tracks cost and revenue per model
+ [x] It supports date range filtering
+ [x] It supports range parameter
+ [x] It caches models usage data
+ [x] It handles breakdown by job type
 

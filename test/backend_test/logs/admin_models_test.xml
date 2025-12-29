@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Nadali\Documents\GitHub\negarify-backend\phpunit.xml" tests="9" assertions="58" errors="0" failures="0" skipped="0" time="2.027406">
+    <testsuite name="BackendTest" tests="9" assertions="58" errors="0" failures="0" skipped="0" time="2.027406">
+      <testsuite name="Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest" file="Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)" tests="9" assertions="58" errors="0" failures="0" skipped="0" time="2.027406">
+        <testcase name="It returns usage statistics per model" file="Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)::It returns usage statistics per model" class="Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminModelsTest" assertions="30" time="1.811439"/>
+        <testcase name="It calculates success and failure rates" file="Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)::It calculates success and failure rates" class="Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminModelsTest" assertions="6" time="0.032138"/>
+        <testcase name="It calculates average latency" file="Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)::It calculates average latency" class="Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminModelsTest" assertions="2" time="0.026674"/>
+        <testcase name="It tracks tokens consumed per model" file="Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)::It tracks tokens consumed per model" class="Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminModelsTest" assertions="2" time="0.026901"/>
+        <testcase name="It tracks cost and revenue per model" file="Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)::It tracks cost and revenue per model" class="Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminModelsTest" assertions="2" time="0.025492"/>
+        <testcase name="It supports date range filtering" file="Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)::It supports date range filtering" class="Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminModelsTest" assertions="6" time="0.026518"/>
+        <testcase name="It supports range parameter" file="Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)::It supports range parameter" class="Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminModelsTest" assertions="4" time="0.025227"/>
+        <testcase name="It caches models usage data" file="Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)::It caches models usage data" class="Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminModelsTest" assertions="1" time="0.027384"/>
+        <testcase name="It handles breakdown by job type" file="Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)::It handles breakdown by job type" class="Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminModelsTest" assertions="5" time="0.025633"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
