@@ -4,32 +4,75 @@ namespace Test\BackendTest\Laravel\Feature\Gallery;
 
 use App\Models\GalleryPost;
 use App\Models\GenerationJob;
-use App\Models\Model as AiModel;
-use App\Models\Provider;
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\DB;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
 
 class GalleryPostManagementTest extends BackendTestCase
 {
+    use DatabaseMigrations;
+
+    /**
+     * Helper method to create a provider using DB::table to avoid factory/Model class conflicts
+     */
+    private function createProvider(array $attributes = []): int
+    {
+        $apiKey = $attributes['api_key'] ?? 'test-api-key';
+        unset($attributes['api_key']);
+        
+        $provider = new \App\Models\Provider(array_merge([
+            'name' => 'Test Provider',
+            'api_base_url' => 'https://api.segmind.com',
+            'enabled' => true,
+        ], $attributes));
+        
+        $provider->setApiKey($apiKey);
+        $provider->save();
+        
+        return $provider->id;
+    }
+
+    /**
+     * Helper method to create a model using DB::table to avoid Model class name conflict
+     */
+    private function createModel(int $providerId, array $attributes = []): int
+    {
+        return DB::table('models')->insertGetId(array_merge([
+            'provider_id' => $providerId,
+            'model_name' => 'Test Model',
+            'model_type' => 'image',
+            'api_endpoint' => '/test',
+            'default_tokens' => 10,
+            'enabled' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], $attributes));
+    }
     /** @test */
     public function it_returns_gallery_post_details(): void
     {
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         $job = GenerationJob::create([
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
+        $postOwner = User::factory()->create();
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'title' => 'My Artwork',
             'visibility' => 'public',
@@ -67,15 +110,19 @@ class GalleryPostManagementTest extends BackendTestCase
         $user2 = User::factory()->create();
         $token1 = $user1->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         $job = GenerationJob::create([
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'user_id' => $user2->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
@@ -97,15 +144,19 @@ class GalleryPostManagementTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         $job = GenerationJob::create([
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
@@ -127,15 +178,19 @@ class GalleryPostManagementTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         $job = GenerationJob::create([
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
@@ -173,15 +228,19 @@ class GalleryPostManagementTest extends BackendTestCase
         $user2 = User::factory()->create();
         $token1 = $user1->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         $job = GenerationJob::create([
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'user_id' => $user2->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
@@ -209,15 +268,19 @@ class GalleryPostManagementTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         $job = GenerationJob::create([
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
@@ -248,15 +311,19 @@ class GalleryPostManagementTest extends BackendTestCase
         $user2 = User::factory()->create();
         $token1 = $user1->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         $job = GenerationJob::create([
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'user_id' => $user2->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
@@ -282,18 +349,21 @@ class GalleryPostManagementTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $provider = Provider::factory()->create();
-        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId);
         
         // Create user's posts
         for ($i = 0; $i < 3; $i++) {
             $job = GenerationJob::create([
                 'user_id' => $user->id,
-                'provider_id' => $provider->id,
-                'model_id' => $model->id,
+                'provider_id' => $providerId,
+                'model_id' => $modelId,
                 'job_type' => 'image',
+                'prompt' => 'Test prompt',
+                'params_json' => [],
                 'status' => 'completed',
                 'result_url' => 'https://example.com/image.jpg',
+                'tokens_consumed' => 10,
             ]);
             
             GalleryPost::create([
@@ -304,16 +374,21 @@ class GalleryPostManagementTest extends BackendTestCase
         }
         
         // Create other user's post
+        $otherUser = User::factory()->create();
         $otherJob = GenerationJob::create([
-            'provider_id' => $provider->id,
-            'model_id' => $model->id,
+            'user_id' => $otherUser->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $otherUser->id,
             'generation_job_id' => $otherJob->id,
             'visibility' => 'public',
         ]);

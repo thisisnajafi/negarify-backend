@@ -261,9 +261,9 @@ class GalleryPostController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $posts->items()->map(function ($post) {
+            'data' => collect($posts->items())->map(function ($post) {
                 return $this->formatPostResponse($post, true); // Owner can see all
-            }),
+            })->values()->all(),
             'meta' => [
                 'current_page' => $posts->currentPage(),
                 'last_page' => $posts->lastPage(),

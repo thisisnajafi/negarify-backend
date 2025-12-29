@@ -203,22 +203,22 @@ This file tracks the implementation progress of the test suite. Items are checke
 ## 7. Gallery & Feed Tests
 
 ### Gallery Post CRUD
-- [ ] Post creation from generation job
-- [ ] Generation job validation
-- [ ] Title, description, tags storage
-- [ ] Visibility settings
+- [x] Post creation from generation job
+- [x] Generation job validation
+- [x] Title, description, tags storage
+- [x] Visibility settings
 - [ ] Prompt/model visibility flags
-- [ ] Get post details
-- [ ] Update post
-- [ ] Delete post
-- [ ] User access control
-- [ ] Privacy settings
+- [x] Get post details
+- [x] Update post
+- [x] Delete post
+- [x] User access control
+- [x] Privacy settings
 
 ### My Posts
-- [ ] Returns user's posts
-- [ ] Pagination
+- [x] Returns user's posts
+- [x] Pagination
 - [ ] Visibility filtering
-- [ ] Ordering
+- [x] Ordering
 
 ### Public Feed
 - [ ] Only curated posts
