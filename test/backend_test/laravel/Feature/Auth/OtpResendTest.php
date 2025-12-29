@@ -16,11 +16,18 @@ class OtpResendTest extends BackendTestCase
         
         RateLimiter::clear('otp_request:*');
         RateLimiter::clear('otp_resend:*');
-        
+    }
+    
+    /**
+     * Set up successful HTTP fake (can be overridden in tests)
+     */
+    protected function setUpHttpFake(): void
+    {
         Http::fake([
             'rest.payamak-panel.com/*' => Http::response([
                 'StrRetStatus' => 'Ok',
                 'RetStatus' => 1,
+                'Value' => '123456',
             ], 200),
         ]);
     }
@@ -28,7 +35,9 @@ class OtpResendTest extends BackendTestCase
     /** @test */
     public function it_resends_otp_successfully(): void
     {
-        $phone = '+989123456789';
+        $this->setUpHttpFake();
+        
+        $phone = '09373264601';
         
         // Create initial OTP
         $firstResult = OtpVerification::generate($phone);
@@ -70,8 +79,8 @@ class OtpResendTest extends BackendTestCase
             'phone' => $phone,
         ]);
 
-        // Verify Melipayamak called for new OTP
-        Http::assertSentCount(2); // Initial + resend
+        // Verify Melipayamak called for resend (initial OTP created via generate() doesn't send SMS)
+        Http::assertSentCount(1); // Only resend sends SMS
 
         $this->assertNoErrorLogs();
     }
@@ -79,6 +88,8 @@ class OtpResendTest extends BackendTestCase
     /** @test */
     public function it_rejects_resend_for_invalid_request_id(): void
     {
+        $this->setUpHttpFake();
+        
         $response = $this->makeRequest('POST', '/api/v1/auth/resend-otp', [
             'request_id' => '00000000-0000-0000-0000-000000000000',
         ]);
@@ -93,7 +104,9 @@ class OtpResendTest extends BackendTestCase
     /** @test */
     public function it_rejects_resend_for_already_verified_otp(): void
     {
-        $phone = '+989123456789';
+        $this->setUpHttpFake();
+        
+        $phone = '09373264601';
         
         // Create and verify OTP
         $result = OtpVerification::generate($phone);
@@ -116,7 +129,9 @@ class OtpResendTest extends BackendTestCase
     /** @test */
     public function it_enforces_resend_rate_limiting(): void
     {
-        $phone = '+989123456789';
+        $this->setUpHttpFake();
+        
+        $phone = '09373264601';
         
         // Create OTP
         $result = OtpVerification::generate($phone);
@@ -152,6 +167,8 @@ class OtpResendTest extends BackendTestCase
     /** @test */
     public function it_validates_request_id_format(): void
     {
+        $this->setUpHttpFake();
+        
         $response = $this->makeRequest('POST', '/api/v1/auth/resend-otp', [
             'request_id' => 'invalid-uuid',
         ]);
@@ -163,17 +180,17 @@ class OtpResendTest extends BackendTestCase
     /** @test */
     public function it_handles_melipayamak_failure_on_resend(): void
     {
-        // Fake HTTP to return failure
+        $phone = '09373264601';
+        $result = OtpVerification::generate($phone);
+        $otp = $result['otp'];
+        
+        // Set up failure response (overrides default successful fake)
         Http::fake([
             'rest.payamak-panel.com/*' => Http::response([
-                'StrRetStatus' => 'Error',
+                'StrRetStatus' => 'InsufficientCredit',
                 'RetStatus' => 0,
             ], 500),
         ]);
-
-        $phone = '+989123456789';
-        $result = OtpVerification::generate($phone);
-        $otp = $result['otp'];
         
         $response = $this->makeRequest('POST', '/api/v1/auth/resend-otp', [
             'request_id' => $otp->request_id,
@@ -185,11 +202,11 @@ class OtpResendTest extends BackendTestCase
                 'message' => 'Failed to resend OTP. Please try again later.',
             ]);
 
-        // Verify new OTP was cleaned up
-        $this->assertDatabaseMissing('otp_verifications', [
-            'phone' => $phone,
-            'request_id' => '!=', $otp->request_id,
-        ]);
+        // Verify new OTP was cleaned up (deleted after SMS failure)
+        $newOtp = OtpVerification::where('phone', $phone)
+            ->where('request_id', '!=', $otp->request_id)
+            ->first();
+        $this->assertNull($newOtp);
 
         $this->allowErrorLogs(['OTP resend SMS send failed']);
     }
