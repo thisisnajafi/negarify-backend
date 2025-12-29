@@ -1,15 +1,10 @@
-Avatar (Test\BackendTest\Laravel\Feature\User\Avatar)
- [x] It uploads avatar successfully
- [x] It deletes old avatar on new upload
- [x] It rejects invalid file type
- [x] It rejects avatar upload for unauthenticated user
- [x] It handles storage failure gracefully
-
-Profile (Test\BackendTest\Laravel\Feature\User\Profile)
- [x] It returns authenticated user profile
- [x] It rejects profile access for unauthenticated user
- [x] It updates user profile
- [x] It resets email verification when email changes
- [x] It validates email format
- [x] It rejects updating forbidden fields
+Queue Job Processing (Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessing)
+ [x] It processes image generation job successfully
+ [x] It handles image generation failure and refunds tokens
+ [x] It processes video generation job successfully
+ [x] It processes audio generation job successfully
+ [x] It is idempotent and skips already completed jobs
+ [x] It is idempotent and skips already failed jobs
+ [x] It updates job status to processing when handling
+ [x] It handles retries safely without duplicate operations
 

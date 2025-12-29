@@ -51,22 +51,16 @@
         </style>
     </head>
     <body>
-        <h2>Avatar (Test\BackendTest\Laravel\Feature\User\Avatar)</h2>
+        <h2>Queue Job Processing (Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessing)</h2>
         <ul>
-            <li class="success">It uploads avatar successfully</li>
-            <li class="success">It deletes old avatar on new upload</li>
-            <li class="success">It rejects invalid file type</li>
-            <li class="success">It rejects avatar upload for unauthenticated user</li>
-            <li class="defect">It handles storage failure gracefully</li>
-        </ul>
-        <h2>Profile (Test\BackendTest\Laravel\Feature\User\Profile)</h2>
-        <ul>
-            <li class="success">It returns authenticated user profile</li>
-            <li class="success">It rejects profile access for unauthenticated user</li>
-            <li class="success">It updates user profile</li>
-            <li class="success">It resets email verification when email changes</li>
-            <li class="success">It validates email format</li>
-            <li class="success">It rejects updating forbidden fields</li>
+            <li class="success">It processes image generation job successfully</li>
+            <li class="success">It handles image generation failure and refunds tokens</li>
+            <li class="success">It processes video generation job successfully</li>
+            <li class="success">It processes audio generation job successfully</li>
+            <li class="success">It is idempotent and skips already completed jobs</li>
+            <li class="success">It is idempotent and skips already failed jobs</li>
+            <li class="success">It updates job status to processing when handling</li>
+            <li class="success">It handles retries safely without duplicate operations</li>
         </ul>
     </body>
 </html>
