@@ -87,8 +87,13 @@ abstract class BackendTestCase extends BaseTestCase
     protected function setupLogCapture(): void
     {
         // Intercept Laravel logs using Log::listen
-        Log::listen(function ($level, $message, $context) {
-            $this->captureLog($level, $message, is_array($context) ? $context : []);
+        // Log::listen receives a MessageLogged event object
+        Log::listen(function ($event) {
+            $this->captureLog(
+                $event->level,
+                $event->message,
+                is_array($event->context) ? $event->context : []
+            );
         });
     }
 

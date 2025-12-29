@@ -54,10 +54,10 @@ trait LogsTestExecution
             $testClassFile
         );
 
-        // Ensure log directory exists
+        // Ensure log directory exists (use native PHP to avoid facade dependency during setup)
         $logDir = dirname($logPath);
-        if (!File::exists($logDir)) {
-            File::makeDirectory($logDir, 0755, true);
+        if (!file_exists($logDir)) {
+            mkdir($logDir, 0755, true);
         }
 
         $this->testLogPath = $logPath;

@@ -36,5 +36,8 @@
         <env name="APP_DEBUG" value="true"/>
         <env name="LOG_CHANNEL" value="stderr"/>
         <env name="LOG_LEVEL" value="debug"/>
+        <env name="MELIPAYAMAK_USERNAME" value="test"/>
+        <env name="MELIPAYAMAK_PASSWORD" value="test"/>
+        <env name="MELIPAYAMAK_AUTH_MODE" value="classic"/>
     </php>
 </phpunit>

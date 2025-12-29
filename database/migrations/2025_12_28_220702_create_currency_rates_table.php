@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('source')->default('tgju');
             $table->timestamp('fetched_at')->index();
             $table->timestamps();
-            
-            $table->index('fetched_at');
         });
     }
 

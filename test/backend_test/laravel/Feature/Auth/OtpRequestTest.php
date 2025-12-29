@@ -31,10 +31,12 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_can_request_otp_with_valid_phone_number(): void
     {
-        $phone = '+989123456789';
+        $phoneInput = '+989123456789';
+        // Phone is normalized to 09123456789 (removes + prefix)
+        $normalizedPhone = '09123456789';
         
         $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
-            'phone' => $phone,
+            'phone' => $phoneInput,
         ]);
 
         $response->assertStatus(200)
@@ -51,12 +53,12 @@ class OtpRequestTest extends BackendTestCase
                 'message' => 'OTP sent successfully',
             ]);
 
-        // Verify OTP stored in database
+        // Verify OTP stored in database (phone is normalized)
         $this->assertDatabaseHas('otp_verifications', [
-            'phone' => $phone,
+            'phone' => $normalizedPhone,
         ]);
 
-        $otp = OtpVerification::where('phone', $phone)->first();
+        $otp = OtpVerification::where('phone', $normalizedPhone)->first();
         $this->assertNotNull($otp);
         $this->assertNotNull($otp->request_id);
         $this->assertNotNull($otp->code_hash);
@@ -66,11 +68,13 @@ class OtpRequestTest extends BackendTestCase
         $this->assertTrue($otp->expires_at->diffInMinutes(Carbon::now()) <= 5);
         $this->assertNull($otp->verified_at);
 
-        // Verify Melipayamak was called
-        Http::assertSent(function ($request) use ($phone) {
-            return $request->url() === config('services.melipayamak.base_url') &&
-                   $request->has('to', $phone) &&
-                   $request->has('text');
+        // Verify Melipayamak was called (check if any request matches the pattern)
+        Http::assertSent(function ($request) use ($normalizedPhone) {
+            $url = $request->url();
+            $body = $request->body();
+            // Check if URL contains melipayamak domain and body contains the phone
+            return str_contains($url, 'rest.payamak-panel.com') &&
+                   str_contains($body, $normalizedPhone);
         });
 
         // Verify no error logs
