@@ -1,0 +1,148 @@
+<?php
+
+namespace Test\BackendTest\Laravel\Unit\Services;
+
+use App\Models\CurrencyRate;
+use App\Services\CurrencyRateService;
+use App\Services\TgjuScraperService;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+use Test\BackendTest\Laravel\Helpers\BackendTestCase;
+
+class TgjuScraperServiceTest extends BackendTestCase
+{
+    /** @test */
+    public function it_fetches_and_stores_usd_rate_from_tgju(): void
+    {
+        // Mock TGJU HTML response
+        $htmlFixture = $this->getTgjuHtmlFixture();
+        
+        Http::fake([
+            'www.tgju.org/*' => Http::response($htmlFixture, 200),
+        ]);
+        
+        $service = app(TgjuScraperService::class);
+        $rate = $service->fetchUsdRate();
+        
+        $this->assertNotNull($rate);
+        $this->assertIsFloat($rate);
+        $this->assertGreaterThan(0, $rate);
+        
+        // Verify rate stored in database
+        $this->assertDatabaseHas('currency_rates', [
+            'currency_from' => 'USD',
+            'currency_to' => 'IRR',
+            'source' => 'tgju',
+        ]);
+        
+        // Verify rate is in Toman (Rials / 10)
+        $storedRate = CurrencyRate::latest('fetched_at')->first();
+        $this->assertEquals($rate * 10, $storedRate->rate); // Stored as Rials
+    }
+
+    /** @test */
+    public function it_caches_rate_after_fetching(): void
+    {
+        $htmlFixture = $this->getTgjuHtmlFixture();
+        
+        Http::fake([
+            'www.tgju.org/*' => Http::response($htmlFixture, 200),
+        ]);
+        
+        Cache::forget('currency_rate:usd_toman');
+        
+        $service = app(TgjuScraperService::class);
+        $rate = $service->fetchUsdRate();
+        
+        // Verify cached
+        $cachedRate = Cache::get('currency_rate:usd_toman');
+        $this->assertEquals($rate, $cachedRate);
+    }
+
+    /** @test */
+    public function it_handles_http_failure_gracefully(): void
+    {
+        Http::fake([
+            'www.tgju.org/*' => Http::response('', 500),
+        ]);
+        
+        $service = app(TgjuScraperService::class);
+        $rate = $service->fetchUsdRate();
+        
+        $this->assertNull($rate);
+        
+        // Verify no rate stored
+        $this->assertDatabaseMissing('currency_rates', [
+            'fetched_at' => now()->toDateString(),
+        ]);
+    }
+
+    /** @test */
+    public function it_handles_html_parsing_failure_gracefully(): void
+    {
+        Http::fake([
+            'www.tgju.org/*' => Http::response('<html><body>Invalid HTML</body></html>', 200),
+        ]);
+        
+        $service = app(TgjuScraperService::class);
+        $rate = $service->fetchUsdRate();
+        
+        $this->assertNull($rate);
+    }
+
+    /** @test */
+    public function it_validates_rate_is_reasonable(): void
+    {
+        // Test with unreasonably high rate
+        $htmlWithHighRate = str_replace('500000', '10000000', $this->getTgjuHtmlFixture());
+        
+        Http::fake([
+            'www.tgju.org/*' => Http::response($htmlWithHighRate, 200),
+        ]);
+        
+        $service = app(TgjuScraperService::class);
+        $rate = $service->fetchUsdRate();
+        
+        // Should reject unreasonably high rate
+        $this->assertNull($rate);
+    }
+
+    /** @test */
+    public function it_converts_rials_to_toman_correctly(): void
+    {
+        $htmlFixture = $this->getTgjuHtmlFixture(500000); // 500,000 Rials
+        
+        Http::fake([
+            'www.tgju.org/*' => Http::response($htmlFixture, 200),
+        ]);
+        
+        $service = app(TgjuScraperService::class);
+        $rate = $service->fetchUsdRate();
+        
+        // Should return 50,000 Toman (500,000 / 10)
+        $this->assertEquals(50000.0, $rate);
+        
+        // Database should store Rials rate
+        $storedRate = CurrencyRate::latest('fetched_at')->first();
+        $this->assertEquals(500000, $storedRate->rate);
+    }
+
+    /**
+     * Get TGJU HTML fixture for testing
+     */
+    private function getTgjuHtmlFixture(int $rialsRate = 500000): string
+    {
+        // Simplified HTML structure - adjust based on actual TGJU.org structure
+        return <<<HTML
+<!DOCTYPE html>
+<html>
+<head><title>TGJU - Dollar Price</title></head>
+<body>
+    <div class="price-value">{$rialsRate}</div>
+    <span class="price">{$rialsRate}</span>
+</body>
+</html>
+HTML;
+    }
+}
+

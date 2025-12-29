@@ -1,0 +1,257 @@
+<?php
+
+namespace Test\BackendTest\Laravel\Helpers;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
+/**
+ * Base TestCase for all backend tests
+ * 
+ * Provides:
+ * - Automatic log capture
+ * - Error detection
+ * - Per-test-file logging
+ * - Response capture
+ * - Queue failure detection
+ */
+abstract class BackendTestCase extends BaseTestCase
+{
+    use RefreshDatabase;
+    use LogsTestExecution;
+
+    /**
+     * Creates the application.
+     */
+    public function createApplication()
+    {
+        return require __DIR__ . '/../../../../bootstrap/app.php';
+    }
+
+    /**
+     * Allowed error log codes (exceptions to error detection)
+     */
+    protected array $allowedErrorLogs = [];
+
+    /**
+     * Setup the test environment
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Set deterministic time
+        Carbon::setTestNow(Carbon::now());
+
+        // Setup logging
+        $this->setUpLogging();
+
+        // Capture Laravel logs
+        $this->setupLogCapture();
+
+        // Fake queues by default
+        Queue::fake();
+
+        // Clear allowed error logs
+        $this->allowedErrorLogs = [];
+    }
+
+    /**
+     * Tear down after test
+     */
+    protected function tearDown(): void
+    {
+        // Log test end
+        if ($this->currentTestMethod) {
+            $this->logTestEnd();
+        }
+
+        // Check for errors
+        $this->checkForErrors();
+
+        // Check for failed jobs
+        $this->checkForFailedJobs();
+
+        parent::tearDown();
+    }
+
+    /**
+     * Setup Laravel log capture
+     */
+    protected function setupLogCapture(): void
+    {
+        // Intercept Laravel logs using Log::listen
+        Log::listen(function ($level, $message, $context) {
+            $this->captureLog($level, $message, is_array($context) ? $context : []);
+        });
+    }
+
+    /**
+     * Make HTTP request and log it
+     */
+    protected function makeRequest(string $method, string $uri, array $data = [], array $headers = [])
+    {
+        $this->logRequest($method, $uri, $data);
+        
+        $response = $this->json($method, $uri, $data, $headers);
+        
+        $this->logResponse($response);
+        
+        // Log validation errors if any
+        if ($response->status() === 422) {
+            $errors = $response->json('errors') ?? [];
+            $this->logValidationErrors($errors);
+        }
+        
+        return $response;
+    }
+
+    /**
+     * Check for errors after test
+     */
+    protected function checkForErrors(): void
+    {
+        $errorLogs = $this->getErrorLogs();
+        
+        if (!empty($errorLogs) && !$this->shouldAllowErrors()) {
+            $this->logCapturedLogs();
+            $this->fail(
+                "Error-level logs detected during test execution:\n" .
+                json_encode($errorLogs, JSON_PRETTY_PRINT)
+            );
+        }
+    }
+
+    /**
+     * Check if errors should be allowed
+     */
+    protected function shouldAllowErrors(): bool
+    {
+        if (empty($this->allowedErrorLogs)) {
+            return false;
+        }
+
+        $errorLogs = $this->getErrorLogs();
+        foreach ($errorLogs as $log) {
+            $message = $log['message'];
+            $allowed = false;
+            
+            foreach ($this->allowedErrorLogs as $allowedPattern) {
+                if (str_contains($message, $allowedPattern)) {
+                    $allowed = true;
+                    break;
+                }
+            }
+            
+            if (!$allowed) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    /**
+     * Allow specific error logs (for expected errors)
+     */
+    protected function allowErrorLogs(array $patterns): void
+    {
+        $this->allowedErrorLogs = array_merge($this->allowedErrorLogs, $patterns);
+    }
+
+    /**
+     * Assert no error logs occurred
+     */
+    protected function assertNoErrorLogs(): void
+    {
+        $errorLogs = $this->getErrorLogs();
+        $this->assertEmpty(
+            $errorLogs,
+            "Expected no error logs, but found: " . json_encode($errorLogs, JSON_PRETTY_PRINT)
+        );
+    }
+
+    /**
+     * Check for failed jobs
+     */
+    protected function checkForFailedJobs(): void
+    {
+        // Only check if queue is not faked
+        if (!Queue::isFake()) {
+            $failedJobs = DB::table('failed_jobs')->count();
+            if ($failedJobs > 0) {
+                $this->logCapturedLogs();
+                $this->fail("Failed jobs detected: {$failedJobs} jobs in failed_jobs table");
+            }
+        }
+    }
+
+    /**
+     * Assert no failed jobs
+     */
+    protected function assertNoFailedJobs(): void
+    {
+        $failedJobs = DB::table('failed_jobs')->count();
+        $this->assertEquals(0, $failedJobs, "Expected no failed jobs, but found {$failedJobs}");
+    }
+
+    /**
+     * Get last response for debugging
+     */
+    protected function getLastResponse()
+    {
+        return $this->lastResponse;
+    }
+
+    /**
+     * Print failure details
+     */
+    protected function onNotSuccessfulTest(\Throwable $t): void
+    {
+        // Log exception
+        $this->logException($t);
+        
+        // Log captured logs
+        $this->logCapturedLogs();
+        
+        // Print to console
+        if ($this->lastResponse) {
+            echo "\n\n=== Last HTTP Response ===\n";
+            echo "Status: " . ($this->lastResponse->status() ?? 'N/A') . "\n";
+            if (method_exists($this->lastResponse, 'getContent')) {
+                echo "Body: " . $this->lastResponse->getContent() . "\n";
+            }
+        }
+        
+        if (!empty($this->capturedLogs)) {
+            echo "\n\n=== Captured Logs ===\n";
+            foreach ($this->capturedLogs as $log) {
+                echo "[{$log['timestamp']}] {$log['level']}: {$log['message']}\n";
+            }
+        }
+        
+        parent::onNotSuccessfulTest($t);
+    }
+
+    /**
+     * Run a test method and log it
+     */
+    public function runTest(): mixed
+    {
+        $testMethod = $this->getName();
+        $this->logTestStart($testMethod);
+        
+        try {
+            $result = parent::runTest();
+            return $result;
+        } catch (\Throwable $e) {
+            $this->logException($e);
+            throw $e;
+        }
+    }
+}
+

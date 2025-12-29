@@ -11,6 +11,9 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
+        <testsuite name="BackendTest">
+            <directory>test/backend_test/laravel</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
@@ -30,5 +33,8 @@
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
+        <env name="APP_DEBUG" value="true"/>
+        <env name="LOG_CHANNEL" value="stderr"/>
+        <env name="LOG_LEVEL" value="debug"/>
     </php>
 </phpunit>
