@@ -1,3 +1,28 @@
+Image Generation (Test\BackendTest\Laravel\Feature\Generation\ImageGeneration)
+ [x] It creates image generation job
+ [x] It rejects generation with insufficient tokens
+ [x] It rejects unavailable model
+ [x] It rejects wrong model type
+ [x] It validates required prompt
+ [x] It stores generation parameters
+
+Job Status (Test\BackendTest\Laravel\Feature\Generation\JobStatus)
+ [x] It returns user generation jobs
+ [x] It filters jobs by type
+ [x] It filters jobs by status
+ [x] It returns single job details
+ [x] It rejects access to other user job
+ [x] It cancels pending job and refunds tokens
+ [x] It rejects cancelling completed job
+ [x] It retries failed job
+ [x] It rejects retrying non failed job
+ [x] It shows status transitions
+ [x] It tracks progress with timestamps
+ [x] It includes result urls when available
+ [x] It includes error message when job failed
+ [x] It paginates job listing
+ [x] It handles cancelling processing job
+
 Queue Job Processing (Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessing)
  [x] It processes image generation job successfully
  [x] It handles image generation failure and refunds tokens
@@ -7,4 +32,12 @@ Queue Job Processing (Test\BackendTest\Laravel\Feature\Generation\QueueJobProces
  [x] It is idempotent and skips already failed jobs
  [x] It updates job status to processing when handling
  [x] It handles retries safely without duplicate operations
+
+Video Audio Generation (Test\BackendTest\Laravel\Feature\Generation\VideoAudioGeneration)
+ [x] It creates video generation job
+ [x] It rejects video generation with wrong model type
+ [x] It creates audio generation job
+ [x] It rejects audio generation with wrong model type
+ [x] It stores video generation parameters
+ [x] It stores audio generation parameters
 
