@@ -71,11 +71,11 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Response structure
 
 ### Upload Avatar
-- [ ] Valid image upload
-- [ ] File storage (S3 fake)
-- [ ] Invalid file type validation
+- [x] Valid image upload
+- [x] File storage (S3 fake)
+- [x] Invalid file type validation
 - [ ] File size validation
-- [ ] Old avatar deletion
+- [x] Old avatar deletion
 
 ---
 
