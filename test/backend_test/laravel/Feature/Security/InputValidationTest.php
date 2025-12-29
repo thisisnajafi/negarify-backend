@@ -49,9 +49,12 @@ class InputValidationTest extends BackendTestCase
         $model = \App\Models\Model::factory()->create(['provider_id' => $provider->id]);
         
         $job = \App\Models\GenerationJob::create([
+            'user_id' => User::factory()->create()->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => json_encode([]),
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
@@ -165,9 +168,12 @@ class InputValidationTest extends BackendTestCase
         $model = \App\Models\Model::factory()->create(['provider_id' => $provider->id]);
         
         $job = \App\Models\GenerationJob::create([
+            'user_id' => User::factory()->create()->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => json_encode([]),
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);

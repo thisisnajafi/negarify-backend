@@ -1,8 +1,27 @@
-Gallery Admin (Test\BackendTest\Laravel\Feature\Admin\GalleryAdmin)
- [x] It curates post as admin
- [x] It rejects curating private post
- [x] It uncurates post
- [x] It features post
- [x] It performs bulk curation
- [x] It lists curated posts
+Input Validation (Test\BackendTest\Laravel\Feature\Security\InputValidation)
+ [x] It prevents sql injection in search queries
+ [x] It sanitizes user input in comments
+ [x] It validates phone number format
+ [x] It validates email format
+ [x] It validates numeric inputs
+ [x] It handles oversized inputs
+ [x] It validates file uploads
+
+Middleware (Test\BackendTest\Laravel\Feature\Security\Middleware)
+ [x] It requires authentication for protected routes
+ [x] It rejects invalid token
+ [x] It rejects expired token
+ [x] It rejects missing token
+ [x] It requires admin role for admin endpoints
+ [x] It allows admin access to admin endpoints
+ [x] It rejects regular user from admin endpoints
+ [x] It allows unauthenticated access to public endpoints
+ [x] It validates token format
+ [x] It handles malformed authorization header
+
+Rate Limiting (Test\BackendTest\Laravel\Feature\Security\RateLimiting)
+ [x] It enforces rate limiting on otp requests
+ [x] It enforces rate limiting per phone number
+ [x] It resets rate limit after time window
+ [x] It enforces rate limiting on generation requests
 

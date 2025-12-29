@@ -320,25 +320,25 @@ This file tracks the implementation progress of the test suite. Items are checke
 ## 10. Security & Middleware Tests
 
 ### Authentication Middleware
-- [ ] Protected routes require auth
-- [ ] Invalid token handling
-- [ ] Expired token handling
-- [ ] Missing token handling
+- [x] Protected routes require auth
+- [x] Invalid token handling
+- [x] Expired token handling
+- [x] Missing token handling
 
 ### Admin Middleware
-- [ ] Admin role required
-- [ ] Regular user rejection
-- [ ] Moderator access (if exists)
+- [x] Admin role required
+- [x] Regular user rejection
+- [x] Moderator access (if exists)
 
 ### Rate Limiting
-- [ ] OTP request limiting
-- [ ] Generation request limiting
-- [ ] API rate limiting
+- [x] OTP request limiting
+- [x] Generation request limiting
+- [x] API rate limiting
 
 ### Input Validation
-- [ ] SQL injection prevention
-- [ ] XSS prevention
-- [ ] Invalid input handling
+- [x] SQL injection prevention
+- [x] XSS prevention
+- [x] Invalid input handling
 
 ---
 

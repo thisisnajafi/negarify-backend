@@ -51,14 +51,35 @@
         </style>
     </head>
     <body>
-        <h2>Gallery Admin (Test\BackendTest\Laravel\Feature\Admin\GalleryAdmin)</h2>
+        <h2>Input Validation (Test\BackendTest\Laravel\Feature\Security\InputValidation)</h2>
         <ul>
-            <li class="success">It curates post as admin</li>
-            <li class="success">It rejects curating private post</li>
-            <li class="success">It uncurates post</li>
-            <li class="success">It features post</li>
-            <li class="success">It performs bulk curation</li>
-            <li class="success">It lists curated posts</li>
+            <li class="success">It prevents sql injection in search queries</li>
+            <li class="success">It sanitizes user input in comments</li>
+            <li class="success">It validates phone number format</li>
+            <li class="success">It validates email format</li>
+            <li class="success">It validates numeric inputs</li>
+            <li class="success">It handles oversized inputs</li>
+            <li class="success">It validates file uploads</li>
+        </ul>
+        <h2>Middleware (Test\BackendTest\Laravel\Feature\Security\Middleware)</h2>
+        <ul>
+            <li class="success">It requires authentication for protected routes</li>
+            <li class="success">It rejects invalid token</li>
+            <li class="success">It rejects expired token</li>
+            <li class="success">It rejects missing token</li>
+            <li class="success">It requires admin role for admin endpoints</li>
+            <li class="success">It allows admin access to admin endpoints</li>
+            <li class="success">It rejects regular user from admin endpoints</li>
+            <li class="success">It allows unauthenticated access to public endpoints</li>
+            <li class="success">It validates token format</li>
+            <li class="success">It handles malformed authorization header</li>
+        </ul>
+        <h2>Rate Limiting (Test\BackendTest\Laravel\Feature\Security\RateLimiting)</h2>
+        <ul>
+            <li class="success">It enforces rate limiting on otp requests</li>
+            <li class="success">It enforces rate limiting per phone number</li>
+            <li class="success">It resets rate limit after time window</li>
+            <li class="success">It enforces rate limiting on generation requests</li>
         </ul>
     </body>
 </html>
