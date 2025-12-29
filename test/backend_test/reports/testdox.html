@@ -51,14 +51,22 @@
         </style>
     </head>
     <body>
-        <h2>Like (Test\BackendTest\Laravel\Feature\Social\Like)</h2>
+        <h2>Avatar (Test\BackendTest\Laravel\Feature\User\Avatar)</h2>
         <ul>
-            <li class="success">It likes a post</li>
-            <li class="success">It is idempotent prevents duplicate likes</li>
-            <li class="success">It unlikes a post</li>
-            <li class="success">It rejects like for unauthenticated user</li>
-            <li class="success">It allows liking own post</li>
-            <li class="success">It maintains accurate likes count</li>
+            <li class="success">It uploads avatar successfully</li>
+            <li class="success">It deletes old avatar on new upload</li>
+            <li class="success">It rejects invalid file type</li>
+            <li class="success">It rejects avatar upload for unauthenticated user</li>
+            <li class="defect">It handles storage failure gracefully</li>
+        </ul>
+        <h2>Profile (Test\BackendTest\Laravel\Feature\User\Profile)</h2>
+        <ul>
+            <li class="success">It returns authenticated user profile</li>
+            <li class="success">It rejects profile access for unauthenticated user</li>
+            <li class="success">It updates user profile</li>
+            <li class="success">It resets email verification when email changes</li>
+            <li class="success">It validates email format</li>
+            <li class="success">It rejects updating forbidden fields</li>
         </ul>
     </body>
 </html>

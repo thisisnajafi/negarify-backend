@@ -1,8 +1,15 @@
-Like (Test\BackendTest\Laravel\Feature\Social\Like)
- [x] It likes a post
- [x] It is idempotent prevents duplicate likes
- [x] It unlikes a post
- [x] It rejects like for unauthenticated user
- [x] It allows liking own post
- [x] It maintains accurate likes count
+Avatar (Test\BackendTest\Laravel\Feature\User\Avatar)
+ [x] It uploads avatar successfully
+ [x] It deletes old avatar on new upload
+ [x] It rejects invalid file type
+ [x] It rejects avatar upload for unauthenticated user
+ [x] It handles storage failure gracefully
+
+Profile (Test\BackendTest\Laravel\Feature\User\Profile)
+ [x] It returns authenticated user profile
+ [x] It rejects profile access for unauthenticated user
+ [x] It updates user profile
+ [x] It resets email verification when email changes
+ [x] It validates email format
+ [x] It rejects updating forbidden fields
 
