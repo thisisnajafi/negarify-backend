@@ -101,15 +101,22 @@ class OtpRequestTest extends BackendTestCase
     public function it_enforces_rate_limiting_on_otp_requests(): void
     {
         $phone = '+989123456789';
-        $phoneHash = hash('sha256', $phone . config('app.key'));
+        $normalizedPhone = '09123456789';
+        $phoneHash = hash('sha256', $normalizedPhone . config('app.key'));
         $rateLimitKey = "otp_request:{$phoneHash}";
 
         // Make 3 requests (should succeed)
+        // Note: Each request creates an active OTP, so we need to delete the previous one
+        // to allow the next request to go through and test rate limiting properly
         for ($i = 0; $i < 3; $i++) {
             $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
                 'phone' => $phone,
             ]);
             $response->assertStatus(200);
+            
+            // Delete the created OTP so the next request can create a new one
+            // This allows us to test rate limiting (3 requests allowed)
+            OtpVerification::where('phone', $normalizedPhone)->delete();
         }
 
         // 4th request should be rate limited
