@@ -146,11 +146,11 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Accuracy verification
 
 ### Transaction Types
-- [ ] Purchase transactions
-- [ ] Consumption transactions
-- [ ] Refund transactions
-- [ ] Bonus transactions
-- [ ] Adjustment transactions
+- [x] Purchase transactions
+- [x] Consumption transactions
+- [x] Refund transactions
+- [x] Bonus transactions
+- [x] Adjustment transactions
 
 ---
 
