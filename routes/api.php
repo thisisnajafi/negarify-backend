@@ -29,6 +29,9 @@ Route::prefix('v1')->group(function () {
     
     // Public currency rate endpoint (no auth required)
     Route::get('currency/rate', [\App\Http\Controllers\Api\V1\CurrencyController::class, 'getRate']);
+    
+    // Public Zarinpal payment callback (no auth required - called by Zarinpal)
+    Route::get('tokens/purchase/callback', [\App\Http\Controllers\Api\V1\OrderController::class, 'callback']);
 });
 
 // Protected routes

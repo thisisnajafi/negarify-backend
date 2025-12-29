@@ -116,15 +116,15 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Inactive bundle rejection
 
 ### Payment Callback
-- [ ] Successful payment verification
-- [ ] Order status update (paid)
-- [ ] Token credit
-- [ ] Transaction creation
-- [ ] Ref_id storage
-- [ ] Idempotency (no double credit)
-- [ ] Failed payment handling
-- [ ] Invalid authority handling
-- [ ] Mismatched amount handling
+- [x] Successful payment verification
+- [x] Order status update (paid)
+- [x] Token credit
+- [x] Transaction creation
+- [x] Ref_id storage
+- [x] Idempotency (no double credit)
+- [x] Failed payment handling
+- [x] Invalid authority handling
+- [x] Mismatched amount handling
 
 ### Integration Tests
 - [ ] Zarinpal contract test (request/response structure)

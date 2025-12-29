@@ -7,17 +7,37 @@ use App\Models\TokenBundle;
 use App\Models\TokenTransaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
 
 class CallbackTest extends BackendTestCase
 {
+    // Override to use DatabaseMigrations instead of RefreshDatabase
+    // Reason: OrderController callback uses DB::beginTransaction() which conflicts with RefreshDatabase's transaction wrapping in SQLite
+    use DatabaseMigrations;
+    
     protected function setUp(): void
     {
         parent::setUp();
         
-        // Mock Zarinpal verification
+        // Set Zarinpal config for tests
+        config(['services.zarinpal.merchant_id' => 'test-merchant-id']);
+        config(['services.zarinpal.sandbox' => true]);
+    }
+    
+    /**
+     * Set up successful Zarinpal verification fake (call in tests that need it)
+     */
+    protected function setUpZarinpalSuccessFake(): void
+    {
         Http::fake([
-            'api.zarinpal.com/pg/v4/payment/verify.json' => Http::response([
+            'sandbox.zarinpal.com/*' => Http::response([
+                'data' => [
+                    'code' => 100,
+                    'ref_id' => 123456789,
+                ],
+            ], 200),
+            'api.zarinpal.com/*' => Http::response([
                 'data' => [
                     'code' => 100,
                     'ref_id' => 123456789,
@@ -29,6 +49,8 @@ class CallbackTest extends BackendTestCase
     /** @test */
     public function it_processes_successful_payment_callback(): void
     {
+        $this->setUpZarinpalSuccessFake();
+        
         $user = User::factory()->create(['tokens_balance' => 0]);
         $bundle = TokenBundle::create([
             'name' => 'Test Pack',
@@ -48,10 +70,7 @@ class CallbackTest extends BackendTestCase
             'zarinpal_authority' => 'A00000000000000000000000000000000000',
         ]);
         
-        $response = $this->makeRequest('GET', '/api/v1/tokens/purchase/callback', [
-            'Authority' => $order->zarinpal_authority,
-            'Status' => 'OK',
-        ]);
+        $response = $this->getJson('/api/v1/tokens/purchase/callback?Authority=' . $order->zarinpal_authority . '&Status=OK');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -89,9 +108,12 @@ class CallbackTest extends BackendTestCase
 
         // Verify Zarinpal verification called
         Http::assertSent(function ($request) use ($order) {
+            $data = $request->data();
             return str_contains($request->url(), 'verify.json') &&
-                   $request->has('authority', $order->zarinpal_authority) &&
-                   $request->has('amount', 50000);
+                   isset($data['authority']) &&
+                   $data['authority'] === $order->zarinpal_authority &&
+                   isset($data['amount']) &&
+                   $data['amount'] == 50000;
         });
 
         $this->assertNoErrorLogs();
@@ -100,6 +122,8 @@ class CallbackTest extends BackendTestCase
     /** @test */
     public function it_is_idempotent_prevents_double_credit(): void
     {
+        $this->setUpZarinpalSuccessFake();
+        
         $user = User::factory()->create(['tokens_balance' => 0]);
         $bundle = TokenBundle::create([
             'name' => 'Test Pack',
@@ -121,10 +145,7 @@ class CallbackTest extends BackendTestCase
         ]);
         
         // First callback (already processed)
-        $response = $this->makeRequest('GET', '/api/v1/tokens/purchase/callback', [
-            'Authority' => $order->zarinpal_authority,
-            'Status' => 'OK',
-        ]);
+        $response = $this->getJson('/api/v1/tokens/purchase/callback?Authority=' . $order->zarinpal_authority . '&Status=OK');
 
         $response->assertStatus(200)
             ->assertJson([
@@ -162,10 +183,7 @@ class CallbackTest extends BackendTestCase
             'zarinpal_authority' => 'A00000000000000000000000000000000000',
         ]);
         
-        $response = $this->makeRequest('GET', '/api/v1/tokens/purchase/callback', [
-            'Authority' => $order->zarinpal_authority,
-            'Status' => 'NOK', // Failed
-        ]);
+        $response = $this->getJson('/api/v1/tokens/purchase/callback?Authority=' . $order->zarinpal_authority . '&Status=NOK');
 
         $response->assertStatus(400)
             ->assertJson([
@@ -184,9 +202,7 @@ class CallbackTest extends BackendTestCase
     /** @test */
     public function it_handles_missing_authority_parameter(): void
     {
-        $response = $this->makeRequest('GET', '/api/v1/tokens/purchase/callback', [
-            'Status' => 'OK',
-        ]);
+        $response = $this->getJson('/api/v1/tokens/purchase/callback?Status=OK');
 
         $response->assertStatus(400)
             ->assertJson([
@@ -200,10 +216,7 @@ class CallbackTest extends BackendTestCase
     /** @test */
     public function it_handles_invalid_authority(): void
     {
-        $response = $this->makeRequest('GET', '/api/v1/tokens/purchase/callback', [
-            'Authority' => 'INVALID_AUTHORITY',
-            'Status' => 'OK',
-        ]);
+        $response = $this->getJson('/api/v1/tokens/purchase/callback?Authority=INVALID_AUTHORITY&Status=OK');
 
         $response->assertStatus(404)
             ->assertJson([
@@ -217,8 +230,21 @@ class CallbackTest extends BackendTestCase
     /** @test */
     public function it_handles_zarinpal_verification_failure(): void
     {
+        // Allow expected error logs before making request
+        $this->allowErrorLogs(['Zarinpal payment verification failed', 'Zarinpal payment verification error']);
+        
+        // Override Http fake for verification failure - must be called BEFORE creating order
+        // Http::fake() replaces all previous fakes, so this will override setUp() fake
+        // ZarinpalService checks: if isset($result['data']['code']) && $result['data']['code'] == 100 -> success
+        // Error response should NOT have 'data' key with code 100, but should have 'errors' key
         Http::fake([
-            'api.zarinpal.com/pg/v4/payment/verify.json' => Http::response([
+            'sandbox.zarinpal.com/*' => Http::response([
+                'errors' => [
+                    'code' => -11,
+                    'message' => 'Payment not found',
+                ],
+            ], 200),
+            'api.zarinpal.com/*' => Http::response([
                 'errors' => [
                     'code' => -11,
                     'message' => 'Payment not found',
@@ -244,10 +270,7 @@ class CallbackTest extends BackendTestCase
             'zarinpal_authority' => 'A00000000000000000000000000000000000',
         ]);
         
-        $response = $this->makeRequest('GET', '/api/v1/tokens/purchase/callback', [
-            'Authority' => $order->zarinpal_authority,
-            'Status' => 'OK',
-        ]);
+        $response = $this->getJson('/api/v1/tokens/purchase/callback?Authority=' . $order->zarinpal_authority . '&Status=OK');
 
         $response->assertStatus(400)
             ->assertJson([
@@ -257,8 +280,6 @@ class CallbackTest extends BackendTestCase
 
         $order->refresh();
         $this->assertEquals('failed', $order->status);
-
-        $this->allowErrorLogs(['Zarinpal payment verification failed']);
     }
 
     /** @test */
@@ -282,10 +303,7 @@ class CallbackTest extends BackendTestCase
             'zarinpal_authority' => 'A00000000000000000000000000000000000',
         ]);
         
-        $response = $this->makeRequest('GET', '/api/v1/tokens/purchase/callback', [
-            'Authority' => $order->zarinpal_authority,
-            'Status' => 'OK',
-        ]);
+        $response = $this->getJson('/api/v1/tokens/purchase/callback?Authority=' . $order->zarinpal_authority . '&Status=OK');
 
         $response->assertStatus(400)
             ->assertJson([
@@ -294,6 +312,68 @@ class CallbackTest extends BackendTestCase
             ]);
 
         $this->allowErrorLogs(['Zarinpal callback - order in invalid state']);
+    }
+    
+    /** @test */
+    public function it_handles_mismatched_amount(): void
+    {
+        // Note: Zarinpal verifies amount server-side in verifyPayment call
+        // If amount doesn't match, Zarinpal will return an error in verification
+        // This test verifies that Zarinpal's verification error is properly handled
+        
+        // Allow expected error logs before making request
+        $this->allowErrorLogs(['Zarinpal payment verification failed', 'Zarinpal payment verification error']);
+        
+        // Mock Zarinpal verification failure due to amount mismatch
+        Http::fake([
+            'sandbox.zarinpal.com/*' => Http::response([
+                'errors' => [
+                    'code' => -11,
+                    'message' => 'Amount mismatch',
+                ],
+            ], 200),
+            'api.zarinpal.com/*' => Http::response([
+                'errors' => [
+                    'code' => -11,
+                    'message' => 'Amount mismatch',
+                ],
+            ], 200),
+        ]);
+        
+        $user = User::factory()->create();
+        $bundle = TokenBundle::create([
+            'name' => 'Test Pack',
+            'token_amount' => 100,
+            'price_usd' => 1.00,
+        ]);
+        
+        $order = Order::create([
+            'user_id' => $user->id,
+            'token_bundle_id' => $bundle->id,
+            'amount_tokens' => 100,
+            'price_toman' => 50000, // Order expects 50000 Toman
+            'price_usd' => 1.00,
+            'dollar_rate' => 50000,
+            'status' => 'pending',
+            'zarinpal_authority' => 'A00000000000000000000000000000000000',
+        ]);
+        
+        // Zarinpal will verify amount server-side and reject if mismatch
+        // Our callback will receive verification failure
+        $response = $this->getJson('/api/v1/tokens/purchase/callback?Authority=' . $order->zarinpal_authority . '&Status=OK');
+
+        $response->assertStatus(400)
+            ->assertJson([
+                'success' => false,
+                'message' => 'Payment verification failed',
+            ]);
+
+        $order->refresh();
+        $this->assertEquals('failed', $order->status);
+        
+        // Verify tokens not credited
+        $user->refresh();
+        $this->assertEquals(0, $user->tokens_balance);
     }
 }
 
