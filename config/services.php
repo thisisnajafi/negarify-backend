@@ -32,10 +32,14 @@ return [
     ],
 
     'melipayamak' => [
+        // Legacy configuration (kept for backward compatibility)
         'username' => env('MELIPAYAMAK_USERNAME'),
         'password' => env('MELIPAYAMAK_PASSWORD'),
         'from' => env('MELIPAYAMAK_FROM'),
         'base_url' => env('MELIPAYAMAK_BASE_URL', 'https://rest.payamak-panel.com/api/SendSMS/SendSMS'),
+        
+        // New OTP template configuration
+        'otp_template_id' => env('MELIPAYAMAK_OTP_TEMPLATE_ID', '372382'),
     ],
 
     'openai' => [

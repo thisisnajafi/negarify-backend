@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contracts\OtpSender;
+use App\Services\Otp\MelipayamakOtpSender;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Bind OtpSender interface to MelipayamakOtpSender implementation
+        $this->app->singleton(OtpSender::class, MelipayamakOtpSender::class);
     }
 
     /**

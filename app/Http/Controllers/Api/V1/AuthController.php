@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Contracts\OtpSender;
+use App\Exceptions\SmsProviderException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\RequestOtpRequest;
 use App\Http\Requests\Api\V1\ResendOtpRequest;
 use App\Http\Requests\Api\V1\VerifyOtpRequest;
 use App\Models\OtpVerification;
 use App\Models\User;
-use App\Services\MelipayamakService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\RateLimiter;
 class AuthController extends Controller
 {
     public function __construct(
-        private readonly MelipayamakService $melipayamakService
+        private readonly OtpSender $otpSender
     ) {
     }
 
@@ -68,15 +69,17 @@ class AuthController extends Controller
         $otp = $result['otp'];
         $code = $result['code'];
 
-        // Send SMS
-        $smsSent = $this->melipayamakService->sendOtp($phone, $code);
-
-        if (!$smsSent) {
+        // Send SMS via OtpSender interface
+        try {
+            $this->otpSender->sendOtp($phone, $code);
+        } catch (SmsProviderException $e) {
             $otp->delete(); // Clean up if SMS failed
             
             Log::error('OTP SMS send failed', [
                 'phone_hash' => $phoneHash,
                 'request_id' => $otp->request_id,
+                'error' => $e->getMessage(),
+                'error_code' => $e->getCode(),
             ]);
             
             return response()->json([
@@ -278,15 +281,17 @@ class AuthController extends Controller
         $newOtp = $result['otp'];
         $code = $result['code'];
 
-        // Send SMS
-        $smsSent = $this->melipayamakService->sendOtp($phone, $code);
-
-        if (!$smsSent) {
+        // Send SMS via OtpSender interface
+        try {
+            $this->otpSender->sendOtp($phone, $code);
+        } catch (SmsProviderException $e) {
             $newOtp->delete();
             
             Log::error('OTP resend SMS send failed', [
                 'phone_hash' => $phoneHash,
                 'request_id' => $requestId,
+                'error' => $e->getMessage(),
+                'error_code' => $e->getCode(),
             ]);
             
             return response()->json([
@@ -336,20 +341,25 @@ class AuthController extends Controller
     }
 
     /**
-     * Normalize phone number to consistent format
+     * Normalize phone number to consistent format (Iranian: 09...)
      */
     private function normalizePhone(string $phone): string
     {
-        // Remove all non-digit characters except +
-        $phone = preg_replace('/[^\d+]/', '', $phone);
+        // Remove all non-digit characters
+        $phone = preg_replace('/[^\d]/', '', $phone);
         
-        // Add country code if not present (assuming Iran +98)
-        if (!str_starts_with($phone, '+')) {
-            if (str_starts_with($phone, '0')) {
-                $phone = '+98' . substr($phone, 1);
-            } else {
-                $phone = '+98' . $phone;
-            }
+        // Convert to Iranian format (09...)
+        if (str_starts_with($phone, '98')) {
+            // Remove country code and add 0
+            $phone = '0' . substr($phone, 2);
+        } elseif (!str_starts_with($phone, '0')) {
+            // Add leading 0 if missing
+            $phone = '0' . $phone;
+        }
+
+        // Ensure it's 11 digits (09 + 9 digits)
+        if (strlen($phone) !== 11) {
+            throw new \InvalidArgumentException('Invalid phone number format');
         }
 
         return $phone;
