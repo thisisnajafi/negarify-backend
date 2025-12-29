@@ -168,14 +168,15 @@ class OtpRequestTest extends BackendTestCase
                 ],
             ]);
 
-        // Verify first OTP still exists
+        // Verify first OTP still exists (phone is normalized)
+        $normalizedPhone = '09123456789';
         $this->assertDatabaseHas('otp_verifications', [
-            'phone' => $phone,
+            'phone' => $normalizedPhone,
             'request_id' => $firstRequestId,
         ]);
 
         // Verify only one OTP exists
-        $this->assertEquals(1, OtpVerification::where('phone', $phone)->count());
+        $this->assertEquals(1, OtpVerification::where('phone', $normalizedPhone)->count());
     }
 
     /** @test */
