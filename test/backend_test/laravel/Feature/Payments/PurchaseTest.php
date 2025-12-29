@@ -9,10 +9,18 @@ use App\Models\User;
 use App\Services\CurrencyRateService;
 use App\Services\ZarinpalService;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
 
 class PurchaseTest extends BackendTestCase
 {
+    // Override RefreshDatabase trait to avoid transaction conflicts
+    // The issue: OrderController uses lockForUpdate() and DB::beginTransaction()
+    // which conflicts with RefreshDatabase's transaction wrapping in SQLite
+    // Solution: Use DatabaseMigrations instead which doesn't wrap in transactions
+    use \Illuminate\Foundation\Testing\DatabaseMigrations;
+    
+    // Remove RefreshDatabase from parent to avoid trait conflict
     protected function setUp(): void
     {
         parent::setUp();
@@ -31,8 +39,13 @@ class PurchaseTest extends BackendTestCase
         ]);
         
         app(CurrencyRateService::class)->cacheRate(50000);
-        
-        // Mock Zarinpal
+    }
+    
+    /**
+     * Set up successful HTTP fake for Zarinpal (can be overridden in tests)
+     */
+    protected function setUpZarinpalFake(): void
+    {
         Http::fake([
             'sandbox.zarinpal.com/*' => Http::response([
                 'data' => [
@@ -52,6 +65,8 @@ class PurchaseTest extends BackendTestCase
     /** @test */
     public function it_creates_order_and_requests_payment(): void
     {
+        $this->setUpZarinpalFake();
+        
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
@@ -110,6 +125,8 @@ class PurchaseTest extends BackendTestCase
     /** @test */
     public function it_rejects_inactive_bundle_purchase(): void
     {
+        $this->setUpZarinpalFake();
+        
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
@@ -136,6 +153,8 @@ class PurchaseTest extends BackendTestCase
     /** @test */
     public function it_calculates_price_using_current_rate(): void
     {
+        $this->setUpZarinpalFake();
+        
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
@@ -165,6 +184,8 @@ class PurchaseTest extends BackendTestCase
     /** @test */
     public function it_includes_bonus_tokens_in_order(): void
     {
+        $this->setUpZarinpalFake();
+        
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
@@ -191,15 +212,6 @@ class PurchaseTest extends BackendTestCase
     /** @test */
     public function it_handles_zarinpal_failure_gracefully(): void
     {
-        Http::fake([
-            'api.zarinpal.com/*' => Http::response([
-                'errors' => [
-                    'code' => -9,
-                    'message' => 'Invalid merchant',
-                ],
-            ], 200),
-        ]);
-        
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
@@ -208,6 +220,18 @@ class PurchaseTest extends BackendTestCase
             'token_amount' => 100,
             'price_usd' => 1.00,
             'is_active' => true,
+        ]);
+        
+        // Override Http fake for failure - Http::fake() replaces previous fakes
+        // ZarinpalService checks: if isset($result['data']['code']) && $result['data']['code'] == 100 -> success
+        // Error response should have 'errors' key instead of 'data' key with code 100
+        Http::fake([
+            '*' => Http::response([
+                'errors' => [
+                    'code' => -9,
+                    'message' => 'Invalid merchant',
+                ],
+            ], 200),
         ]);
         
         $response = $this->withHeaders([
