@@ -310,10 +310,10 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Storage usage
 
 ### Feed Management
-- [ ] Curate post
-- [ ] Uncurate post
-- [ ] Bulk curation
-- [ ] Curated posts listing
+- [x] Curate post
+- [x] Uncurate post
+- [x] Bulk curation
+- [x] Curated posts listing
 
 ---
 

@@ -1,10 +1,8 @@
-System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)
- [x] It returns system health metrics
- [x] It caches system health
- [x] It rejects system health access for non admin
- [x] It tracks failed jobs count
- [x] It calculates error rate
- [x] It tracks api latency
- [x] It tracks storage usage
- [x] It tracks queue length by type
+Gallery Admin (Test\BackendTest\Laravel\Feature\Admin\GalleryAdmin)
+ [x] It curates post as admin
+ [x] It rejects curating private post
+ [x] It uncurates post
+ [x] It features post
+ [x] It performs bulk curation
+ [x] It lists curated posts
 
