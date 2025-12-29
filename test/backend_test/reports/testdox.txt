@@ -1,11 +1,10 @@
-Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)
- [x] It calculates revenue cost and profit
- [x] It calculates profit margins correctly
- [x] It provides breakdown by model
- [x] It provides breakdown by provider
- [x] It provides historical comparison
- [x] It provides profit margins over time
- [x] It supports date range filtering
- [x] It supports range parameter
- [x] It caches cost profit data
+System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)
+ [x] It returns system health metrics
+ [x] It caches system health
+ [x] It rejects system health access for non admin
+ [x] It tracks failed jobs count
+ [x] It calculates error rate
+ [x] It tracks api latency
+ [x] It tracks storage usage
+ [x] It tracks queue length by type
 

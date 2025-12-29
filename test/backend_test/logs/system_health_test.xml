@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Nadali\Documents\GitHub\negarify-backend\phpunit.xml" tests="8" assertions="59" errors="0" failures="0" skipped="0" time="1.997570">
+    <testsuite name="BackendTest" tests="8" assertions="59" errors="0" failures="0" skipped="0" time="1.997570">
+      <testsuite name="Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest" file="System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)" tests="8" assertions="59" errors="0" failures="0" skipped="0" time="1.997570">
+        <testcase name="It returns system health metrics" file="System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)::It returns system health metrics" class="Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest" classname="Test.BackendTest.Laravel.Feature.Admin.SystemHealthTest" assertions="18" time="1.815388"/>
+        <testcase name="It caches system health" file="System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)::It caches system health" class="Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest" classname="Test.BackendTest.Laravel.Feature.Admin.SystemHealthTest" assertions="3" time="0.025113"/>
+        <testcase name="It rejects system health access for non admin" file="System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)::It rejects system health access for non admin" class="Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest" classname="Test.BackendTest.Laravel.Feature.Admin.SystemHealthTest" assertions="1" time="0.020541"/>
+        <testcase name="It tracks failed jobs count" file="System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)::It tracks failed jobs count" class="Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest" classname="Test.BackendTest.Laravel.Feature.Admin.SystemHealthTest" assertions="7" time="0.026201"/>
+        <testcase name="It calculates error rate" file="System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)::It calculates error rate" class="Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest" classname="Test.BackendTest.Laravel.Feature.Admin.SystemHealthTest" assertions="8" time="0.030470"/>
+        <testcase name="It tracks api latency" file="System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)::It tracks api latency" class="Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest" classname="Test.BackendTest.Laravel.Feature.Admin.SystemHealthTest" assertions="6" time="0.027766"/>
+        <testcase name="It tracks storage usage" file="System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)::It tracks storage usage" class="Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest" classname="Test.BackendTest.Laravel.Feature.Admin.SystemHealthTest" assertions="7" time="0.025910"/>
+        <testcase name="It tracks queue length by type" file="System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)::It tracks queue length by type" class="Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest" classname="Test.BackendTest.Laravel.Feature.Admin.SystemHealthTest" assertions="9" time="0.026180"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

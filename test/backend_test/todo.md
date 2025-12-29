@@ -302,12 +302,12 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Historical comparison
 
 ### System Health Dashboard
-- [ ] Queue length
-- [ ] Worker status
-- [ ] Failed jobs count
-- [ ] Error rate
-- [ ] API latency
-- [ ] Storage usage
+- [x] Queue length
+- [x] Worker status
+- [x] Failed jobs count
+- [x] Error rate
+- [x] API latency
+- [x] Storage usage
 
 ### Feed Management
 - [ ] Curate post
