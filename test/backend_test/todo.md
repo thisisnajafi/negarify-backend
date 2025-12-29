@@ -43,10 +43,10 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Phone verified_at timestamp
 
 ### OTP Resend Tests
-- [ ] Valid resend creates new OTP
-- [ ] Previous OTP invalidated
-- [ ] Rate limiting for resend
-- [ ] Invalid request_id handling
+- [x] Valid resend creates new OTP
+- [x] Previous OTP invalidated
+- [x] Rate limiting for resend
+- [x] Invalid request_id handling
 
 ### Logout Tests
 - [ ] Token revocation

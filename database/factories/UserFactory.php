@@ -24,11 +24,15 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'phone' => '09' . fake()->unique()->numerify('#########'), // 09 + 9 digits = 11 digits total (Iranian format)
             'email' => fake()->unique()->safeEmail(),
+            'name' => fake()->name(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'is_verified' => true,
+            'tokens_balance' => 0,
+            'role' => 'user',
         ];
     }
 
