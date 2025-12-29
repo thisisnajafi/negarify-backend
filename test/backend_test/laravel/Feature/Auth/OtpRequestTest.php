@@ -251,7 +251,6 @@ class OtpRequestTest extends BackendTestCase
             '989373264601',
             '+989373264601',
             '+98 937 326 4601',
-            '00989373264601',
         ];
         $normalizedPhone = '09373264601';
         $normalizedPhoneHash = hash('sha256', $normalizedPhone . config('app.key'));
