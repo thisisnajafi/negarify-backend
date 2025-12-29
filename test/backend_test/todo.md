@@ -157,32 +157,32 @@ This file tracks the implementation progress of the test suite. Items are checke
 ## 6. Generation Jobs Tests
 
 ### Generation Request (Image/Video/Audio)
-- [ ] Valid request creates job
-- [ ] Parameter validation
-- [ ] Token balance check
-- [ ] Insufficient tokens handling
-- [ ] Token reservation
-- [ ] Job creation (status=pending)
-- [ ] Job queuing
-- [ ] Invalid model handling
-- [ ] Disabled model rejection
+- [x] Valid request creates job
+- [x] Parameter validation
+- [x] Token balance check
+- [x] Insufficient tokens handling
+- [x] Token reservation
+- [x] Job creation (status=pending)
+- [x] Job queuing
+- [x] Invalid model handling
+- [x] Disabled model rejection
 
 ### Job Status & Listing
-- [ ] Job details returned
+- [x] Job details returned
 - [ ] Status transitions
 - [ ] Progress tracking
 - [ ] Result URL availability
 - [ ] Error message inclusion
-- [ ] User access control (own jobs only)
-- [ ] Job listing with filters
+- [x] User access control (own jobs only)
+- [x] Job listing with filters
 - [ ] Pagination
 
 ### Job Cancellation & Retry
-- [ ] Pending job cancellation
-- [ ] Token refund on cancellation
+- [x] Pending job cancellation
+- [x] Token refund on cancellation
 - [ ] Processing job handling
-- [ ] Failed job retry
-- [ ] Completed job handling
+- [x] Failed job retry
+- [x] Completed job handling
 
 ### Queue Job Processing
 - [ ] GenerateImageJob processing
