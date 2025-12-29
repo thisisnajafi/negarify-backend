@@ -51,182 +51,55 @@
         </style>
     </head>
     <body>
-        <h2>Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)</h2>
+        <h2>Comment (Test\BackendTest\Laravel\Feature\Social\Comment)</h2>
         <ul>
-            <li class="success">It calculates revenue cost and profit</li>
-            <li class="success">It calculates profit margins correctly</li>
-            <li class="success">It provides breakdown by model</li>
-            <li class="success">It provides breakdown by provider</li>
-            <li class="success">It provides historical comparison</li>
-            <li class="success">It provides profit margins over time</li>
-            <li class="success">It supports date range filtering</li>
-            <li class="success">It supports range parameter</li>
-            <li class="success">It caches cost profit data</li>
+            <li class="success">It creates comment on post</li>
+            <li class="success">It creates nested reply comment</li>
+            <li class="success">It rejects reply to invalid parent comment</li>
+            <li class="success">It validates comment body</li>
+            <li class="success">It rejects comment for unauthenticated user</li>
         </ul>
-        <h2>Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)</h2>
+        <h2>Comment Accuracy (Test\BackendTest\Laravel\Feature\Social\CommentAccuracy)</h2>
         <ul>
-            <li class="success">It returns usage statistics per model</li>
-            <li class="success">It calculates success and failure rates</li>
-            <li class="success">It calculates average latency</li>
-            <li class="success">It tracks tokens consumed per model</li>
-            <li class="success">It tracks cost and revenue per model</li>
-            <li class="success">It supports date range filtering</li>
-            <li class="success">It supports range parameter</li>
-            <li class="success">It caches models usage data</li>
-            <li class="success">It handles breakdown by job type</li>
+            <li class="success">It maintains accurate comments count</li>
+            <li class="success">It decrements comments count when deleting comment</li>
+            <li class="success">It decrements comments count when deleting comment with replies</li>
+            <li class="success">It handles nested replies correctly</li>
         </ul>
-        <h2>Admin Rbac (Test\BackendTest\Laravel\Feature\Admin\AdminRbac)</h2>
+        <h2>Comment Delete (Test\BackendTest\Laravel\Feature\Social\CommentDelete)</h2>
         <ul>
-            <li class="success">It requires admin role for admin endpoints</li>
-            <li class="success">It rejects non admin users with 403</li>
-            <li class="success">It rejects unauthenticated users with 401</li>
-            <li class="success">It verifies admin middleware works</li>
+            <li class="success">It deletes own comment</li>
+            <li class="success">It deletes comment with replies</li>
+            <li class="success">It rejects deleting other user comment</li>
+            <li class="success">It allows admin to delete any comment</li>
         </ul>
-        <h2>Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)</h2>
+        <h2>Gallery Post (Test\BackendTest\Laravel\Feature\Gallery\GalleryPost)</h2>
         <ul>
-            <li class="success">It returns revenue by period</li>
-            <li class="success">It calculates total revenue correctly</li>
-            <li class="success">It returns top selling bundles</li>
-            <li class="success">It tracks refunds</li>
-            <li class="success">It supports date range filtering</li>
-            <li class="success">It caches sales summary</li>
+            <li class="success">It creates gallery post from completed job</li>
+            <li class="success">It rejects post from incomplete job</li>
+            <li class="success">It rejects post from other user job</li>
+            <li class="success">It prevents duplicate posts for same job</li>
+            <li class="success">It respects prompt and model visibility flags</li>
         </ul>
-        <h2>Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)</h2>
+        <h2>Gallery Post Management (Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagement)</h2>
         <ul>
-            <li class="success">It returns tokens consumption by provider</li>
-            <li class="success">It returns tokens consumption by type</li>
-            <li class="success">It returns cost per provider</li>
-            <li class="success">It returns time series data</li>
-            <li class="success">It supports date range filtering</li>
-            <li class="success">It supports range parameter</li>
-            <li class="success">It caches token analytics data</li>
+            <li class="success">It returns gallery post details</li>
+            <li class="success">It hides private posts from other users</li>
+            <li class="success">It allows owner to view private post</li>
+            <li class="success">It updates gallery post</li>
+            <li class="success">It rejects updating other user post</li>
+            <li class="success">It deletes gallery post</li>
+            <li class="success">It rejects deleting other user post</li>
+            <li class="success">It returns user own posts</li>
         </ul>
-        <h2>Admin Users (Test\BackendTest\Laravel\Feature\Admin\AdminUsers)</h2>
+        <h2>Like (Test\BackendTest\Laravel\Feature\Social\Like)</h2>
         <ul>
-            <li class="success">It calculates dau wau mau correctly</li>
-            <li class="success">It returns top users by generation</li>
-            <li class="success">It returns top users by spending</li>
-            <li class="success">It performs cohort analysis</li>
-            <li class="success">It searches users by name phone or email</li>
-            <li class="success">It filters users by role</li>
-            <li class="success">It filters users by date range</li>
-            <li class="success">It paginates users list</li>
-            <li class="success">It caches users summary</li>
-        </ul>
-        <h2>Callback (Test\BackendTest\Laravel\Feature\Payments\Callback)</h2>
-        <ul>
-            <li class="success">It processes successful payment callback</li>
-            <li class="success">It is idempotent prevents double credit</li>
-            <li class="success">It handles failed payment status</li>
-            <li class="success">It handles missing authority parameter</li>
-            <li class="success">It handles invalid authority</li>
-            <li class="success">It handles zarinpal verification failure</li>
-            <li class="success">It prevents processing non pending orders</li>
-            <li class="success">It handles mismatched amount</li>
-        </ul>
-        <h2>Dashboard Summary (Test\BackendTest\Laravel\Feature\Admin\DashboardSummary)</h2>
-        <ul>
-            <li class="success">It returns sales summary</li>
-            <li class="success">It returns users summary</li>
-            <li class="success">It returns tokens summary</li>
-            <li class="success">It returns cost profit summary</li>
-            <li class="success">It returns models usage summary</li>
-            <li class="success">It returns users list</li>
-            <li class="success">It filters users list by role</li>
-            <li class="success">It rejects admin endpoints for non admin</li>
-        </ul>
-        <h2>Gallery Admin (Test\BackendTest\Laravel\Feature\Admin\GalleryAdmin)</h2>
-        <ul>
-            <li class="success">It curates post as admin</li>
-            <li class="success">It rejects curating private post</li>
-            <li class="success">It uncurates post</li>
-            <li class="success">It features post</li>
-            <li class="success">It performs bulk curation</li>
-            <li class="success">It lists curated posts</li>
-        </ul>
-        <h2>Image Generation (Test\BackendTest\Laravel\Feature\Generation\ImageGeneration)</h2>
-        <ul>
-            <li class="success">It creates image generation job</li>
-            <li class="success">It rejects generation with insufficient tokens</li>
-            <li class="success">It rejects unavailable model</li>
-            <li class="success">It rejects wrong model type</li>
-            <li class="success">It validates required prompt</li>
-            <li class="success">It stores generation parameters</li>
-        </ul>
-        <h2>Job Status (Test\BackendTest\Laravel\Feature\Generation\JobStatus)</h2>
-        <ul>
-            <li class="success">It returns user generation jobs</li>
-            <li class="success">It filters jobs by type</li>
-            <li class="success">It filters jobs by status</li>
-            <li class="success">It returns single job details</li>
-            <li class="success">It rejects access to other user job</li>
-            <li class="success">It cancels pending job and refunds tokens</li>
-            <li class="success">It rejects cancelling completed job</li>
-            <li class="success">It retries failed job</li>
-            <li class="success">It rejects retrying non failed job</li>
-            <li class="success">It shows status transitions</li>
-            <li class="success">It tracks progress with timestamps</li>
-            <li class="success">It includes result urls when available</li>
-            <li class="success">It includes error message when job failed</li>
-            <li class="success">It paginates job listing</li>
-            <li class="success">It handles cancelling processing job</li>
-        </ul>
-        <h2>Moderation Admin (Test\BackendTest\Laravel\Feature\Admin\ModerationAdmin)</h2>
-        <ul>
-            <li class="success">It returns moderation queue</li>
-            <li class="success">It returns reports list</li>
-            <li class="success">It approves post in moderation</li>
-            <li class="success">It rejects post in moderation</li>
-            <li class="success">It resolves report</li>
-        </ul>
-        <h2>Purchase (Test\BackendTest\Laravel\Feature\Payments\Purchase)</h2>
-        <ul>
-            <li class="success">It creates order and requests payment</li>
-            <li class="success">It rejects inactive bundle purchase</li>
-            <li class="success">It calculates price using current rate</li>
-            <li class="success">It includes bonus tokens in order</li>
-            <li class="success">It handles zarinpal failure gracefully</li>
-            <li class="success">It rejects purchase for unauthenticated user</li>
-        </ul>
-        <h2>Queue Job Processing (Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessing)</h2>
-        <ul>
-            <li class="success">It processes image generation job successfully</li>
-            <li class="success">It handles image generation failure and refunds tokens</li>
-            <li class="success">It processes video generation job successfully</li>
-            <li class="success">It processes audio generation job successfully</li>
-            <li class="success">It is idempotent and skips already completed jobs</li>
-            <li class="success">It is idempotent and skips already failed jobs</li>
-            <li class="success">It updates job status to processing when handling</li>
-            <li class="success">It handles retries safely without duplicate operations</li>
-        </ul>
-        <h2>System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)</h2>
-        <ul>
-            <li class="success">It returns system health metrics</li>
-            <li class="success">It caches system health</li>
-            <li class="success">It rejects system health access for non admin</li>
-            <li class="success">It tracks failed jobs count</li>
-            <li class="success">It calculates error rate</li>
-            <li class="success">It tracks api latency</li>
-            <li class="success">It tracks storage usage</li>
-            <li class="success">It tracks queue length by type</li>
-        </ul>
-        <h2>Token Bundle Admin (Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdmin)</h2>
-        <ul>
-            <li class="success">It creates token bundle as admin</li>
-            <li class="success">It rejects bundle creation for non admin</li>
-            <li class="success">It updates token bundle</li>
-            <li class="success">It deletes token bundle</li>
-            <li class="success">It activates token bundle</li>
-            <li class="success">It deactivates token bundle</li>
-        </ul>
-        <h2>Video Audio Generation (Test\BackendTest\Laravel\Feature\Generation\VideoAudioGeneration)</h2>
-        <ul>
-            <li class="success">It creates video generation job</li>
-            <li class="success">It rejects video generation with wrong model type</li>
-            <li class="success">It creates audio generation job</li>
-            <li class="success">It rejects audio generation with wrong model type</li>
-            <li class="success">It stores video generation parameters</li>
-            <li class="success">It stores audio generation parameters</li>
+            <li class="success">It likes a post</li>
+            <li class="success">It is idempotent prevents duplicate likes</li>
+            <li class="success">It unlikes a post</li>
+            <li class="success">It rejects like for unauthenticated user</li>
+            <li class="success">It allows liking own post</li>
+            <li class="success">It maintains accurate likes count</li>
         </ul>
     </body>
 </html>

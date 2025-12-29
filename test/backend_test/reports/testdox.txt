@@ -1,160 +1,44 @@
-Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)
- [x] It calculates revenue cost and profit
- [x] It calculates profit margins correctly
- [x] It provides breakdown by model
- [x] It provides breakdown by provider
- [x] It provides historical comparison
- [x] It provides profit margins over time
- [x] It supports date range filtering
- [x] It supports range parameter
- [x] It caches cost profit data
+Comment (Test\BackendTest\Laravel\Feature\Social\Comment)
+ [x] It creates comment on post
+ [x] It creates nested reply comment
+ [x] It rejects reply to invalid parent comment
+ [x] It validates comment body
+ [x] It rejects comment for unauthenticated user
 
-Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)
- [x] It returns usage statistics per model
- [x] It calculates success and failure rates
- [x] It calculates average latency
- [x] It tracks tokens consumed per model
- [x] It tracks cost and revenue per model
- [x] It supports date range filtering
- [x] It supports range parameter
- [x] It caches models usage data
- [x] It handles breakdown by job type
+Comment Accuracy (Test\BackendTest\Laravel\Feature\Social\CommentAccuracy)
+ [x] It maintains accurate comments count
+ [x] It decrements comments count when deleting comment
+ [x] It decrements comments count when deleting comment with replies
+ [x] It handles nested replies correctly
 
-Admin Rbac (Test\BackendTest\Laravel\Feature\Admin\AdminRbac)
- [x] It requires admin role for admin endpoints
- [x] It rejects non admin users with 403
- [x] It rejects unauthenticated users with 401
- [x] It verifies admin middleware works
+Comment Delete (Test\BackendTest\Laravel\Feature\Social\CommentDelete)
+ [x] It deletes own comment
+ [x] It deletes comment with replies
+ [x] It rejects deleting other user comment
+ [x] It allows admin to delete any comment
 
-Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)
- [x] It returns revenue by period
- [x] It calculates total revenue correctly
- [x] It returns top selling bundles
- [x] It tracks refunds
- [x] It supports date range filtering
- [x] It caches sales summary
+Gallery Post (Test\BackendTest\Laravel\Feature\Gallery\GalleryPost)
+ [x] It creates gallery post from completed job
+ [x] It rejects post from incomplete job
+ [x] It rejects post from other user job
+ [x] It prevents duplicate posts for same job
+ [x] It respects prompt and model visibility flags
 
-Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)
- [x] It returns tokens consumption by provider
- [x] It returns tokens consumption by type
- [x] It returns cost per provider
- [x] It returns time series data
- [x] It supports date range filtering
- [x] It supports range parameter
- [x] It caches token analytics data
+Gallery Post Management (Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagement)
+ [x] It returns gallery post details
+ [x] It hides private posts from other users
+ [x] It allows owner to view private post
+ [x] It updates gallery post
+ [x] It rejects updating other user post
+ [x] It deletes gallery post
+ [x] It rejects deleting other user post
+ [x] It returns user own posts
 
-Admin Users (Test\BackendTest\Laravel\Feature\Admin\AdminUsers)
- [x] It calculates dau wau mau correctly
- [x] It returns top users by generation
- [x] It returns top users by spending
- [x] It performs cohort analysis
- [x] It searches users by name phone or email
- [x] It filters users by role
- [x] It filters users by date range
- [x] It paginates users list
- [x] It caches users summary
-
-Callback (Test\BackendTest\Laravel\Feature\Payments\Callback)
- [x] It processes successful payment callback
- [x] It is idempotent prevents double credit
- [x] It handles failed payment status
- [x] It handles missing authority parameter
- [x] It handles invalid authority
- [x] It handles zarinpal verification failure
- [x] It prevents processing non pending orders
- [x] It handles mismatched amount
-
-Dashboard Summary (Test\BackendTest\Laravel\Feature\Admin\DashboardSummary)
- [x] It returns sales summary
- [x] It returns users summary
- [x] It returns tokens summary
- [x] It returns cost profit summary
- [x] It returns models usage summary
- [x] It returns users list
- [x] It filters users list by role
- [x] It rejects admin endpoints for non admin
-
-Gallery Admin (Test\BackendTest\Laravel\Feature\Admin\GalleryAdmin)
- [x] It curates post as admin
- [x] It rejects curating private post
- [x] It uncurates post
- [x] It features post
- [x] It performs bulk curation
- [x] It lists curated posts
-
-Image Generation (Test\BackendTest\Laravel\Feature\Generation\ImageGeneration)
- [x] It creates image generation job
- [x] It rejects generation with insufficient tokens
- [x] It rejects unavailable model
- [x] It rejects wrong model type
- [x] It validates required prompt
- [x] It stores generation parameters
-
-Job Status (Test\BackendTest\Laravel\Feature\Generation\JobStatus)
- [x] It returns user generation jobs
- [x] It filters jobs by type
- [x] It filters jobs by status
- [x] It returns single job details
- [x] It rejects access to other user job
- [x] It cancels pending job and refunds tokens
- [x] It rejects cancelling completed job
- [x] It retries failed job
- [x] It rejects retrying non failed job
- [x] It shows status transitions
- [x] It tracks progress with timestamps
- [x] It includes result urls when available
- [x] It includes error message when job failed
- [x] It paginates job listing
- [x] It handles cancelling processing job
-
-Moderation Admin (Test\BackendTest\Laravel\Feature\Admin\ModerationAdmin)
- [x] It returns moderation queue
- [x] It returns reports list
- [x] It approves post in moderation
- [x] It rejects post in moderation
- [x] It resolves report
-
-Purchase (Test\BackendTest\Laravel\Feature\Payments\Purchase)
- [x] It creates order and requests payment
- [x] It rejects inactive bundle purchase
- [x] It calculates price using current rate
- [x] It includes bonus tokens in order
- [x] It handles zarinpal failure gracefully
- [x] It rejects purchase for unauthenticated user
-
-Queue Job Processing (Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessing)
- [x] It processes image generation job successfully
- [x] It handles image generation failure and refunds tokens
- [x] It processes video generation job successfully
- [x] It processes audio generation job successfully
- [x] It is idempotent and skips already completed jobs
- [x] It is idempotent and skips already failed jobs
- [x] It updates job status to processing when handling
- [x] It handles retries safely without duplicate operations
-
-System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)
- [x] It returns system health metrics
- [x] It caches system health
- [x] It rejects system health access for non admin
- [x] It tracks failed jobs count
- [x] It calculates error rate
- [x] It tracks api latency
- [x] It tracks storage usage
- [x] It tracks queue length by type
-
-Token Bundle Admin (Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdmin)
- [x] It creates token bundle as admin
- [x] It rejects bundle creation for non admin
- [x] It updates token bundle
- [x] It deletes token bundle
- [x] It activates token bundle
- [x] It deactivates token bundle
-
-Video Audio Generation (Test\BackendTest\Laravel\Feature\Generation\VideoAudioGeneration)
- [x] It creates video generation job
- [x] It rejects video generation with wrong model type
- [x] It creates audio generation job
- [x] It rejects audio generation with wrong model type
- [x] It stores video generation parameters
- [x] It stores audio generation parameters
+Like (Test\BackendTest\Laravel\Feature\Social\Like)
+ [x] It likes a post
+ [x] It is idempotent prevents duplicate likes
+ [x] It unlikes a post
+ [x] It rejects like for unauthenticated user
+ [x] It allows liking own post
+ [x] It maintains accurate likes count
 
