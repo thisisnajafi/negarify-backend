@@ -22,14 +22,14 @@ This file tracks the implementation progress of the test suite. Items are checke
 ## 1. Authentication & OTP Tests
 
 ### OTP Request Tests
-- [ ] Valid phone number sends OTP
-- [ ] Invalid phone format validation
-- [ ] Rate limiting (3 per 15 min)
-- [ ] OTP storage structure
-- [ ] Request ID generation
-- [ ] Expiration time (5 minutes)
-- [ ] Melipayamak service mocking
-- [ ] Melipayamak failure handling
+- [x] Valid phone number sends OTP
+- [x] Invalid phone format validation
+- [x] Rate limiting (3 per 15 min)
+- [x] OTP storage structure
+- [x] Request ID generation
+- [x] Expiration time (5 minutes)
+- [x] Melipayamak service mocking
+- [x] Melipayamak failure handling
 
 ### OTP Verification Tests
 - [x] Valid OTP verification

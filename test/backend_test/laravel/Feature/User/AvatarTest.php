@@ -48,9 +48,14 @@ class AvatarTest extends BackendTestCase
         $this->assertNotNull($user->avatar_url);
         $this->assertStringContainsString('avatars', $user->avatar_url);
 
-        // Verify file stored
-        $path = str_replace(config('filesystems.disks.s3.url'), '', $user->avatar_url);
-        Storage::disk('s3')->assertExists(ltrim($path, '/'));
+        // Verify file stored - extract path from URL
+        $avatarUrl = $user->avatar_url;
+        // Extract path from URL (format: http://localhost/storage/avatars/... or https://bucket.s3.../avatars/...)
+        $parsedUrl = parse_url($avatarUrl);
+        $path = ltrim($parsedUrl['path'] ?? '', '/');
+        // Remove 'storage/' prefix if present (Laravel fake storage adds this)
+        $path = preg_replace('#^storage/#', '', $path);
+        Storage::disk('s3')->assertExists($path);
 
         $this->assertNoErrorLogs();
     }
