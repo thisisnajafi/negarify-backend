@@ -1,3 +1,59 @@
+Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)
+ [x] It calculates revenue cost and profit
+ [x] It calculates profit margins correctly
+ [x] It provides breakdown by model
+ [x] It provides breakdown by provider
+ [x] It provides historical comparison
+ [x] It provides profit margins over time
+ [x] It supports date range filtering
+ [x] It supports range parameter
+ [x] It caches cost profit data
+
+Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)
+ [x] It returns usage statistics per model
+ [x] It calculates success and failure rates
+ [x] It calculates average latency
+ [x] It tracks tokens consumed per model
+ [x] It tracks cost and revenue per model
+ [x] It supports date range filtering
+ [x] It supports range parameter
+ [x] It caches models usage data
+ [x] It handles breakdown by job type
+
+Admin Rbac (Test\BackendTest\Laravel\Feature\Admin\AdminRbac)
+ [x] It requires admin role for admin endpoints
+ [x] It rejects non admin users with 403
+ [x] It rejects unauthenticated users with 401
+ [x] It verifies admin middleware works
+
+Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)
+ [x] It returns revenue by period
+ [x] It calculates total revenue correctly
+ [x] It returns top selling bundles
+ [x] It tracks refunds
+ [x] It supports date range filtering
+ [x] It caches sales summary
+
+Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)
+ [x] It returns tokens consumption by provider
+ [x] It returns tokens consumption by type
+ [x] It returns cost per provider
+ [x] It returns time series data
+ [x] It supports date range filtering
+ [x] It supports range parameter
+ [x] It caches token analytics data
+
+Admin Users (Test\BackendTest\Laravel\Feature\Admin\AdminUsers)
+ [x] It calculates dau wau mau correctly
+ [x] It returns top users by generation
+ [x] It returns top users by spending
+ [x] It performs cohort analysis
+ [x] It searches users by name phone or email
+ [x] It filters users by role
+ [x] It filters users by date range
+ [x] It paginates users list
+ [x] It caches users summary
+
 Callback (Test\BackendTest\Laravel\Feature\Payments\Callback)
  [x] It processes successful payment callback
  [x] It is idempotent prevents double credit
@@ -8,22 +64,23 @@ Callback (Test\BackendTest\Laravel\Feature\Payments\Callback)
  [x] It prevents processing non pending orders
  [x] It handles mismatched amount
 
-Gallery Post (Test\BackendTest\Laravel\Feature\Gallery\GalleryPost)
- [x] It creates gallery post from completed job
- [x] It rejects post from incomplete job
- [x] It rejects post from other user job
- [x] It prevents duplicate posts for same job
- [x] It respects prompt and model visibility flags
+Dashboard Summary (Test\BackendTest\Laravel\Feature\Admin\DashboardSummary)
+ [x] It returns sales summary
+ [x] It returns users summary
+ [x] It returns tokens summary
+ [x] It returns cost profit summary
+ [x] It returns models usage summary
+ [x] It returns users list
+ [x] It filters users list by role
+ [x] It rejects admin endpoints for non admin
 
-Gallery Post Management (Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagement)
- [x] It returns gallery post details
- [x] It hides private posts from other users
- [x] It allows owner to view private post
- [x] It updates gallery post
- [x] It rejects updating other user post
- [x] It deletes gallery post
- [x] It rejects deleting other user post
- [x] It returns user own posts
+Gallery Admin (Test\BackendTest\Laravel\Feature\Admin\GalleryAdmin)
+ [x] It curates post as admin
+ [x] It rejects curating private post
+ [x] It uncurates post
+ [x] It features post
+ [x] It performs bulk curation
+ [x] It lists curated posts
 
 Image Generation (Test\BackendTest\Laravel\Feature\Generation\ImageGeneration)
  [x] It creates image generation job
@@ -50,6 +107,13 @@ Job Status (Test\BackendTest\Laravel\Feature\Generation\JobStatus)
  [x] It paginates job listing
  [x] It handles cancelling processing job
 
+Moderation Admin (Test\BackendTest\Laravel\Feature\Admin\ModerationAdmin)
+ [x] It returns moderation queue
+ [x] It returns reports list
+ [x] It approves post in moderation
+ [x] It rejects post in moderation
+ [x] It resolves report
+
 Purchase (Test\BackendTest\Laravel\Feature\Payments\Purchase)
  [x] It creates order and requests payment
  [x] It rejects inactive bundle purchase
@@ -67,6 +131,24 @@ Queue Job Processing (Test\BackendTest\Laravel\Feature\Generation\QueueJobProces
  [x] It is idempotent and skips already failed jobs
  [x] It updates job status to processing when handling
  [x] It handles retries safely without duplicate operations
+
+System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)
+ [x] It returns system health metrics
+ [x] It caches system health
+ [x] It rejects system health access for non admin
+ [x] It tracks failed jobs count
+ [x] It calculates error rate
+ [x] It tracks api latency
+ [x] It tracks storage usage
+ [x] It tracks queue length by type
+
+Token Bundle Admin (Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdmin)
+ [x] It creates token bundle as admin
+ [x] It rejects bundle creation for non admin
+ [x] It updates token bundle
+ [x] It deletes token bundle
+ [x] It activates token bundle
+ [x] It deactivates token bundle
 
 Video Audio Generation (Test\BackendTest\Laravel\Feature\Generation\VideoAudioGeneration)
  [x] It creates video generation job

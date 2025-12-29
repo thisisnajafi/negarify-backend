@@ -75,10 +75,13 @@ class DashboardSummaryTest extends BackendTestCase
             ->assertJsonStructure([
                 'success',
                 'data' => [
-                    'dau',
-                    'wau',
-                    'mau',
-                    'top_users',
+                    'active_users' => [
+                        'dau',
+                        'wau',
+                        'mau',
+                    ],
+                    'top_users_by_generation',
+                    'top_users_by_spending',
                 ],
             ])
             ->assertJson([
@@ -154,10 +157,12 @@ class DashboardSummaryTest extends BackendTestCase
             ->assertJsonStructure([
                 'success',
                 'data' => [
-                    'revenue',
-                    'cost',
-                    'profit',
-                    'profit_margin',
+                    'summary' => [
+                        'total_revenue_usd',
+                        'total_cost_usd',
+                        'total_profit_usd',
+                        'profit_margin',
+                    ],
                 ],
             ])
             ->assertJson([

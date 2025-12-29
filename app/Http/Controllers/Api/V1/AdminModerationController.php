@@ -26,7 +26,7 @@ class AdminModerationController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $queue->items()->map(function ($item) {
+            'data' => collect($queue->items())->map(function ($item) {
                 return [
                     'id' => $item->id,
                     'post_id' => $item->gallery_post_id,
@@ -44,7 +44,7 @@ class AdminModerationController extends Controller
                         ],
                     ],
                 ];
-            }),
+            })->values()->all(),
             'meta' => [
                 'current_page' => $queue->currentPage(),
                 'last_page' => $queue->lastPage(),
@@ -67,7 +67,7 @@ class AdminModerationController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $reports->items()->map(function ($report) {
+            'data' => collect($reports->items())->map(function ($report) {
                 return [
                     'id' => $report->id,
                     'user_id' => $report->user_id,
@@ -84,7 +84,7 @@ class AdminModerationController extends Controller
                         'name' => $report->user->name,
                     ],
                 ];
-            }),
+            })->values()->all(),
             'meta' => [
                 'current_page' => $reports->currentPage(),
                 'last_page' => $reports->lastPage(),
@@ -183,6 +183,7 @@ class AdminModerationController extends Controller
         }
 
         $report->status = 'resolved';
+        $report->save();
         // Note: No updated_at column, so we can't track when it was resolved
         // This is a limitation of the schema
 
@@ -219,6 +220,7 @@ class AdminModerationController extends Controller
         }
 
         $report->status = 'dismissed';
+        $report->save();
 
         Log::info('Report dismissed by admin', [
             'report_id' => $report->id,

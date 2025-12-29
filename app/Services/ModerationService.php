@@ -87,7 +87,7 @@ class ModerationService
             throw new \RuntimeException('Queue item is not pending');
         }
 
-        DB::transaction(function () use ($queue, $reviewerId, $notes) {
+        $executeUpdate = function () use ($queue, $reviewerId, $notes) {
             $queue->status = 'approved';
             $queue->reviewed_by = $reviewerId;
             $queue->reviewed_at = now();
@@ -99,7 +99,15 @@ class ModerationService
                 'reviewer_id' => $reviewerId,
                 'notes' => $notes,
             ]);
-        });
+        };
+
+        // If already in a transaction (e.g., test environment with LazilyRefreshDatabase),
+        // execute directly to avoid nested transaction issues in SQLite
+        if (DB::transactionLevel() > 0) {
+            $executeUpdate();
+        } else {
+            DB::transaction($executeUpdate);
+        }
     }
 
     /**
@@ -113,7 +121,7 @@ class ModerationService
             throw new \RuntimeException('Queue item is not pending');
         }
 
-        DB::transaction(function () use ($queue, $reviewerId, $action, $notes) {
+        $executeUpdate = function () use ($queue, $reviewerId, $action, $notes) {
             $queue->status = 'rejected';
             $queue->reviewed_by = $reviewerId;
             $queue->reviewed_at = now();
@@ -156,7 +164,15 @@ class ModerationService
                 'action' => $action,
                 'notes' => $notes,
             ]);
-        });
+        };
+
+        // If already in a transaction (e.g., test environment with LazilyRefreshDatabase),
+        // execute directly to avoid nested transaction issues in SQLite
+        if (DB::transactionLevel() > 0) {
+            $executeUpdate();
+        } else {
+            DB::transaction($executeUpdate);
+        }
     }
 
     /**
@@ -164,7 +180,7 @@ class ModerationService
      */
     public function removeContent(GalleryPost $post, string $action = 'hide', ?string $reason = null): void
     {
-        DB::transaction(function () use ($post, $action, $reason) {
+        $executeUpdate = function () use ($post, $action, $reason) {
             switch ($action) {
                 case 'hide':
                     $post->visibility = 'private';
@@ -188,7 +204,15 @@ class ModerationService
                 'action' => $action,
                 'reason' => $reason,
             ]);
-        });
+        };
+
+        // If already in a transaction (e.g., test environment with LazilyRefreshDatabase),
+        // execute directly to avoid nested transaction issues in SQLite
+        if (DB::transactionLevel() > 0) {
+            $executeUpdate();
+        } else {
+            DB::transaction($executeUpdate);
+        }
     }
 }
 

@@ -21,17 +21,22 @@ class ModerationAdminTest extends BackendTestCase
         
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $user = User::factory()->create();
         
         $job = GenerationJob::create([
+            'user_id' => $user->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $user->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
         ]);
@@ -75,17 +80,22 @@ class ModerationAdminTest extends BackendTestCase
         
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $user = User::factory()->create();
         
         $job = GenerationJob::create([
+            'user_id' => $user->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $user->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
         ]);
@@ -128,17 +138,22 @@ class ModerationAdminTest extends BackendTestCase
         
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $user = User::factory()->create();
         
         $job = GenerationJob::create([
+            'user_id' => $user->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $user->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
         ]);
@@ -158,7 +173,7 @@ class ModerationAdminTest extends BackendTestCase
         $response->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'message' => 'Post approved',
+                'message' => 'Content approved successfully',
             ]);
 
         $queueItem->refresh();
@@ -173,17 +188,22 @@ class ModerationAdminTest extends BackendTestCase
         
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $user = User::factory()->create();
         
         $job = GenerationJob::create([
+            'user_id' => $user->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $user->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
         ]);
@@ -203,15 +223,15 @@ class ModerationAdminTest extends BackendTestCase
         $response->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'message' => 'Post rejected',
+                'message' => 'Content rejected successfully',
             ]);
 
         $queueItem->refresh();
         $this->assertEquals('rejected', $queueItem->status);
         
-        // Verify post hidden
+        // Verify post hidden (set to private)
         $post->refresh();
-        $this->assertEquals('hidden', $post->visibility);
+        $this->assertEquals('private', $post->visibility);
     }
 
     /** @test */
@@ -222,17 +242,22 @@ class ModerationAdminTest extends BackendTestCase
         
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        $user = User::factory()->create();
         
         $job = GenerationJob::create([
+            'user_id' => $user->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $user->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
         ]);
@@ -254,7 +279,7 @@ class ModerationAdminTest extends BackendTestCase
         $response->assertStatus(200)
             ->assertJson([
                 'success' => true,
-                'message' => 'Report resolved',
+                'message' => 'Report resolved successfully',
             ]);
 
         $report->refresh();
