@@ -7,10 +7,14 @@ use App\Services\CurrencyRateService;
 use App\Services\TgjuScraperService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
 
 class TgjuScraperServiceTest extends BackendTestCase
 {
+    // Override to use DatabaseMigrations instead of RefreshDatabase
+    // Reason: Service creates CurrencyRate records which conflicts with RefreshDatabase's transaction wrapping in SQLite
+    use DatabaseMigrations;
     /** @test */
     public function it_fetches_and_stores_usd_rate_from_tgju(): void
     {
