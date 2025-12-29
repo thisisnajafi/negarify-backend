@@ -1,0 +1,11 @@
+{
+  "data": {
+    "code": 100,
+    "message": "Verified",
+    "ref_id": 123456789,
+    "fee": 0,
+    "fee_type": "Merchant"
+  },
+  "errors": []
+}
+

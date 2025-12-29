@@ -29,7 +29,8 @@ class AdminSalesController extends Controller
         $endDate = $dateRange['end'];
         
         // Cache key
-        $cacheKey = "admin:sales:summary:{$validated['range'] ?? 'custom'}:{$startDate->format('Y-m-d')}:{$endDate->format('Y-m-d')}";
+        $range = $validated['range'] ?? 'custom';
+        $cacheKey = "admin:sales:summary:{$range}:{$startDate->format('Y-m-d')}:{$endDate->format('Y-m-d')}";
         
         // Try cache first
         $cached = Cache::get($cacheKey);
@@ -59,23 +60,23 @@ class AdminSalesController extends Controller
                 SUM(price_usd) as revenue_usd,
                 COUNT(*) as orders_count
             ')
-            ->groupBy('date')
-            ->orderBy('date', 'asc')
+            ->groupBy(DB::raw('DATE(created_at)'))
+            ->orderBy(DB::raw('DATE(created_at)'), 'asc')
             ->get();
         
         // Get top selling bundles
-        $topBundles = Order::where('status', 'paid')
-            ->whereBetween('created_at', [$startDate, $endDate])
+        $topBundles = Order::where('orders.status', 'paid')
+            ->whereBetween('orders.created_at', [$startDate, $endDate])
             ->join('token_bundles', 'orders.token_bundle_id', '=', 'token_bundles.id')
             ->selectRaw('
                 token_bundles.id,
                 token_bundles.name,
-                token_bundles.amount_tokens,
+                token_bundles.token_amount,
                 COUNT(orders.id) as orders_count,
                 SUM(orders.price_toman) as total_revenue_toman,
                 SUM(orders.price_usd) as total_revenue_usd
             ')
-            ->groupBy('token_bundles.id', 'token_bundles.name', 'token_bundles.amount_tokens')
+            ->groupBy('token_bundles.id', 'token_bundles.name', 'token_bundles.token_amount')
             ->orderBy('orders_count', 'desc')
             ->limit(10)
             ->get();
@@ -120,7 +121,7 @@ class AdminSalesController extends Controller
                 return [
                     'id' => $bundle->id,
                     'name' => $bundle->name,
-                    'amount_tokens' => (int) $bundle->amount_tokens,
+                    'amount_tokens' => (int) $bundle->token_amount,
                     'orders_count' => (int) $bundle->orders_count,
                     'total_revenue_toman' => (float) $bundle->total_revenue_toman,
                     'total_revenue_usd' => (float) $bundle->total_revenue_usd,

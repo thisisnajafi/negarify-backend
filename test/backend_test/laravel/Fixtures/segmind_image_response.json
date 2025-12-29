@@ -1,0 +1,17 @@
+{
+  "status": "success",
+  "image_url": "https://api.segmind.com/v1/sd1.5-txt2img/results/abc123.jpg",
+  "image_base64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+  "seed": 12345,
+  "inference_time": 2.5,
+  "model": "sd1.5-txt2img",
+  "parameters": {
+    "prompt": "A beautiful sunset",
+    "negative_prompt": "blurry, low quality",
+    "num_inference_steps": 20,
+    "guidance_scale": 7.5,
+    "width": 512,
+    "height": 512
+  }
+}
+

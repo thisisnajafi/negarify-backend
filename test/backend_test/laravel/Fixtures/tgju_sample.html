@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TGJU - Currency Rates</title>
+</head>
+<body>
+    <div class="currency-rates">
+        <div class="rate-item" data-currency="usd">
+            <span class="currency-name">USD</span>
+            <span class="rate-value">500000</span>
+            <span class="rate-unit">IRR</span>
+        </div>
+        <div class="rate-item" data-currency="eur">
+            <span class="currency-name">EUR</span>
+            <span class="rate-value">550000</span>
+            <span class="rate-unit">IRR</span>
+        </div>
+    </div>
+    <script>
+        // Sample TGJU page structure
+        // The scraper looks for specific elements containing USD to IRR rate
+        var currencyData = {
+            "usd": {
+                "buy": 500000,
+                "sell": 501000,
+                "unit": "IRR"
+            }
+        };
+    </script>
+</body>
+</html>
+

@@ -4,6 +4,60 @@
 
 The test suite is designed with the principle that **no error should be hidden**. All warnings, notices, deprecations, and exceptions are captured and surfaced.
 
+## Test Infrastructure
+
+### Base TestCase
+
+All backend tests extend `BackendTestCase` located at `test/backend_test/laravel/Helpers/BackendTestCase.php`:
+
+**Features:**
+- Automatic log capture via Laravel's `MessageLogged` event
+- Per-test-file logging (logs written to `test/backend_test/logs/`)
+- Error detection (tests fail on error-level logs unless explicitly allowed)
+- Queue failure detection
+- HTTP request/response logging
+- Exception capture with full stack traces
+- Database refresh for clean state (`RefreshDatabase`)
+
+**Helper Methods:**
+- `makeRequest($method, $uri, $data, $headers)` - Make HTTP request with automatic logging
+- `makeAuthenticatedRequest($method, $uri, $data, $user, $headers)` - Make authenticated request
+- `createAuthenticatedUser($attributes)` - Create user with auth token
+- `assertNoErrorLogs()` - Assert no error-level logs occurred
+- `allowErrorLogs($patterns)` - Allow specific error log patterns
+- `assertNoFailedJobs()` - Assert no failed queue jobs
+
+### Logging Trait
+
+The `LogsTestExecution` trait provides per-test-file logging:
+
+**Automatic Logging:**
+- Test method start/end with timestamps
+- Test duration
+- HTTP requests (method, URI, payload)
+- HTTP responses (status, body)
+- Validation errors
+- Captured Laravel logs
+- Exceptions with stack traces
+
+**Log File Location:**
+- Test: `test/backend_test/laravel/Feature/Auth/OtpRequestTest.php`
+- Log: `test/backend_test/logs/Feature/Auth/OtpRequestTest.log`
+
+### PHPUnit Configuration
+
+The `phpunit.xml` is configured with:
+- **BackendTest Suite**: Tests in `test/backend_test/laravel/`
+- **Coverage Reports**: HTML, text, and Clover XML formats
+- **Test Reports**: TestDox HTML/text and JUnit XML
+- **Environment**: SQLite in-memory database, faked queues, test API keys
+- **Logging**: Debug level, stderr channel
+
+**Coverage Output:**
+- HTML: `test/backend_test/reports/coverage/`
+- Text: `test/backend_test/reports/coverage.txt`
+- XML: `test/backend_test/reports/coverage.xml`
+
 ## Testing Approach
 
 ### 1. Test Types

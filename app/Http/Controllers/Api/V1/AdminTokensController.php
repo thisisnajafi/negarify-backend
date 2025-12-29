@@ -28,7 +28,8 @@ class AdminTokensController extends Controller
         $endDate = $dateRange['end'];
         
         // Cache key
-        $cacheKey = "admin:tokens:analytics:{$validated['range'] ?? 'custom'}:{$startDate->format('Y-m-d')}:{$endDate->format('Y-m-d')}";
+        $range = $validated['range'] ?? 'custom';
+        $cacheKey = "admin:tokens:analytics:{$range}:{$startDate->format('Y-m-d')}:{$endDate->format('Y-m-d')}";
         
         // Try cache first
         $cached = Cache::get($cacheKey);
@@ -40,8 +41,8 @@ class AdminTokensController extends Controller
         }
         
         // Tokens consumed per provider
-        $tokensByProvider = GenerationJob::where('status', 'completed')
-            ->whereBetween('created_at', [$startDate, $endDate])
+        $tokensByProvider = GenerationJob::where('generation_jobs.status', 'completed')
+            ->whereBetween('generation_jobs.created_at', [$startDate, $endDate])
             ->join('providers', 'generation_jobs.provider_id', '=', 'providers.id')
             ->selectRaw('
                 providers.id as provider_id,
@@ -61,15 +62,15 @@ class AdminTokensController extends Controller
             });
         
         // Tokens by type (image/video/audio)
-        $tokensByType = GenerationJob::where('status', 'completed')
-            ->whereBetween('created_at', [$startDate, $endDate])
+        $tokensByType = GenerationJob::where('generation_jobs.status', 'completed')
+            ->whereBetween('generation_jobs.created_at', [$startDate, $endDate])
             ->selectRaw('
-                job_type,
-                SUM(tokens_consumed) as tokens_consumed,
-                SUM(cost_usd) as cost_usd,
+                generation_jobs.job_type,
+                SUM(generation_jobs.tokens_consumed) as tokens_consumed,
+                SUM(generation_jobs.cost_usd) as cost_usd,
                 COUNT(*) as jobs_count
             ')
-            ->groupBy('job_type')
+            ->groupBy('generation_jobs.job_type')
             ->get()
             ->map(function ($item) {
                 return [
@@ -81,14 +82,19 @@ class AdminTokensController extends Controller
             });
         
         // Time-series data (by day)
-        $timeSeries = GenerationJob::where('status', 'completed')
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('
-                DATE(created_at) as date,
-                SUM(tokens_consumed) as tokens_consumed,
-                SUM(cost_usd) as cost_usd,
+        // Use database-agnostic date extraction
+        $dateFormat = DB::getDriverName() === 'sqlite' 
+            ? "strftime('%Y-%m-%d', generation_jobs.created_at)" 
+            : "DATE(generation_jobs.created_at)";
+        
+        $timeSeries = GenerationJob::where('generation_jobs.status', 'completed')
+            ->whereBetween('generation_jobs.created_at', [$startDate, $endDate])
+            ->selectRaw("
+                {$dateFormat} as date,
+                SUM(generation_jobs.tokens_consumed) as tokens_consumed,
+                SUM(generation_jobs.cost_usd) as cost_usd,
                 COUNT(*) as jobs_count
-            ')
+            ")
             ->groupBy('date')
             ->orderBy('date', 'asc')
             ->get()

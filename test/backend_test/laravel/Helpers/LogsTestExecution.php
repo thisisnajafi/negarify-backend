@@ -174,7 +174,36 @@ trait LogsTestExecution
     protected function writeToLog(string $message): void
     {
         if ($this->testLogPath) {
-            file_put_contents($this->testLogPath, $message . PHP_EOL, FILE_APPEND);
+            // Ensure directory exists
+            $logDir = dirname($this->testLogPath);
+            if (!file_exists($logDir)) {
+                mkdir($logDir, 0755, true);
+            }
+            
+            file_put_contents($this->testLogPath, $message . PHP_EOL, FILE_APPEND | LOCK_EX);
+        }
+    }
+
+    /**
+     * Log database query (for debugging)
+     */
+    protected function logDatabaseQuery(string $query, array $bindings = []): void
+    {
+        $this->writeToLog("Database Query: {$query}");
+        if (!empty($bindings)) {
+            $this->writeToLog("  Bindings: " . json_encode($bindings, JSON_PRETTY_PRINT));
+        }
+    }
+
+    /**
+     * Log test assertion (for debugging complex tests)
+     */
+    protected function logAssertion(string $assertion, bool $passed, string $message = ''): void
+    {
+        $status = $passed ? 'PASS' : 'FAIL';
+        $this->writeToLog("Assertion [{$status}]: {$assertion}");
+        if ($message) {
+            $this->writeToLog("  Message: {$message}");
         }
     }
 

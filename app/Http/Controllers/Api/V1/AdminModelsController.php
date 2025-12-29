@@ -28,7 +28,8 @@ class AdminModelsController extends Controller
         $endDate = $dateRange['end'];
         
         // Cache key
-        $cacheKey = "admin:models:usage:{$validated['range'] ?? 'custom'}:{$startDate->format('Y-m-d')}:{$endDate->format('Y-m-d')}";
+        $range = $validated['range'] ?? 'custom';
+        $cacheKey = "admin:models:usage:{$range}:{$startDate->format('Y-m-d')}:{$endDate->format('Y-m-d')}";
         
         // Try cache first
         $cached = Cache::get($cacheKey);
@@ -40,9 +41,19 @@ class AdminModelsController extends Controller
         }
         
         // Try to use aggregated data first (if available)
-        $useAggregated = AnalyticsModelsUsage::where('period_start', '>=', $startDate)
-            ->where('period_end', '<=', $endDate)
-            ->exists();
+        // Check if analytics table exists and has data
+        $useAggregated = false;
+        try {
+            $useAggregated = AnalyticsModelsUsage::where('period_start', '>=', $startDate)
+                ->where('period_end', '<=', $endDate)
+                ->exists();
+        } catch (\Exception $e) {
+            // Table doesn't exist or other error - fallback to raw data
+            \Log::warning('AnalyticsModelsUsage table not available, using raw data', [
+                'error' => $e->getMessage(),
+            ]);
+            $useAggregated = false;
+        }
         
         if ($useAggregated) {
             // Use aggregated data
@@ -74,22 +85,29 @@ class AdminModelsController extends Controller
                 ->values();
         } else {
             // Fallback to raw data from generation_jobs
-            $usageData = GenerationJob::where('status', '!=', 'pending')
-                ->whereBetween('created_at', [$startDate, $endDate])
+            // Use database-agnostic latency calculation
+            $latencyCalculation = DB::getDriverName() === 'sqlite'
+                ? "CASE WHEN generation_jobs.started_at IS NOT NULL AND generation_jobs.completed_at IS NOT NULL 
+                    THEN (julianday(generation_jobs.completed_at) - julianday(generation_jobs.started_at)) * 86400000 
+                    ELSE NULL END"
+                : "CASE WHEN generation_jobs.started_at IS NOT NULL AND generation_jobs.completed_at IS NOT NULL 
+                    THEN TIMESTAMPDIFF(MILLISECOND, generation_jobs.started_at, generation_jobs.completed_at) 
+                    ELSE NULL END";
+            
+            $usageData = GenerationJob::where('generation_jobs.status', '!=', 'pending')
+                ->whereBetween('generation_jobs.created_at', [$startDate, $endDate])
                 ->with('model:id,model_name,provider_id')
-                ->selectRaw('
-                    model_id,
-                    job_type,
+                ->selectRaw("
+                    generation_jobs.model_id,
+                    generation_jobs.job_type,
                     COUNT(*) as requests_count,
-                    SUM(CASE WHEN status = "completed" THEN 1 ELSE 0 END) as successful_count,
-                    SUM(CASE WHEN status = "failed" THEN 1 ELSE 0 END) as failed_count,
-                    SUM(tokens_consumed) as tokens_consumed,
-                    SUM(cost_usd) as cost_usd,
-                    AVG(CASE WHEN started_at IS NOT NULL AND completed_at IS NOT NULL 
-                        THEN TIMESTAMPDIFF(MILLISECOND, started_at, completed_at) 
-                        ELSE NULL END) as avg_latency_ms
-                ')
-                ->groupBy('model_id', 'job_type')
+                    SUM(CASE WHEN generation_jobs.status = 'completed' THEN 1 ELSE 0 END) as successful_count,
+                    SUM(CASE WHEN generation_jobs.status = 'failed' THEN 1 ELSE 0 END) as failed_count,
+                    SUM(generation_jobs.tokens_consumed) as tokens_consumed,
+                    SUM(generation_jobs.cost_usd) as cost_usd,
+                    AVG({$latencyCalculation}) as avg_latency_ms
+                ")
+                ->groupBy('generation_jobs.model_id', 'generation_jobs.job_type')
                 ->get()
                 ->groupBy('model_id')
                 ->map(function ($records, $modelId) {

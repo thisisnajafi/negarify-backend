@@ -1,0 +1,11 @@
+{
+  "data": {
+    "code": 100,
+    "message": "Success",
+    "authority": "A000000000000000000000000000000000000",
+    "fee": 0,
+    "fee_type": "Merchant"
+  },
+  "errors": []
+}
+

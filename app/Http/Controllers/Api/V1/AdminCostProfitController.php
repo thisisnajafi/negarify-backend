@@ -28,7 +28,8 @@ class AdminCostProfitController extends Controller
         $endDate = $dateRange['end'];
         
         // Cache key
-        $cacheKey = "admin:cost-profit:summary:{$validated['range'] ?? 'custom'}:{$startDate->format('Y-m-d')}:{$endDate->format('Y-m-d')}";
+        $range = $validated['range'] ?? 'custom';
+        $cacheKey = "admin:cost-profit:summary:{$range}:{$startDate->format('Y-m-d')}:{$endDate->format('Y-m-d')}";
         
         // Try cache first
         $cached = Cache::get($cacheKey);
@@ -49,10 +50,10 @@ class AdminCostProfitController extends Controller
             ->first();
         
         // Cost: Only completed generation jobs
-        $costData = GenerationJob::where('status', 'completed')
-            ->whereBetween('created_at', [$startDate, $endDate])
+        $costData = GenerationJob::where('generation_jobs.status', 'completed')
+            ->whereBetween('generation_jobs.created_at', [$startDate, $endDate])
             ->selectRaw('
-                SUM(cost_usd) as total_cost_usd
+                SUM(generation_jobs.cost_usd) as total_cost_usd
             ')
             ->first();
         
@@ -64,8 +65,8 @@ class AdminCostProfitController extends Controller
             : 0;
         
         // Breakdown by model
-        $breakdownByModel = GenerationJob::where('status', 'completed')
-            ->whereBetween('created_at', [$startDate, $endDate])
+        $breakdownByModel = GenerationJob::where('generation_jobs.status', 'completed')
+            ->whereBetween('generation_jobs.created_at', [$startDate, $endDate])
             ->join('models', 'generation_jobs.model_id', '=', 'models.id')
             ->selectRaw('
                 models.id as model_id,
@@ -91,8 +92,8 @@ class AdminCostProfitController extends Controller
             });
         
         // Breakdown by provider
-        $breakdownByProvider = GenerationJob::where('status', 'completed')
-            ->whereBetween('created_at', [$startDate, $endDate])
+        $breakdownByProvider = GenerationJob::where('generation_jobs.status', 'completed')
+            ->whereBetween('generation_jobs.created_at', [$startDate, $endDate])
             ->join('providers', 'generation_jobs.provider_id', '=', 'providers.id')
             ->selectRaw('
                 providers.id as provider_id,
@@ -116,13 +117,18 @@ class AdminCostProfitController extends Controller
             });
         
         // Profit margins over time (daily)
+        // Use database-agnostic date extraction
+        $dateFormat = DB::getDriverName() === 'sqlite' 
+            ? "strftime('%Y-%m-%d', orders.created_at)" 
+            : "DATE(orders.created_at)";
+        
         $profitMarginsOverTime = DB::table('orders')
-            ->where('status', 'paid')
-            ->whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('
-                DATE(created_at) as date,
-                SUM(price_usd) as revenue_usd
-            ')
+            ->where('orders.status', 'paid')
+            ->whereBetween('orders.created_at', [$startDate, $endDate])
+            ->selectRaw("
+                {$dateFormat} as date,
+                SUM(orders.price_usd) as revenue_usd
+            ")
             ->groupBy('date')
             ->get()
             ->map(function ($orderItem) use ($startDate, $endDate) {
@@ -131,9 +137,9 @@ class AdminCostProfitController extends Controller
                 $dayEnd = $date->copy()->endOfDay();
                 
                 // Get cost for this day
-                $dayCost = GenerationJob::where('status', 'completed')
-                    ->whereBetween('created_at', [$dayStart, $dayEnd])
-                    ->sum('cost_usd');
+                $dayCost = GenerationJob::where('generation_jobs.status', 'completed')
+                    ->whereBetween('generation_jobs.created_at', [$dayStart, $dayEnd])
+                    ->sum('generation_jobs.cost_usd');
                 
                 $revenue = (float) $orderItem->revenue_usd;
                 $cost = (float) $dayCost;
@@ -159,9 +165,9 @@ class AdminCostProfitController extends Controller
             ->whereBetween('created_at', [$previousStart, $previousEnd])
             ->sum('price_usd');
         
-        $previousCost = GenerationJob::where('status', 'completed')
-            ->whereBetween('created_at', [$previousStart, $previousEnd])
-            ->sum('cost_usd');
+        $previousCost = GenerationJob::where('generation_jobs.status', 'completed')
+            ->whereBetween('generation_jobs.created_at', [$previousStart, $previousEnd])
+            ->sum('generation_jobs.cost_usd');
         
         $previousProfit = $previousRevenue - $previousCost;
         $previousMargin = $previousRevenue > 0 

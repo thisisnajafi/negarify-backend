@@ -1,0 +1,6 @@
+Admin Rbac (Test\BackendTest\Laravel\Feature\Admin\AdminRbac)
+ [x] It requires admin role for admin endpoints
+ [x] It rejects non admin users with 403
+ [x] It rejects unauthenticated users with 401
+ [x] It verifies admin middleware works
+

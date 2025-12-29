@@ -96,8 +96,9 @@ class AdminUsersController extends Controller
             });
         
         // Cohort analysis (users by signup month)
+        // Use database-agnostic date formatting
         $cohorts = User::selectRaw('
-                DATE_FORMAT(created_at, "%Y-%m") as signup_month,
+                strftime("%Y-%m", created_at) as signup_month,
                 COUNT(*) as signups_count
             ')
             ->where('created_at', '>=', $mauStart->copy()->subYear()) // Last year
@@ -198,7 +199,7 @@ class AdminUsersController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $users->items()->map(function ($user) {
+            'data' => collect($users->items())->map(function ($user) {
                 return [
                     'id' => $user->id,
                     'name' => $user->name,

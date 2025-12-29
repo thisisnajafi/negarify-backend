@@ -5,8 +5,10 @@ namespace Test\BackendTest\Laravel\Helpers;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Log\Events\MessageLogged;
 use Carbon\Carbon;
 
 /**
@@ -86,9 +88,8 @@ abstract class BackendTestCase extends BaseTestCase
      */
     protected function setupLogCapture(): void
     {
-        // Intercept Laravel logs using Log::listen
-        // Log::listen receives a MessageLogged event object
-        Log::listen(function ($event) {
+        // Intercept Laravel logs using Event::listen for MessageLogged event
+        Event::listen(MessageLogged::class, function (MessageLogged $event) {
             $this->captureLog(
                 $event->level,
                 $event->message,
@@ -230,7 +231,14 @@ abstract class BackendTestCase extends BaseTestCase
             echo "\n\n=== Last HTTP Response ===\n";
             echo "Status: " . ($this->lastResponse->status() ?? 'N/A') . "\n";
             if (method_exists($this->lastResponse, 'getContent')) {
-                echo "Body: " . $this->lastResponse->getContent() . "\n";
+                $content = $this->lastResponse->getContent();
+                // Try to pretty-print JSON
+                $decoded = json_decode($content, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    echo "Body: " . json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n";
+                } else {
+                    echo "Body: " . substr($content, 0, 2000) . "\n";
+                }
             }
         }
         
@@ -238,6 +246,9 @@ abstract class BackendTestCase extends BaseTestCase
             echo "\n\n=== Captured Logs ===\n";
             foreach ($this->capturedLogs as $log) {
                 echo "[{$log['timestamp']}] {$log['level']}: {$log['message']}\n";
+                if (!empty($log['context'])) {
+                    echo "  Context: " . json_encode($log['context'], JSON_PRETTY_PRINT) . "\n";
+                }
             }
         }
         
@@ -259,6 +270,49 @@ abstract class BackendTestCase extends BaseTestCase
             $this->logException($e);
             throw $e;
         }
+    }
+
+    /**
+     * Assert response has JSON structure (helper method)
+     */
+    protected function assertResponseJsonStructure(array $structure, $response = null): void
+    {
+        $response = $response ?? $this->lastResponse;
+        if ($response && method_exists($response, 'assertJsonStructure')) {
+            $response->assertJsonStructure($structure);
+        }
+    }
+
+    /**
+     * Create authenticated user for testing
+     */
+    protected function createAuthenticatedUser(array $attributes = [])
+    {
+        $user = \App\Models\User::factory()->create($attributes);
+        $token = $user->createToken('test-token')->plainTextToken;
+        
+        return [
+            'user' => $user,
+            'token' => $token,
+        ];
+    }
+
+    /**
+     * Make authenticated request
+     */
+    protected function makeAuthenticatedRequest(string $method, string $uri, array $data = [], $user = null, array $headers = [])
+    {
+        if (!$user) {
+            $auth = $this->createAuthenticatedUser();
+            $user = $auth['user'];
+            $token = $auth['token'];
+        } else {
+            $token = is_array($user) ? $user['token'] : $user->createToken('test-token')->plainTextToken;
+        }
+
+        $headers['Authorization'] = 'Bearer ' . $token;
+        
+        return $this->makeRequest($method, $uri, $data, $headers);
     }
 }
 

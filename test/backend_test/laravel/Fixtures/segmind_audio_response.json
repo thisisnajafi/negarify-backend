@@ -1,0 +1,17 @@
+{
+  "status": "success",
+  "audio_url": "https://api.segmind.com/v1/audio-generation/results/audio123.mp3",
+  "audio_base64": null,
+  "seed": 11111,
+  "inference_time": 8.5,
+  "model": "audio-generation",
+  "duration": 10.0,
+  "sample_rate": 44100,
+  "parameters": {
+    "prompt": "A peaceful nature sound",
+    "negative_prompt": "noise, distortion",
+    "num_inference_steps": 30,
+    "guidance_scale": 7.5
+  }
+}
+

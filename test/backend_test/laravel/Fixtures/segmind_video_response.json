@@ -1,0 +1,20 @@
+{
+  "status": "success",
+  "video_url": "https://api.segmind.com/v1/video-generation/results/xyz789.mp4",
+  "video_base64": null,
+  "thumbnail_url": "https://api.segmind.com/v1/video-generation/results/xyz789_thumb.jpg",
+  "seed": 67890,
+  "inference_time": 15.2,
+  "model": "video-generation",
+  "duration": 5.0,
+  "fps": 24,
+  "parameters": {
+    "prompt": "A cat walking in a garden",
+    "negative_prompt": "blurry, distorted",
+    "num_inference_steps": 50,
+    "guidance_scale": 7.5,
+    "width": 512,
+    "height": 512
+  }
+}
+

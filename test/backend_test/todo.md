@@ -261,10 +261,10 @@ This file tracks the implementation progress of the test suite. Items are checke
 ## 9. Admin Dashboard Tests
 
 ### RBAC Enforcement
-- [ ] Admin endpoints require admin role
-- [ ] Non-admin 403 response
-- [ ] Unauthenticated 401 response
-- [ ] Admin middleware works
+- [x] Admin endpoints require admin role
+- [x] Non-admin 403 response
+- [x] Unauthenticated 401 response
+- [x] Admin middleware works
 
 ### Sales Dashboard
 - [ ] Revenue by period

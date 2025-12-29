@@ -3,6 +3,9 @@
          xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
+         cacheDirectory=".phpunit.cache"
+         stopOnFailure="false"
+         stopOnError="false"
 >
     <testsuites>
         <testsuite name="Unit">
@@ -19,7 +22,24 @@
         <include>
             <directory>app</directory>
         </include>
+        <exclude>
+            <directory>app/Console</directory>
+            <directory>app/Exceptions</directory>
+            <file>app/Providers/AppServiceProvider.php</file>
+        </exclude>
     </source>
+    <coverage>
+        <report>
+            <html outputDirectory="test/backend_test/reports/coverage"/>
+            <text outputFile="test/backend_test/reports/coverage.txt"/>
+            <clover outputFile="test/backend_test/reports/coverage.xml"/>
+        </report>
+    </coverage>
+    <logging>
+        <testdoxHtml outputFile="test/backend_test/reports/testdox.html"/>
+        <testdoxText outputFile="test/backend_test/reports/testdox.txt"/>
+        <junit outputFile="test/backend_test/reports/junit.xml"/>
+    </logging>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:EZJESMQbJvBqkdgseKl4CTGodvSaavNIeKtMwc9E1WA="/>
@@ -40,5 +60,8 @@
         <env name="MELIPAYAMAK_USERNAME" value="test"/>
         <env name="MELIPAYAMAK_PASSWORD" value="test"/>
         <env name="MELIPAYAMAK_AUTH_MODE" value="classic"/>
+        <env name="SEGMIND_API_KEY" value="test-key"/>
+        <env name="ZARINPAL_MERCHANT_ID" value="test-merchant"/>
+        <env name="FILESYSTEM_DISK" value="local"/>
     </php>
 </phpunit>
