@@ -49,29 +49,36 @@ class FeedController extends Controller
             ]);
         }
 
-        // Build query for curated feed
-        $query = GalleryPost::where('is_curated', true)
-            ->where('visibility', 'public')
-            ->whereHas('generationJob', function ($q) {
-                $q->whereIn('job_type', ['image', 'video']); // Exclude audio
-            })
-            ->with(['user', 'generationJob.model'])
-            ->orderBy('is_featured', 'desc') // Featured first
-            ->orderBy('curated_at', 'desc'); // Then by curation date
+        // Build cache key (cursor-specific)
+        $cacheKey = 'feed:posts:' . ($validated['cursor'] ?? 'first');
+        
+        // Try to get posts from cache (5 minute TTL)
+        $posts = Cache::tags(['feed'])->remember($cacheKey, 300, function () use ($validated) {
+            $query = GalleryPost::where('is_curated', true)
+                ->where('visibility', 'public')
+                ->whereHas('generationJob', function ($q) {
+                    $q->whereIn('job_type', ['image', 'video']); // Exclude audio
+                })
+                ->with(['user', 'generationJob.model'])
+                ->orderBy('is_featured', 'desc') // Featured first
+                ->orderBy('curated_at', 'desc'); // Then by curation date
 
-        // Cursor-based pagination
-        $cursor = $validated['cursor'] ?? null;
-        if ($cursor) {
-            $query->where('id', '<', $cursor);
-        }
+            // Cursor-based pagination
+            $cursor = $validated['cursor'] ?? null;
+            if ($cursor) {
+                $query->where('id', '<', $cursor);
+            }
 
-        // Limit results (respect view limits)
+            return $query->limit(50)->get(); // Cache more than needed, apply limit per user
+        });
+
+        // Apply user-specific limit (respect view limits)
         $limit = min(15, $imageLimit->views_remaining + $videoLimit->views_remaining);
         if ($isAdmin) {
             $limit = 15; // Admins get full page
         }
 
-        $posts = $query->limit($limit)->get();
+        $posts = $posts->take($limit);
 
         // Decrement view limits for each post viewed
         $decremented = $this->decrementViewLimits($user->id, $posts, $isAdmin);

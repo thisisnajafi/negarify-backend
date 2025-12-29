@@ -207,7 +207,7 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Generation job validation
 - [x] Title, description, tags storage
 - [x] Visibility settings
-- [ ] Prompt/model visibility flags
+- [x] Prompt/model visibility flags
 - [x] Get post details
 - [x] Update post
 - [x] Delete post
@@ -217,25 +217,25 @@ This file tracks the implementation progress of the test suite. Items are checke
 ### My Posts
 - [x] Returns user's posts
 - [x] Pagination
-- [ ] Visibility filtering
+- [x] Visibility filtering (visibility field included in response)
 - [x] Ordering
 
 ### Public Feed
-- [ ] Only curated posts
-- [ ] Images/videos only (no audio)
-- [ ] View limits decrement
-- [ ] Daily limit reset
-- [ ] Limit reached handling
-- [ ] Admin unlimited views
-- [ ] Cursor pagination
-- [ ] Redis caching
+- [x] Only curated posts
+- [x] Images/videos only (no audio)
+- [x] View limits decrement
+- [x] Daily limit reset
+- [x] Limit reached handling
+- [x] Admin unlimited views
+- [x] Cursor pagination
+- [x] Redis caching
 
 ### Copy Prompt/Model
-- [ ] Copy prompt (if visible)
-- [ ] Copy prompt (if hidden)
-- [ ] Copy model (if visible)
-- [ ] Copy model (if hidden)
-- [ ] Only for curated posts
+- [x] Copy prompt (if visible)
+- [x] Copy prompt (if hidden)
+- [x] Copy model (if visible)
+- [x] Copy model (if hidden)
+- [x] Only for curated posts
 
 ---
 

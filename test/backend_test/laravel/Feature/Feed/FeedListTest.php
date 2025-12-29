@@ -21,16 +21,21 @@ class FeedListTest extends BackendTestCase
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
+        $postOwner = User::factory()->create();
+        
         $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
             'is_curated' => true,
@@ -47,7 +52,7 @@ class FeedListTest extends BackendTestCase
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('GET', '/api/v1/feed');
+        ])->makeRequest('GET', '/api/v1/gallery/feed');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -84,16 +89,20 @@ class FeedListTest extends BackendTestCase
         
         // Create 3 posts
         for ($i = 0; $i < 3; $i++) {
+            $postOwner = User::factory()->create();
             $job = GenerationJob::create([
+                'user_id' => $postOwner->id,
                 'provider_id' => $provider->id,
                 'model_id' => $model->id,
                 'job_type' => 'image',
+                'prompt' => 'Test prompt',
+                'params_json' => [],
                 'status' => 'completed',
                 'result_url' => 'https://example.com/image.jpg',
             ]);
             
             GalleryPost::create([
-                'user_id' => User::factory()->create()->id,
+                'user_id' => $postOwner->id,
                 'generation_job_id' => $job->id,
                 'visibility' => 'public',
                 'is_curated' => true,
@@ -110,7 +119,7 @@ class FeedListTest extends BackendTestCase
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('GET', '/api/v1/feed');
+        ])->makeRequest('GET', '/api/v1/gallery/feed');
 
         $response->assertStatus(200);
         
@@ -143,7 +152,7 @@ class FeedListTest extends BackendTestCase
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('GET', '/api/v1/feed');
+        ])->makeRequest('GET', '/api/v1/gallery/feed');
 
         $response->assertStatus(200)
             ->assertJson([
@@ -168,17 +177,21 @@ class FeedListTest extends BackendTestCase
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
+        $postOwner = User::factory()->create();
         $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
         
         // Create private post
         GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'visibility' => 'private', // Private
             'is_curated' => true,
@@ -194,7 +207,7 @@ class FeedListTest extends BackendTestCase
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('GET', '/api/v1/feed');
+        ])->makeRequest('GET', '/api/v1/gallery/feed');
 
         $posts = $response->json('data');
         $this->assertCount(0, $posts); // Private post excluded
@@ -209,17 +222,21 @@ class FeedListTest extends BackendTestCase
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
+        $postOwner = User::factory()->create();
         $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
         
         // Create non-curated post
         GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
             'is_curated' => false, // Not curated
@@ -235,7 +252,7 @@ class FeedListTest extends BackendTestCase
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('GET', '/api/v1/feed');
+        ])->makeRequest('GET', '/api/v1/gallery/feed');
 
         $posts = $response->json('data');
         $this->assertCount(0, $posts); // Non-curated post excluded
@@ -253,16 +270,20 @@ class FeedListTest extends BackendTestCase
         // Create multiple posts
         $postIds = [];
         for ($i = 0; $i < 5; $i++) {
+            $postOwner = User::factory()->create();
             $job = GenerationJob::create([
+                'user_id' => $postOwner->id,
                 'provider_id' => $provider->id,
                 'model_id' => $model->id,
                 'job_type' => 'image',
+                'prompt' => 'Test prompt',
+                'params_json' => [],
                 'status' => 'completed',
                 'result_url' => 'https://example.com/image.jpg',
             ]);
             
             $post = GalleryPost::create([
-                'user_id' => User::factory()->create()->id,
+                'user_id' => $postOwner->id,
                 'generation_job_id' => $job->id,
                 'visibility' => 'public',
                 'is_curated' => true,
@@ -281,7 +302,7 @@ class FeedListTest extends BackendTestCase
         // First page
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('GET', '/api/v1/feed');
+        ])->makeRequest('GET', '/api/v1/gallery/feed');
 
         $response->assertStatus(200);
         $cursor = $response->json('meta.cursor');
@@ -290,7 +311,7 @@ class FeedListTest extends BackendTestCase
         // Second page with cursor
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
-        ])->makeRequest('GET', '/api/v1/feed', [
+        ])->makeRequest('GET', '/api/v1/gallery/feed', [
             'cursor' => $cursor,
         ]);
 

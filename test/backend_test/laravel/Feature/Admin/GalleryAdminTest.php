@@ -21,16 +21,20 @@ class GalleryAdminTest extends BackendTestCase
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
+        $postOwner = User::factory()->create();
         $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
             'is_curated' => false,
@@ -65,16 +69,20 @@ class GalleryAdminTest extends BackendTestCase
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
+        $postOwner = User::factory()->create();
         $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'visibility' => 'private', // Private
             'is_curated' => false,
@@ -100,16 +108,20 @@ class GalleryAdminTest extends BackendTestCase
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
+        $postOwner = User::factory()->create();
         $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
             'is_curated' => true,
@@ -143,16 +155,20 @@ class GalleryAdminTest extends BackendTestCase
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
+        $postOwner = User::factory()->create();
         $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
             'is_featured' => false,
@@ -179,16 +195,20 @@ class GalleryAdminTest extends BackendTestCase
         
         $postIds = [];
         for ($i = 0; $i < 3; $i++) {
+            $postOwner = User::factory()->create();
             $job = GenerationJob::create([
+                'user_id' => $postOwner->id,
                 'provider_id' => $provider->id,
                 'model_id' => $model->id,
                 'job_type' => 'image',
+                'prompt' => 'Test prompt',
+                'params_json' => [],
                 'status' => 'completed',
                 'result_url' => 'https://example.com/image.jpg',
             ]);
             
             $post = GalleryPost::create([
-                'user_id' => User::factory()->create()->id,
+                'user_id' => $postOwner->id,
                 'generation_job_id' => $job->id,
                 'visibility' => 'public',
                 'is_curated' => false,

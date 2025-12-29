@@ -248,9 +248,7 @@ class GalleryPostTest extends BackendTestCase
         ]);
         
         // Create post with hidden prompt and model
-        $response = $this->withHeaders([
-            'Authorization' => "Bearer {$ownerToken}",
-        ])->makeRequest('POST', '/api/v1/gallery/post', [
+        $response = $this->actingAs($owner)->makeRequest('POST', '/api/v1/gallery/post', [
             'generation_job_id' => $job->id,
             'title' => 'Post with hidden prompt/model',
             'visibility' => 'public',
@@ -268,9 +266,7 @@ class GalleryPostTest extends BackendTestCase
         $this->assertSame(false, $post->model_visible, 'model_visible should be false');
         
         // Owner should see prompt and model even if flags are false
-        $ownerResponse = $this->withHeaders([
-            'Authorization' => "Bearer {$ownerToken}",
-        ])->makeRequest('GET', "/api/v1/gallery/posts/{$post->id}");
+        $ownerResponse = $this->actingAs($owner)->makeRequest('GET', "/api/v1/gallery/posts/{$post->id}");
 
         $ownerResponse->assertStatus(200);
         $ownerData = $ownerResponse->json('data');
@@ -286,9 +282,7 @@ class GalleryPostTest extends BackendTestCase
         $this->assertSame(false, (bool)$post->prompt_visible, 'prompt_visible must be false before non-owner view');
         $this->assertSame(false, (bool)$post->model_visible, 'model_visible must be false before non-owner view');
         
-        $viewerResponse = $this->withHeaders([
-            'Authorization' => "Bearer {$viewerToken}",
-        ])->makeRequest('GET', "/api/v1/gallery/posts/{$post->id}");
+        $viewerResponse = $this->actingAs($viewer)->makeRequest('GET', "/api/v1/gallery/posts/{$post->id}");
 
         $viewerResponse->assertStatus(200);
         $viewerData = $viewerResponse->json('data');
@@ -305,9 +299,7 @@ class GalleryPostTest extends BackendTestCase
         $this->assertArrayNotHasKey('model', $viewerData['generation_job']);
         
         // Now update post to make prompt and model visible
-        $updateResponse = $this->withHeaders([
-            'Authorization' => "Bearer {$ownerToken}",
-        ])->makeRequest('PUT', "/api/v1/gallery/posts/{$post->id}", [
+        $updateResponse = $this->actingAs($owner)->makeRequest('PUT', "/api/v1/gallery/posts/{$post->id}", [
             'prompt_visible' => true,
             'model_visible' => true,
         ]);
