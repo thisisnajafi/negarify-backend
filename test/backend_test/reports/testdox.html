@@ -51,19 +51,72 @@
         </style>
     </head>
     <body>
-        <h2>Smoke (Test\BackendTest\Laravel\Feature\Observability\Smoke)</h2>
+        <h2>Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)</h2>
         <ul>
-            <li class="success">It health check returns ok</li>
-            <li class="success">It public endpoints are accessible</li>
-            <li class="success">It protected endpoints require authentication</li>
-            <li class="success">It database connection works</li>
-            <li class="success">It api returns consistent response format</li>
-            <li class="success">It handles invalid routes gracefully</li>
-            <li class="success">It handles invalid methods gracefully</li>
-            <li class="success">It returns proper status codes for auth errors</li>
-            <li class="success">It logs errors without exposing sensitive data</li>
-            <li class="success">It validates route parameters</li>
-            <li class="success">It logs validation errors appropriately</li>
+            <li class="success">It calculates revenue cost and profit</li>
+            <li class="success">It calculates profit margins correctly</li>
+            <li class="success">It provides breakdown by model</li>
+            <li class="success">It provides breakdown by provider</li>
+            <li class="success">It provides historical comparison</li>
+            <li class="success">It provides profit margins over time</li>
+            <li class="success">It supports date range filtering</li>
+            <li class="success">It supports range parameter</li>
+            <li class="success">It caches cost profit data</li>
+        </ul>
+        <h2>Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)</h2>
+        <ul>
+            <li class="success">It returns usage statistics per model</li>
+            <li class="success">It calculates success and failure rates</li>
+            <li class="success">It calculates average latency</li>
+            <li class="success">It tracks tokens consumed per model</li>
+            <li class="success">It tracks cost and revenue per model</li>
+            <li class="success">It supports date range filtering</li>
+            <li class="success">It supports range parameter</li>
+            <li class="success">It caches models usage data</li>
+            <li class="success">It handles breakdown by job type</li>
+        </ul>
+        <h2>Admin Rbac (Test\BackendTest\Laravel\Feature\Admin\AdminRbac)</h2>
+        <ul>
+            <li class="success">It requires admin role for admin endpoints</li>
+            <li class="success">It rejects non admin users with 403</li>
+            <li class="success">It rejects unauthenticated users with 401</li>
+            <li class="success">It verifies admin middleware works</li>
+        </ul>
+        <h2>Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)</h2>
+        <ul>
+            <li class="success">It returns revenue by period</li>
+            <li class="success">It calculates total revenue correctly</li>
+            <li class="success">It returns top selling bundles</li>
+            <li class="success">It tracks refunds</li>
+            <li class="success">It supports date range filtering</li>
+            <li class="success">It caches sales summary</li>
+        </ul>
+        <h2>Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)</h2>
+        <ul>
+            <li class="success">It returns tokens consumption by provider</li>
+            <li class="success">It returns tokens consumption by type</li>
+            <li class="success">It returns cost per provider</li>
+            <li class="success">It returns time series data</li>
+            <li class="success">It supports date range filtering</li>
+            <li class="success">It supports range parameter</li>
+            <li class="success">It caches token analytics data</li>
+        </ul>
+        <h2>Admin Users (Test\BackendTest\Laravel\Feature\Admin\AdminUsers)</h2>
+        <ul>
+            <li class="success">It calculates dau wau mau correctly</li>
+            <li class="success">It returns top users by generation</li>
+            <li class="success">It returns top users by spending</li>
+            <li class="success">It performs cohort analysis</li>
+            <li class="success">It searches users by name phone or email</li>
+            <li class="success">It filters users by role</li>
+            <li class="success">It filters users by date range</li>
+            <li class="success">It paginates users list</li>
+            <li class="success">It caches users summary</li>
+        </ul>
+        <h2>Dashboard Summary (Test\BackendTest\Laravel\Feature\Admin\DashboardSummary)</h2>
+        <ul>
+            <li class="success">It returns sales summary</li>
+            <li class="defect">It returns users summary</li>
         </ul>
     </body>
 </html>

@@ -1,13 +1,60 @@
-Smoke (Test\BackendTest\Laravel\Feature\Observability\Smoke)
- [x] It health check returns ok
- [x] It public endpoints are accessible
- [x] It protected endpoints require authentication
- [x] It database connection works
- [x] It api returns consistent response format
- [x] It handles invalid routes gracefully
- [x] It handles invalid methods gracefully
- [x] It returns proper status codes for auth errors
- [x] It logs errors without exposing sensitive data
- [x] It validates route parameters
- [x] It logs validation errors appropriately
+Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)
+ [x] It calculates revenue cost and profit
+ [x] It calculates profit margins correctly
+ [x] It provides breakdown by model
+ [x] It provides breakdown by provider
+ [x] It provides historical comparison
+ [x] It provides profit margins over time
+ [x] It supports date range filtering
+ [x] It supports range parameter
+ [x] It caches cost profit data
+
+Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)
+ [x] It returns usage statistics per model
+ [x] It calculates success and failure rates
+ [x] It calculates average latency
+ [x] It tracks tokens consumed per model
+ [x] It tracks cost and revenue per model
+ [x] It supports date range filtering
+ [x] It supports range parameter
+ [x] It caches models usage data
+ [x] It handles breakdown by job type
+
+Admin Rbac (Test\BackendTest\Laravel\Feature\Admin\AdminRbac)
+ [x] It requires admin role for admin endpoints
+ [x] It rejects non admin users with 403
+ [x] It rejects unauthenticated users with 401
+ [x] It verifies admin middleware works
+
+Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)
+ [x] It returns revenue by period
+ [x] It calculates total revenue correctly
+ [x] It returns top selling bundles
+ [x] It tracks refunds
+ [x] It supports date range filtering
+ [x] It caches sales summary
+
+Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)
+ [x] It returns tokens consumption by provider
+ [x] It returns tokens consumption by type
+ [x] It returns cost per provider
+ [x] It returns time series data
+ [x] It supports date range filtering
+ [x] It supports range parameter
+ [x] It caches token analytics data
+
+Admin Users (Test\BackendTest\Laravel\Feature\Admin\AdminUsers)
+ [x] It calculates dau wau mau correctly
+ [x] It returns top users by generation
+ [x] It returns top users by spending
+ [x] It performs cohort analysis
+ [x] It searches users by name phone or email
+ [x] It filters users by role
+ [x] It filters users by date range
+ [x] It paginates users list
+ [x] It caches users summary
+
+Dashboard Summary (Test\BackendTest\Laravel\Feature\Admin\DashboardSummary)
+ [x] It returns sales summary
+ [ ] It returns users summary
 
