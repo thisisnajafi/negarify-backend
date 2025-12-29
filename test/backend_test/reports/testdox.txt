@@ -1,9 +1,11 @@
-Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)
- [x] It returns tokens consumption by provider
- [x] It returns tokens consumption by type
- [x] It returns cost per provider
- [x] It returns time series data
+Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)
+ [x] It calculates revenue cost and profit
+ [x] It calculates profit margins correctly
+ [x] It provides breakdown by model
+ [x] It provides breakdown by provider
+ [x] It provides historical comparison
+ [x] It provides profit margins over time
  [x] It supports date range filtering
  [x] It supports range parameter
- [x] It caches token analytics data
+ [x] It caches cost profit data
 

@@ -296,10 +296,10 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Time-series data
 
 ### Cost & Profit Dashboard
-- [ ] Revenue, cost, profit calculation
-- [ ] Profit margins
-- [ ] Breakdown by model/provider
-- [ ] Historical comparison
+- [x] Revenue, cost, profit calculation
+- [x] Profit margins
+- [x] Breakdown by model/provider
+- [x] Historical comparison
 
 ### System Health Dashboard
 - [ ] Queue length

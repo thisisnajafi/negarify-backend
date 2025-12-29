@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\Nadali\Documents\GitHub\negarify-backend\phpunit.xml" tests="9" assertions="50" errors="0" failures="0" skipped="0" time="2.053833">
+    <testsuite name="BackendTest" tests="9" assertions="50" errors="0" failures="0" skipped="0" time="2.053833">
+      <testsuite name="Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest" file="Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)" tests="9" assertions="50" errors="0" failures="0" skipped="0" time="2.053833">
+        <testcase name="It calculates revenue cost and profit" file="Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)::It calculates revenue cost and profit" class="Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminCostProfitTest" assertions="18" time="1.828247"/>
+        <testcase name="It calculates profit margins correctly" file="Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)::It calculates profit margins correctly" class="Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminCostProfitTest" assertions="1" time="0.029228"/>
+        <testcase name="It provides breakdown by model" file="Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)::It provides breakdown by model" class="Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminCostProfitTest" assertions="4" time="0.029344"/>
+        <testcase name="It provides breakdown by provider" file="Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)::It provides breakdown by provider" class="Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminCostProfitTest" assertions="4" time="0.027503"/>
+        <testcase name="It provides historical comparison" file="Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)::It provides historical comparison" class="Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminCostProfitTest" assertions="6" time="0.028000"/>
+        <testcase name="It provides profit margins over time" file="Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)::It provides profit margins over time" class="Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminCostProfitTest" assertions="9" time="0.028292"/>
+        <testcase name="It supports date range filtering" file="Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)::It supports date range filtering" class="Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminCostProfitTest" assertions="2" time="0.027644"/>
+        <testcase name="It supports range parameter" file="Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)::It supports range parameter" class="Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminCostProfitTest" assertions="5" time="0.026553"/>
+        <testcase name="It caches cost profit data" file="Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)::It caches cost profit data" class="Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest" classname="Test.BackendTest.Laravel.Feature.Admin.AdminCostProfitTest" assertions="1" time="0.029021"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
