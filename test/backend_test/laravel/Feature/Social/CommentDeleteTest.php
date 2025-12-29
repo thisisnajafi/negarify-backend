@@ -16,21 +16,24 @@ class CommentDeleteTest extends BackendTestCase
     public function it_deletes_own_comment(): void
     {
         $user = User::factory()->create();
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $postOwner = User::factory()->create();
         
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
         $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
             'comments_count' => 1,
@@ -42,9 +45,7 @@ class CommentDeleteTest extends BackendTestCase
             'body' => 'Test comment',
         ]);
         
-        $response = $this->withHeaders([
-            'Authorization' => "Bearer {$token}",
-        ])->makeRequest('DELETE', "/api/v1/gallery/comments/{$comment->id}");
+        $response = $this->actingAs($user)->makeRequest('DELETE', "/api/v1/gallery/comments/{$comment->id}");
 
         $response->assertStatus(200)
             ->assertJson([
@@ -68,21 +69,26 @@ class CommentDeleteTest extends BackendTestCase
     public function it_deletes_comment_with_replies(): void
     {
         $user = User::factory()->create();
-        $token = $user->createToken('auth-token')->plainTextToken;
+        $postOwner = User::factory()->create();
+        $replyOwner1 = User::factory()->create();
+        $replyOwner2 = User::factory()->create();
         
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
         $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
             'comments_count' => 3, // 1 parent + 2 replies
@@ -96,22 +102,20 @@ class CommentDeleteTest extends BackendTestCase
         
         // Create replies
         Comment::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $replyOwner1->id,
             'gallery_post_id' => $post->id,
             'parent_id' => $parentComment->id,
             'body' => 'Reply 1',
         ]);
         
         Comment::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $replyOwner2->id,
             'gallery_post_id' => $post->id,
             'parent_id' => $parentComment->id,
             'body' => 'Reply 2',
         ]);
         
-        $response = $this->withHeaders([
-            'Authorization' => "Bearer {$token}",
-        ])->makeRequest('DELETE', "/api/v1/gallery/comments/{$parentComment->id}");
+        $response = $this->actingAs($user)->makeRequest('DELETE', "/api/v1/gallery/comments/{$parentComment->id}");
 
         $response->assertStatus(200);
 
@@ -131,21 +135,24 @@ class CommentDeleteTest extends BackendTestCase
     {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
-        $token1 = $user1->createToken('auth-token')->plainTextToken;
+        $postOwner = User::factory()->create();
         
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
         $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
         ]);
@@ -156,9 +163,7 @@ class CommentDeleteTest extends BackendTestCase
             'body' => 'Test comment',
         ]);
         
-        $response = $this->withHeaders([
-            'Authorization' => "Bearer {$token1}",
-        ])->makeRequest('DELETE', "/api/v1/gallery/comments/{$comment->id}");
+        $response = $this->actingAs($user1)->makeRequest('DELETE', "/api/v1/gallery/comments/{$comment->id}");
 
         $response->assertStatus(403)
             ->assertJson([
@@ -170,23 +175,26 @@ class CommentDeleteTest extends BackendTestCase
     /** @test */
     public function it_allows_admin_to_delete_any_comment(): void
     {
-        $admin = User::factory()->create(['role' => 'admin']);
+        $admin = User::factory()->create(['role' => 'admin'])->refresh();
         $user = User::factory()->create();
-        $token = $admin->createToken('auth-token')->plainTextToken;
+        $postOwner = User::factory()->create();
         
         $provider = Provider::factory()->create();
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
         $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
         ]);
         
         $post = GalleryPost::create([
-            'user_id' => User::factory()->create()->id,
+            'user_id' => $postOwner->id,
             'generation_job_id' => $job->id,
             'visibility' => 'public',
             'comments_count' => 1,
@@ -198,9 +206,7 @@ class CommentDeleteTest extends BackendTestCase
             'body' => 'Test comment',
         ]);
         
-        $response = $this->withHeaders([
-            'Authorization' => "Bearer {$token}",
-        ])->makeRequest('DELETE', "/api/v1/gallery/comments/{$comment->id}");
+        $response = $this->actingAs($admin)->makeRequest('DELETE', "/api/v1/gallery/comments/{$comment->id}");
 
         $response->assertStatus(200)
             ->assertJson([

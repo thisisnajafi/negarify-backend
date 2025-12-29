@@ -242,19 +242,19 @@ This file tracks the implementation progress of the test suite. Items are checke
 ## 8. Social Features Tests
 
 ### Likes
-- [ ] Like post increments count
-- [ ] Unlike post decrements count
-- [ ] Own post handling
-- [ ] Duplicate like prevention
-- [ ] Count accuracy
+- [x] Like post increments count
+- [x] Unlike post decrements count
+- [x] Own post handling
+- [x] Duplicate like prevention
+- [x] Count accuracy
 
 ### Comments
-- [ ] Create comment
-- [ ] Nested comments (replies)
-- [ ] Comments_count accuracy
-- [ ] Delete comment
-- [ ] User access control
-- [ ] Comment validation
+- [x] Create comment
+- [x] Nested comments (replies)
+- [x] Comments_count accuracy
+- [x] Delete comment
+- [x] User access control
+- [x] Comment validation
 
 ---
 
