@@ -134,16 +134,16 @@ This file tracks the implementation progress of the test suite. Items are checke
 ## 5. Token Transactions & Balance Tests
 
 ### Transaction History
-- [ ] Returns user history
-- [ ] Pagination
-- [ ] Type filtering
-- [ ] Date range filtering
-- [ ] Ordering (created_at DESC)
+- [x] Returns user history
+- [x] Pagination
+- [x] Type filtering
+- [x] Date range filtering
+- [x] Ordering (created_at DESC)
 
 ### Token Balance
-- [ ] Returns current balance
-- [ ] Balance reconciliation (SUM of transactions)
-- [ ] Accuracy verification
+- [x] Returns current balance
+- [x] Balance reconciliation (SUM of transactions)
+- [x] Accuracy verification
 
 ### Transaction Types
 - [ ] Purchase transactions

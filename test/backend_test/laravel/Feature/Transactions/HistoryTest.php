@@ -60,8 +60,9 @@ class HistoryTest extends BackendTestCase
 
         $transactions = $response->json('data');
         $this->assertCount(2, $transactions);
-        $this->assertEquals('purchase', $transactions[0]['type']);
-        $this->assertEquals('consume', $transactions[1]['type']);
+        // Transactions ordered by created_at DESC (newest first)
+        $this->assertEquals('consume', $transactions[0]['type']);
+        $this->assertEquals('purchase', $transactions[1]['type']);
 
         $this->assertNoErrorLogs();
     }
@@ -101,21 +102,27 @@ class HistoryTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        Carbon::setTestNow(Carbon::parse('2024-01-15'));
-        
-        TokenTransaction::create([
+        // Create transaction within date range (2024-01-01 to 2024-01-15)
+        $transaction1 = new TokenTransaction([
             'user_id' => $user->id,
             'amount_tokens' => 100,
             'type' => 'purchase',
-            'created_at' => Carbon::parse('2024-01-10'),
         ]);
+        $transaction1->timestamps = false; // Disable automatic timestamps
+        $transaction1->created_at = Carbon::parse('2024-01-10 12:00:00');
+        $transaction1->updated_at = Carbon::parse('2024-01-10 12:00:00');
+        $transaction1->save();
         
-        TokenTransaction::create([
+        // Create transaction outside date range (after end_date)
+        $transaction2 = new TokenTransaction([
             'user_id' => $user->id,
             'amount_tokens' => -10,
             'type' => 'consume',
-            'created_at' => Carbon::parse('2024-01-20'),
         ]);
+        $transaction2->timestamps = false; // Disable automatic timestamps
+        $transaction2->created_at = Carbon::parse('2024-01-20 12:00:00');
+        $transaction2->updated_at = Carbon::parse('2024-01-20 12:00:00');
+        $transaction2->save();
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
@@ -127,6 +134,8 @@ class HistoryTest extends BackendTestCase
         $transactions = $response->json('data');
         $this->assertCount(1, $transactions);
         $this->assertEquals('purchase', $transactions[0]['type']);
+        
+        Carbon::setTestNow(); // Reset
     }
 
     /** @test */
@@ -163,25 +172,33 @@ class HistoryTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        $oldTransaction = TokenTransaction::create([
+        // Ensure transactions are created with different timestamps
+        $oldTime = Carbon::parse('2024-01-01 10:00:00');
+        $newTime = Carbon::parse('2024-01-02 10:00:00');
+        
+        $oldTransaction = new TokenTransaction([
             'user_id' => $user->id,
             'amount_tokens' => 100,
             'type' => 'purchase',
-            'created_at' => Carbon::now()->subDay(),
         ]);
+        $oldTransaction->created_at = $oldTime;
+        $oldTransaction->save();
         
-        $newTransaction = TokenTransaction::create([
+        $newTransaction = new TokenTransaction([
             'user_id' => $user->id,
             'amount_tokens' => 50,
             'type' => 'purchase',
-            'created_at' => Carbon::now(),
         ]);
+        $newTransaction->created_at = $newTime;
+        $newTransaction->save();
         
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('GET', '/api/v1/tokens/history');
 
         $transactions = $response->json('data');
+        $this->assertCount(2, $transactions);
+        // Newest first (DESC order)
         $this->assertEquals($newTransaction->id, $transactions[0]['id']);
         $this->assertEquals($oldTransaction->id, $transactions[1]['id']);
     }
