@@ -195,7 +195,7 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Status updates
 - [x] Token consumption on success
 - [x] Token refund on failure
-- [ ] Retry logic
+- [x] Retry logic
 - [x] Idempotency
 
 ---

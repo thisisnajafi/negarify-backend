@@ -434,5 +434,158 @@ class QueueJobProcessingTest extends BackendTestCase
         $this->assertEquals('completed', $job->status);
         $this->assertNotNull($job->started_at); // Started_at should be set when status changes to processing
     }
+
+    /** @test */
+    public function it_handles_retries_safely_without_duplicate_operations(): void
+    {
+        $user = User::factory()->create(['tokens_balance' => 1000]);
+        
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
+            'model_type' => 'image',
+            'default_tokens' => 10,
+            'base_cost_usd' => 0.01,
+        ]);
+        
+        $job = GenerationJob::create([
+            'user_id' => $user->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Test retry safety',
+            'params_json' => [],
+            'status' => 'pending',
+            'tokens_consumed' => 10,
+        ]);
+        
+        // Reserve tokens (simulate what happens when job is created)
+        $user->tokens_balance -= 10;
+        $user->save();
+        $initialBalance = $user->tokens_balance;
+        
+        // Create a minimal valid PNG image (1x1 pixel PNG)
+        $pngContent = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+        $imageUrl = 'https://segmind.com/generated/image123.png';
+        
+        // Track download attempt count to simulate failure on first download, success on second
+        $downloadAttemptCount = 0;
+        Http::fake(function ($request) use ($imageUrl, $pngContent, &$downloadAttemptCount) {
+            $url = $request->url();
+            
+            // Segmind API calls - always succeed (BaseSegmindService handles its own retries)
+            if (str_contains($url, 'api.segmind.com')) {
+                return Http::response(['image_url' => $imageUrl], 200);
+            }
+            
+            // Image download - fail on first attempt, succeed on second
+            if (str_contains($url, 'segmind.com/generated/image')) {
+                $downloadAttemptCount++;
+                // First attempt: fail (this will cause the job to throw exception and be retried by Laravel queue)
+                if ($downloadAttemptCount === 1) {
+                    return Http::response('Server Error', 500);
+                }
+                // Second attempt: succeed
+                return Http::response($pngContent, 200, ['Content-Type' => 'image/png']);
+            }
+            
+            return Http::response('Not found', 404);
+        });
+        
+        // Allow expected error logs for download failure
+        $this->allowErrorLogs(['Image generation failed', 'Failed to process image result', 'Failed to download image']);
+        
+        // First attempt - should fail due to download error (handled internally by handleFailure)
+        $generateJob = new GenerateImageJob($job->id);
+        $generateJob->handle(); // No exception thrown - failures are handled internally
+        
+        // Verify job status after first attempt failure
+        $job->refresh();
+        // Job should be marked as failed
+        $this->assertEquals('failed', $job->status);
+        $this->assertNotNull($job->error_message);
+        $this->assertStringContainsString('download', strtolower($job->error_message));
+        
+        // Verify NO token transaction created yet (job failed before completion)
+        $transactionCount = TokenTransaction::where('generation_job_id', $job->id)->count();
+        $this->assertEquals(0, $transactionCount, 'No transaction should be created on failure');
+        
+        // Verify tokens were refunded on failure
+        $user->refresh();
+        $this->assertEquals($initialBalance + 10, $user->tokens_balance, 'Tokens should be refunded on failure');
+        
+        // Reset job status to pending for retry simulation
+        // In real Laravel queue, the job would be retried automatically
+        // Here we simulate the retry by resetting the job status
+        $job->status = 'pending';
+        $job->error_message = null;
+        $job->completed_at = null;
+        $job->started_at = null;
+        $job->save();
+        
+        // Reserve tokens again (simulate what happens when job is retried)
+        $user->tokens_balance -= 10;
+        $user->save();
+        
+        // Second attempt - should succeed (download will work this time)
+        $generateJobRetry = new GenerateImageJob($job->id);
+        $generateJobRetry->handle();
+        
+        // Verify job completed successfully on second attempt
+        $job->refresh();
+        $this->assertEquals('completed', $job->status);
+        $this->assertNotNull($job->result_url);
+        $this->assertNotNull($job->result_thumbnail_url);
+        $this->assertNotNull($job->started_at);
+        $this->assertNotNull($job->completed_at);
+        $this->assertEquals(10, $job->tokens_consumed);
+        
+        // Verify EXACTLY ONE token transaction created (no duplicates)
+        $transactionCount = TokenTransaction::where('generation_job_id', $job->id)->count();
+        $this->assertEquals(1, $transactionCount, 'Exactly one transaction should be created after successful retry');
+        
+        $transaction = TokenTransaction::where('generation_job_id', $job->id)->first();
+        $this->assertNotNull($transaction);
+        $this->assertEquals('consume', $transaction->type);
+        $this->assertEquals(-10, $transaction->amount_tokens);
+        
+        // Verify tokens consumed exactly once (user balance should be initial - 10)
+        $user->refresh();
+        $this->assertEquals($initialBalance, $user->tokens_balance, 'Tokens should be consumed exactly once after successful retry');
+        
+        // Verify image stored exactly once (check file count)
+        $imagePath = "generations/image/{$user->id}/{$job->id}.png";
+        Storage::disk('s3')->assertExists($imagePath);
+        
+        // Verify thumbnail stored exactly once
+        $thumbPath = "generations/image/{$user->id}/{$job->id}_thumb.png";
+        Storage::disk('s3')->assertExists($thumbPath);
+        
+        // Verify no duplicate files exist (check that there's only one file with this pattern)
+        $files = Storage::disk('s3')->files("generations/image/{$user->id}/");
+        $imageFiles = array_filter($files, function ($file) use ($job) {
+            return str_contains($file, "/{$job->id}.png");
+        });
+        $this->assertCount(1, $imageFiles, 'Only one image file should exist (no duplicates)');
+        
+        $thumbFiles = array_filter($files, function ($file) use ($job) {
+            return str_contains($file, "/{$job->id}_thumb.png");
+        });
+        $this->assertCount(1, $thumbFiles, 'Only one thumbnail file should exist (no duplicates)');
+        
+        // Verify idempotency: if we try to process again, it should be skipped (already completed)
+        $generateJobIdempotent = new GenerateImageJob($job->id);
+        $generateJobIdempotent->handle();
+        
+        // Verify no new transaction created
+        $finalTransactionCount = TokenTransaction::where('generation_job_id', $job->id)->count();
+        $this->assertEquals(1, $finalTransactionCount, 'No additional transactions should be created on idempotent retry');
+        
+        // Verify job still completed
+        $job->refresh();
+        $this->assertEquals('completed', $job->status);
+        
+        // Note: Error logs from first attempt are expected, so we don't assert no error logs
+        // The important part is that retry safety is verified (no duplicates, idempotency)
+    }
 }
 
