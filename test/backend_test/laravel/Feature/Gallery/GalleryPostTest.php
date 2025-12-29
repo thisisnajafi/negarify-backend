@@ -220,5 +220,117 @@ class GalleryPostTest extends BackendTestCase
                 'message' => 'A gallery post already exists for this generation job',
             ]);
     }
+
+    /** @test */
+    public function it_respects_prompt_and_model_visibility_flags(): void
+    {
+        $owner = User::factory()->create();
+        $viewer = User::factory()->create();
+        $ownerToken = $owner->createToken('auth-token')->plainTextToken;
+        $viewerToken = $viewer->createToken('auth-token')->plainTextToken;
+        
+        $providerId = $this->createProvider();
+        $modelId = $this->createModel($providerId, [
+            'model_name' => 'Test Model Name',
+        ]);
+        
+        $job = GenerationJob::create([
+            'user_id' => $owner->id,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
+            'job_type' => 'image',
+            'prompt' => 'Secret prompt text',
+            'negative_prompt' => 'Secret negative prompt',
+            'params_json' => [],
+            'status' => 'completed',
+            'result_url' => 'https://example.com/image.jpg',
+            'tokens_consumed' => 10,
+        ]);
+        
+        // Create post with hidden prompt and model
+        $response = $this->withHeaders([
+            'Authorization' => "Bearer {$ownerToken}",
+        ])->makeRequest('POST', '/api/v1/gallery/post', [
+            'generation_job_id' => $job->id,
+            'title' => 'Post with hidden prompt/model',
+            'visibility' => 'public',
+            'prompt_visible' => false,
+            'model_visible' => false,
+        ]);
+
+        $response->assertStatus(201);
+        $post = GalleryPost::where('user_id', $owner->id)->first();
+        $this->assertNotNull($post);
+        // Refresh to ensure we have the latest values from the database
+        $post->refresh();
+        // Use assertSame for strict boolean comparison
+        $this->assertSame(false, $post->prompt_visible, 'prompt_visible should be false');
+        $this->assertSame(false, $post->model_visible, 'model_visible should be false');
+        
+        // Owner should see prompt and model even if flags are false
+        $ownerResponse = $this->withHeaders([
+            'Authorization' => "Bearer {$ownerToken}",
+        ])->makeRequest('GET', "/api/v1/gallery/posts/{$post->id}");
+
+        $ownerResponse->assertStatus(200);
+        $ownerData = $ownerResponse->json('data');
+        $this->assertArrayHasKey('generation_job', $ownerData);
+        $this->assertArrayHasKey('prompt', $ownerData['generation_job']);
+        $this->assertEquals('Secret prompt text', $ownerData['generation_job']['prompt']);
+        $this->assertArrayHasKey('model', $ownerData['generation_job']);
+        $this->assertEquals('Test Model Name', $ownerData['generation_job']['model']['name']);
+        
+        // Non-owner should NOT see prompt and model when flags are false
+        // Double-check the post flags before making the request
+        $post->refresh();
+        $this->assertSame(false, (bool)$post->prompt_visible, 'prompt_visible must be false before non-owner view');
+        $this->assertSame(false, (bool)$post->model_visible, 'model_visible must be false before non-owner view');
+        
+        $viewerResponse = $this->withHeaders([
+            'Authorization' => "Bearer {$viewerToken}",
+        ])->makeRequest('GET', "/api/v1/gallery/posts/{$post->id}");
+
+        $viewerResponse->assertStatus(200);
+        $viewerData = $viewerResponse->json('data');
+        $this->assertArrayHasKey('generation_job', $viewerData);
+        
+        // Debug: check what's actually in the response
+        if (isset($viewerData['generation_job']['prompt'])) {
+            $this->fail('Prompt should not be visible to non-owner when prompt_visible=false. Post ID: ' . $post->id . ', prompt_visible: ' . var_export($post->prompt_visible, true));
+        }
+        if (isset($viewerData['generation_job']['model'])) {
+            $this->fail('Model should not be visible to non-owner when model_visible=false. Post ID: ' . $post->id . ', model_visible: ' . var_export($post->model_visible, true));
+        }
+        $this->assertArrayNotHasKey('prompt', $viewerData['generation_job']);
+        $this->assertArrayNotHasKey('model', $viewerData['generation_job']);
+        
+        // Now update post to make prompt and model visible
+        $updateResponse = $this->withHeaders([
+            'Authorization' => "Bearer {$ownerToken}",
+        ])->makeRequest('PUT', "/api/v1/gallery/posts/{$post->id}", [
+            'prompt_visible' => true,
+            'model_visible' => true,
+        ]);
+
+        $updateResponse->assertStatus(200);
+        $post->refresh();
+        $this->assertTrue($post->prompt_visible);
+        $this->assertTrue($post->model_visible);
+        
+        // Now non-owner should see prompt and model
+        $viewerResponse2 = $this->withHeaders([
+            'Authorization' => "Bearer {$viewerToken}",
+        ])->makeRequest('GET', "/api/v1/gallery/posts/{$post->id}");
+
+        $viewerResponse2->assertStatus(200);
+        $viewerData2 = $viewerResponse2->json('data');
+        $this->assertArrayHasKey('generation_job', $viewerData2);
+        $this->assertArrayHasKey('prompt', $viewerData2['generation_job']);
+        $this->assertEquals('Secret prompt text', $viewerData2['generation_job']['prompt']);
+        $this->assertArrayHasKey('model', $viewerData2['generation_job']);
+        $this->assertEquals('Test Model Name', $viewerData2['generation_job']['model']['name']);
+
+        $this->assertNoErrorLogs();
+    }
 }
 

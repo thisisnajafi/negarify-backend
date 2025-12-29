@@ -65,8 +65,8 @@ class GalleryPostController extends Controller
                 'description' => $validated['description'] ?? null,
                 'tags_json' => $validated['tags'] ?? null,
                 'visibility' => $validated['visibility'] ?? 'public',
-                'prompt_visible' => $validated['prompt_visible'] ?? true,
-                'model_visible' => $validated['model_visible'] ?? true,
+                'prompt_visible' => isset($validated['prompt_visible']) ? $validated['prompt_visible'] : true,
+                'model_visible' => isset($validated['model_visible']) ? $validated['model_visible'] : true,
             ]);
 
             DB::commit();
@@ -80,7 +80,7 @@ class GalleryPostController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Gallery post created successfully',
-                'data' => $this->formatPostResponse($post),
+                'data' => $this->formatPostResponse($post, true), // Creator is always the owner
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -119,9 +119,12 @@ class GalleryPostController extends Controller
             ], 404); // Don't reveal existence of private posts
         }
 
+        $isOwner = $user->id === $post->user_id;
+        // Reload post to ensure fresh attribute values (in case of any caching issues)
+        $post->refresh();
         return response()->json([
             'success' => true,
-            'data' => $this->formatPostResponse($post, $user->id === $post->user_id),
+            'data' => $this->formatPostResponse($post, $isOwner),
         ]);
     }
 
@@ -306,13 +309,15 @@ class GalleryPostController extends Controller
                 'result_thumbnail_url' => $post->generationJob->result_thumbnail_url,
             ];
 
-            // Add prompt only if visible
+            // Add prompt only if visible (or if owner - owners always see prompts)
+            // Note: Owners can always see their own prompts, even if prompt_visible is false
             if ($post->prompt_visible || $isOwner) {
                 $response['generation_job']['prompt'] = $post->generationJob->prompt;
                 $response['generation_job']['negative_prompt'] = $post->generationJob->negative_prompt;
             }
 
-            // Add model only if visible
+            // Add model only if visible (or if owner - owners always see models)
+            // Note: Owners can always see their own models, even if model_visible is false
             if ($post->model_visible || $isOwner) {
                 if ($post->generationJob->model) {
                     $response['generation_job']['model'] = [
