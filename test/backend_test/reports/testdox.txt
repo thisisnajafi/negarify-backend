@@ -1,27 +1,13 @@
-Input Validation (Test\BackendTest\Laravel\Feature\Security\InputValidation)
- [x] It prevents sql injection in search queries
- [x] It sanitizes user input in comments
- [x] It validates phone number format
- [x] It validates email format
- [x] It validates numeric inputs
- [x] It handles oversized inputs
- [x] It validates file uploads
-
-Middleware (Test\BackendTest\Laravel\Feature\Security\Middleware)
- [x] It requires authentication for protected routes
- [x] It rejects invalid token
- [x] It rejects expired token
- [x] It rejects missing token
- [x] It requires admin role for admin endpoints
- [x] It allows admin access to admin endpoints
- [x] It rejects regular user from admin endpoints
- [x] It allows unauthenticated access to public endpoints
- [x] It validates token format
- [x] It handles malformed authorization header
-
-Rate Limiting (Test\BackendTest\Laravel\Feature\Security\RateLimiting)
- [x] It enforces rate limiting on otp requests
- [x] It enforces rate limiting per phone number
- [x] It resets rate limit after time window
- [x] It enforces rate limiting on generation requests
+Smoke (Test\BackendTest\Laravel\Feature\Observability\Smoke)
+ [x] It health check returns ok
+ [x] It public endpoints are accessible
+ [x] It protected endpoints require authentication
+ [x] It database connection works
+ [x] It api returns consistent response format
+ [x] It handles invalid routes gracefully
+ [x] It handles invalid methods gracefully
+ [x] It returns proper status codes for auth errors
+ [x] It logs errors without exposing sensitive data
+ [x] It validates route parameters
+ [x] It logs validation errors appropriately
 

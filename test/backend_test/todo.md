@@ -345,27 +345,27 @@ This file tracks the implementation progress of the test suite. Items are checke
 ## 11. Observability & Smoke Tests
 
 ### Route Registration
-- [ ] All routes registered
-- [ ] Auth errors return 401/403 (not 500)
-- [ ] 404 for non-existent endpoints
-- [ ] Route parameter validation
+- [x] All routes registered
+- [x] Auth errors return 401/403 (not 500)
+- [x] 404 for non-existent endpoints
+- [x] Route parameter validation
 
 ### Error Handling
-- [ ] Proper status codes
-- [ ] No sensitive data exposure
-- [ ] Stack traces in logs only
-- [ ] Validation error details
+- [x] Proper status codes
+- [x] No sensitive data exposure
+- [x] Stack traces in logs only
+- [x] Validation error details
 
 ### Logging
-- [ ] All errors logged
-- [ ] No secrets in logs
-- [ ] Structured logging
-- [ ] Appropriate log levels
+- [x] All errors logged
+- [x] No secrets in logs
+- [x] Structured logging
+- [x] Appropriate log levels
 
 ### Queue Failures
-- [ ] Failed jobs logged
-- [ ] Failed jobs table updated
-- [ ] No failed jobs after success (unless testing failure)
+- [x] Failed jobs logged
+- [x] Failed jobs table updated
+- [x] No failed jobs after success (unless testing failure)
 
 ---
 
