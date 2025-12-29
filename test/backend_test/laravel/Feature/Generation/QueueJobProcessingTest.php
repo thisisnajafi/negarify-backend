@@ -8,7 +8,6 @@ use App\Jobs\GenerateVideoJob;
 use App\Models\GenerationJob;
 use App\Models\TokenTransaction;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
@@ -17,7 +16,6 @@ use Test\BackendTest\Laravel\Helpers\BackendTestCase;
 
 class QueueJobProcessingTest extends BackendTestCase
 {
-    use DatabaseMigrations;
 
     /**
      * Helper method to create a provider using Provider model to handle encryption properly

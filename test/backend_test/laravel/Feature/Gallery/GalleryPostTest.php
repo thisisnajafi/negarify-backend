@@ -5,13 +5,11 @@ namespace Test\BackendTest\Laravel\Feature\Gallery;
 use App\Models\GenerationJob;
 use App\Models\GalleryPost;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
 
 class GalleryPostTest extends BackendTestCase
 {
-    use DatabaseMigrations;
 
     /**
      * Helper method to create a provider using DB::table to avoid factory/Model class conflicts

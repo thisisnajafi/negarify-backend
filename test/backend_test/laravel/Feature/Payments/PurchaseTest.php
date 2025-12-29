@@ -14,13 +14,6 @@ use Test\BackendTest\Laravel\Helpers\BackendTestCase;
 
 class PurchaseTest extends BackendTestCase
 {
-    // Override RefreshDatabase trait to avoid transaction conflicts
-    // The issue: OrderController uses lockForUpdate() and DB::beginTransaction()
-    // which conflicts with RefreshDatabase's transaction wrapping in SQLite
-    // Solution: Use DatabaseMigrations instead which doesn't wrap in transactions
-    use \Illuminate\Foundation\Testing\DatabaseMigrations;
-    
-    // Remove RefreshDatabase from parent to avoid trait conflict
     protected function setUp(): void
     {
         parent::setUp();

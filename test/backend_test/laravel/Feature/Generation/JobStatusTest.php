@@ -6,12 +6,10 @@ use App\Models\GenerationJob;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Carbon\Carbon;
 
 class JobStatusTest extends BackendTestCase
 {
-    use DatabaseMigrations; // Use DatabaseMigrations to avoid transaction conflicts
 
     /**
      * Helper method to create a provider using DB::table to avoid factory/Model class conflicts

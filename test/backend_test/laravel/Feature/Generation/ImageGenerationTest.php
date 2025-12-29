@@ -7,11 +7,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ImageGenerationTest extends BackendTestCase
 {
-    use DatabaseMigrations; // Use DatabaseMigrations to avoid transaction conflicts
 
     protected function setUp(): void
     {

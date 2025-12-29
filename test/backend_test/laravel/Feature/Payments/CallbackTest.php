@@ -7,14 +7,10 @@ use App\Models\TokenBundle;
 use App\Models\TokenTransaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
 
 class CallbackTest extends BackendTestCase
 {
-    // Override to use DatabaseMigrations instead of RefreshDatabase
-    // Reason: OrderController callback uses DB::beginTransaction() which conflicts with RefreshDatabase's transaction wrapping in SQLite
-    use DatabaseMigrations;
     
     protected function setUp(): void
     {
