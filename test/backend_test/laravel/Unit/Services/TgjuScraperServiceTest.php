@@ -89,6 +89,9 @@ class TgjuScraperServiceTest extends BackendTestCase
     /** @test */
     public function it_handles_html_parsing_failure_gracefully(): void
     {
+        // Allow expected error logs
+        $this->allowErrorLogs(['Failed to extract rate from TGJU.org HTML']);
+        
         Http::fake([
             'www.tgju.org/*' => Http::response('<html><body>Invalid HTML</body></html>', 200),
         ]);
@@ -102,8 +105,10 @@ class TgjuScraperServiceTest extends BackendTestCase
     /** @test */
     public function it_validates_rate_is_reasonable(): void
     {
-        // Test with unreasonably high rate
-        $htmlWithHighRate = str_replace('500000', '10000000', $this->getTgjuHtmlFixture());
+        // Test with unreasonably high rate (outside parseRate validation range 10000-200000)
+        // Use 500000 (outside range) and ensure it's in the HTML
+        $invalidRate = 500000; // > 200000, should be rejected
+        $htmlWithHighRate = $this->getTgjuHtmlFixture($invalidRate);
         
         Http::fake([
             'www.tgju.org/*' => Http::response($htmlWithHighRate, 200),
@@ -112,8 +117,11 @@ class TgjuScraperServiceTest extends BackendTestCase
         $service = app(TgjuScraperService::class);
         $rate = $service->fetchUsdRate();
         
-        // Should reject unreasonably high rate
+        // Should reject unreasonably high rate (validation in parseRate method)
         $this->assertNull($rate);
+        
+        // Allow expected error logs
+        $this->allowErrorLogs(['Invalid rate extracted from TGJU.org']);
     }
 
     /** @test */
