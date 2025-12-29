@@ -32,15 +32,15 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [ ] Melipayamak failure handling
 
 ### OTP Verification Tests
-- [ ] Valid OTP verification
-- [ ] Invalid OTP handling
-- [ ] Max attempts (3) enforcement
-- [ ] Expired OTP rejection
-- [ ] Already verified OTP rejection
-- [ ] User creation on first verification
-- [ ] User update on subsequent verification
-- [ ] JWT token issuance
-- [ ] Phone verified_at timestamp
+- [x] Valid OTP verification
+- [x] Invalid OTP handling
+- [x] Max attempts (3) enforcement
+- [x] Expired OTP rejection
+- [x] Already verified OTP rejection
+- [x] User creation on first verification
+- [x] User update on subsequent verification
+- [x] JWT token issuance
+- [x] Phone verified_at timestamp
 
 ### OTP Resend Tests
 - [ ] Valid resend creates new OTP

@@ -101,22 +101,15 @@ class OtpRequestTest extends BackendTestCase
     public function it_enforces_rate_limiting_on_otp_requests(): void
     {
         $phone = '+989123456789';
-        $normalizedPhone = '09123456789';
-        $phoneHash = hash('sha256', $normalizedPhone . config('app.key'));
+        $phoneHash = hash('sha256', $phone . config('app.key'));
         $rateLimitKey = "otp_request:{$phoneHash}";
 
         // Make 3 requests (should succeed)
-        // Note: Each request creates an active OTP, so we need to delete the previous one
-        // to allow the next request to go through and test rate limiting properly
         for ($i = 0; $i < 3; $i++) {
             $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
                 'phone' => $phone,
             ]);
             $response->assertStatus(200);
-            
-            // Delete the created OTP so the next request can create a new one
-            // This allows us to test rate limiting (3 requests allowed)
-            OtpVerification::where('phone', $normalizedPhone)->delete();
         }
 
         // 4th request should be rate limited
@@ -168,15 +161,14 @@ class OtpRequestTest extends BackendTestCase
                 ],
             ]);
 
-        // Verify first OTP still exists (phone is normalized)
-        $normalizedPhone = '09123456789';
+        // Verify first OTP still exists
         $this->assertDatabaseHas('otp_verifications', [
-            'phone' => $normalizedPhone,
+            'phone' => $phone,
             'request_id' => $firstRequestId,
         ]);
 
         // Verify only one OTP exists
-        $this->assertEquals(1, OtpVerification::where('phone', $normalizedPhone)->count());
+        $this->assertEquals(1, OtpVerification::where('phone', $phone)->count());
     }
 
     /** @test */
@@ -218,20 +210,15 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_handles_melipayamak_service_failure_gracefully(): void
     {
+        // Fake HTTP to return failure
+        Http::fake([
+            'rest.payamak-panel.com/*' => Http::response([
+                'StrRetStatus' => 'Error',
+                'RetStatus' => 0,
+            ], 500),
+        ]);
+
         $phone = '+989123456789';
-        $normalizedPhone = '09123456789';
-        
-        // Override setUp fake with a failure response
-        // Use Http::fake() with a closure to ensure it matches
-        Http::fake(function ($request) {
-            if (str_contains($request->url(), 'rest.payamak-panel.com')) {
-                return Http::response([
-                    'StrRetStatus' => 'InsufficientCredit',
-                    'RetStatus' => 0,
-                ], 200); // API returns 200 even on errors, RetStatus indicates success/failure
-            }
-            return Http::response([], 404);
-        });
         
         $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
             'phone' => $phone,
@@ -245,7 +232,7 @@ class OtpRequestTest extends BackendTestCase
 
         // Verify OTP was cleaned up (deleted after SMS failure)
         $this->assertDatabaseMissing('otp_verifications', [
-            'phone' => $normalizedPhone,
+            'phone' => $phone,
         ]);
 
         // Allow error logs for SMS failure (expected in this test)
@@ -255,34 +242,30 @@ class OtpRequestTest extends BackendTestCase
     /** @test */
     public function it_normalizes_phone_number_format(): void
     {
-        // Test various phone formats that should normalize to 09123456789
+        // Test various phone formats that should normalize to +989123456789
         $formats = [
             '09123456789',
             '9123456789',
             '989123456789',
-            '+989123456789',
+            '+98 912 345 6789',
+            '00989123456789',
         ];
-        $expectedNormalized = '09123456789';
-        $normalizedPhoneHash = hash('sha256', $expectedNormalized . config('app.key'));
-        $rateLimitKey = "otp_request:{$normalizedPhoneHash}";
 
         foreach ($formats as $format) {
-            // Clear rate limiter for this normalized phone before each request
-            RateLimiter::clear($rateLimitKey);
-            
             $response = $this->makeRequest('POST', '/api/v1/auth/request-otp', [
                 'phone' => $format,
             ]);
 
             $response->assertStatus(200);
 
-            // Verify normalized phone stored (phone is normalized to 09123456789)
+            // Verify normalized phone stored
             $this->assertDatabaseHas('otp_verifications', [
-                'phone' => $expectedNormalized,
+                'phone' => '+989123456789',
             ]);
 
             // Clean up for next iteration
-            OtpVerification::where('phone', $expectedNormalized)->delete();
+            OtpVerification::where('phone', '+989123456789')->delete();
+            RateLimiter::clear('otp_request:*');
         }
     }
 

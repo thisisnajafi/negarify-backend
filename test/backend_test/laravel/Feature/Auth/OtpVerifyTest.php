@@ -28,7 +28,7 @@ class OtpVerifyTest extends BackendTestCase
     /** @test */
     public function it_verifies_valid_otp_code_and_creates_user(): void
     {
-        $phone = '+989123456789';
+        $phone = '09373264601';
         
         // Create OTP
         $result = OtpVerification::generate($phone);
@@ -96,7 +96,7 @@ class OtpVerifyTest extends BackendTestCase
     /** @test */
     public function it_verifies_valid_otp_code_and_updates_existing_user(): void
     {
-        $phone = '+989123456789';
+        $phone = '09373264601';
         
         // Create existing user
         $existingUser = User::create([
@@ -130,7 +130,7 @@ class OtpVerifyTest extends BackendTestCase
     /** @test */
     public function it_rejects_invalid_otp_code(): void
     {
-        $phone = '+989123456789';
+        $phone = '09373264601';
         
         // Create OTP
         $result = OtpVerification::generate($phone);
@@ -164,7 +164,7 @@ class OtpVerifyTest extends BackendTestCase
     /** @test */
     public function it_enforces_max_attempts_limit(): void
     {
-        $phone = '+989123456789';
+        $phone = '09373264601';
         
         // Create OTP
         $result = OtpVerification::generate($phone);
@@ -200,7 +200,7 @@ class OtpVerifyTest extends BackendTestCase
     /** @test */
     public function it_rejects_expired_otp(): void
     {
-        $phone = '+989123456789';
+        $phone = '09373264601';
         
         // Create OTP
         $result = OtpVerification::generate($phone);
@@ -228,7 +228,7 @@ class OtpVerifyTest extends BackendTestCase
     /** @test */
     public function it_rejects_already_verified_otp(): void
     {
-        $phone = '+989123456789';
+        $phone = '09373264601';
         
         // Create and verify OTP
         $result = OtpVerification::generate($phone);
@@ -284,7 +284,7 @@ class OtpVerifyTest extends BackendTestCase
     /** @test */
     public function it_validates_code_format(): void
     {
-        $phone = '+989123456789';
+        $phone = '09373264601';
         $result = OtpVerification::generate($phone);
         $otp = $result['otp'];
         
