@@ -267,19 +267,19 @@ This file tracks the implementation progress of the test suite. Items are checke
 - [x] Admin middleware works
 
 ### Sales Dashboard
-- [ ] Revenue by period
-- [ ] Total revenue calculation
-- [ ] Top selling bundles
-- [ ] Refunds tracking
-- [ ] Date range filtering
-- [ ] Response structure
+- [x] Revenue by period
+- [x] Total revenue calculation
+- [x] Top selling bundles
+- [x] Refunds tracking
+- [x] Date range filtering
+- [x] Response structure
 
 ### Users Dashboard
-- [ ] DAU/WAU/MAU calculation
-- [ ] Top users by generation
-- [ ] Top users by spending
-- [ ] Cohort analysis
-- [ ] User search/filtering
+- [x] DAU/WAU/MAU calculation
+- [x] Top users by generation
+- [x] Top users by spending
+- [x] Cohort analysis
+- [x] User search/filtering
 
 ### Models Usage Dashboard
 - [ ] Usage statistics per model

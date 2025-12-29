@@ -1,8 +1,11 @@
-Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)
- [x] It returns revenue by period
- [x] It calculates total revenue correctly
- [x] It returns top selling bundles
- [x] It tracks refunds
- [x] It supports date range filtering
- [x] It caches sales summary
+Admin Users (Test\BackendTest\Laravel\Feature\Admin\AdminUsers)
+ [x] It calculates dau wau mau correctly
+ [x] It returns top users by generation
+ [x] It returns top users by spending
+ [x] It performs cohort analysis
+ [x] It searches users by name phone or email
+ [x] It filters users by role
+ [x] It filters users by date range
+ [x] It paginates users list
+ [x] It caches users summary
 
