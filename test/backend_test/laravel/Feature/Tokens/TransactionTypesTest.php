@@ -4,9 +4,11 @@ namespace Test\BackendTest\Laravel\Feature\Tokens;
 
 use App\Models\Order;
 use App\Models\GenerationJob;
+use App\Models\Provider;
 use App\Models\TokenBundle;
 use App\Models\TokenTransaction;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
 
 class TransactionTypesTest extends BackendTestCase
@@ -65,10 +67,30 @@ class TransactionTypesTest extends BackendTestCase
     {
         $user = User::factory()->create(['tokens_balance' => 100]);
         
+        // Create provider with required fields (using DB to bypass encryption mutator in tests)
+        $providerId = DB::table('providers')->insertGetId([
+            'name' => 'Test Provider',
+            'api_base_url' => 'https://api.example.com',
+            'api_key_encrypted' => 'test-api-key-encrypted', // In real app this would be encrypted
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
+        // Create model using DB::table to avoid Model class name conflict with Illuminate\Database\Eloquent\Model
+        $modelId = DB::table('models')->insertGetId([
+            'provider_id' => $providerId,
+            'model_name' => 'Test Model',
+            'model_type' => 'image',
+            'api_endpoint' => '/test',
+            'default_tokens' => 10,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
         $job = GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => 1,
-            'model_id' => 1,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
             'prompt' => 'Test prompt',
             'params_json' => [],
@@ -103,11 +125,33 @@ class TransactionTypesTest extends BackendTestCase
     {
         $user = User::factory()->create(['tokens_balance' => 100]);
         
+        // Create provider with required fields (using DB to bypass encryption mutator in tests)
+        $providerId = DB::table('providers')->insertGetId([
+            'name' => 'Test Provider',
+            'api_base_url' => 'https://api.example.com',
+            'api_key_encrypted' => 'test-api-key-encrypted', // In real app this would be encrypted
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
+        // Create model using DB::table to avoid Model class name conflict with Illuminate\Database\Eloquent\Model
+        $modelId = DB::table('models')->insertGetId([
+            'provider_id' => $providerId,
+            'model_name' => 'Test Model',
+            'model_type' => 'image',
+            'api_endpoint' => '/test',
+            'default_tokens' => 10,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
         $job = GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => 1,
-            'model_id' => 1,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'failed',
             'tokens_consumed' => 10,
         ]);
@@ -233,11 +277,33 @@ class TransactionTypesTest extends BackendTestCase
             'description' => 'Token purchase',
         ]);
         
+        // Create provider with required fields (using DB to bypass encryption mutator in tests)
+        $providerId = DB::table('providers')->insertGetId([
+            'name' => 'Test Provider',
+            'api_base_url' => 'https://api.example.com',
+            'api_key_encrypted' => 'test-api-key-encrypted', // In real app this would be encrypted
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
+        // Create model using DB::table to avoid Model class name conflict with Illuminate\Database\Eloquent\Model
+        $modelId = DB::table('models')->insertGetId([
+            'provider_id' => $providerId,
+            'model_name' => 'Test Model',
+            'model_type' => 'image',
+            'api_endpoint' => '/test',
+            'default_tokens' => 10,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
         $job = GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => 1,
-            'model_id' => 1,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'completed',
             'tokens_consumed' => 30,
         ]);
@@ -259,9 +325,11 @@ class TransactionTypesTest extends BackendTestCase
         
         $failedJob = GenerationJob::create([
             'user_id' => $user->id,
-            'provider_id' => 1,
-            'model_id' => 1,
+            'provider_id' => $providerId,
+            'model_id' => $modelId,
             'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
             'status' => 'failed',
             'tokens_consumed' => 20,
         ]);
