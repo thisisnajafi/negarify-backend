@@ -1,7 +1,7 @@
 # Full Suite Stabilization Task List
 
 **Date Created:** 2025-12-29  
-**Status:** Phase 1 Complete  
+**Status:** Phase 2 In Progress (C1-C3 Complete)  
 **Objective:** Fix 139 transaction isolation failures in full test suite execution
 
 **Phase 1 Summary (Completed 2025-12-29):**
@@ -10,6 +10,11 @@
 - ✅ Task A3: Verified test isolation - all tests properly isolated, no state leakage detected
 - ✅ Task A4: Validated queue job execution context - queue jobs work correctly with LazilyRefreshDatabase
 - ✅ Task A5: Phase 1 verification - All Payment and Generation tests pass with zero transaction nesting errors
+
+**Phase 2 Summary (In Progress):**
+- ✅ Task C1: Removed all DatabaseMigrations overrides from 9 test files
+- ✅ Task C2: Fixed transaction nesting in ModerationService (DB::transactionLevel() check) and AdminModerationController bugs
+- ✅ Task C3: Normalized test behavior - verified all suites work correctly with LazilyRefreshDatabase, no dependencies on per-method rollback behavior detected
 
 **Key Changes:**
 - BackendTestCase now uses LazilyRefreshDatabase instead of RefreshDatabase
