@@ -71,6 +71,9 @@ class TgjuScraperServiceTest extends BackendTestCase
     /** @test */
     public function it_handles_http_failure_gracefully(): void
     {
+        // Allow expected error logs
+        $this->allowErrorLogs(['TGJU.org request failed']);
+        
         Http::fake([
             'www.tgju.org/*' => Http::response('', 500),
         ]);
