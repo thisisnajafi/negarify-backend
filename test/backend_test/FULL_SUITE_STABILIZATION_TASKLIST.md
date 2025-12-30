@@ -658,23 +658,28 @@
   - [x] Created documentation: `PHASE_F1_COVERAGE_DRIVER_SELECTION.md` ✅
 
 ### F2. Installation Steps
-- [ ] **F2.1** Install PCOV extension:
-  - [ ] Windows: `pecl install pcov` or use pre-built DLL
-  - [ ] Linux: `pecl install pcov` or `apt-get install php-pcov`
-  - [ ] macOS: `pecl install pcov` or `brew install php-pcov`
-  - [ ] Verify installation: `php -m | grep pcov`
+- [x] **F2.1** Attempt PCOV installation:
+  - [x] Windows: PECL not available, no PCOV DLL found ✅
+  - [x] PCOV installation not possible on this system ✅
+  - [x] Fallback to Xdebug ✅
 
-- [ ] **F2.2** Configure PCOV in `php.ini`:
-  - [ ] Add: `extension=pcov.so` (or `extension=pcov.dll` on Windows)
-  - [ ] Add: `pcov.enabled=1`
-  - [ ] Add: `pcov.directory=app` (limit to app directory)
-  - [ ] Verify: `php -i | grep pcov`
+- [x] **F2.2** Configure Xdebug in `php.ini`:
+  - [x] Added: `zend_extension=xdebug` ✅
+  - [x] Added: `xdebug.mode=coverage` ✅
+  - [x] Added: `xdebug.start_with_request=no` ✅
+  - [x] Configuration file: `C:\php8.4\php.ini` ✅
 
-- [ ] **F2.3** Alternative: Install Xdebug if PCOV fails:
-  - [ ] Windows: Download DLL from xdebug.org
-  - [ ] Linux: `apt-get install php-xdebug` or `yum install php-xdebug`
-  - [ ] macOS: `brew install php-xdebug`
-  - [ ] Configure: `xdebug.mode=coverage`
+- [x] **F2.3** Xdebug DLL download:
+  - [x] Attempted automated download - SSL/TLS issue prevented download ⚠️
+  - [x] Created installation guide: `INSTALL_XDEBUG_WINDOWS.md` ✅
+  - [x] Manual download required: https://xdebug.org/files/php_xdebug-3.5.2-8.4-ts-vs17-x86_64.dll ⚠️
+  - [x] DLL must be placed in: `C:\php8.4\ext\php_xdebug.dll` ⚠️
+
+**Status:** ⚠️ **F2 Partial** - php.ini configured, DLL download required (SSL/TLS issue)
+- ✅ php.ini configured correctly
+- ⚠️ Xdebug DLL not yet downloaded (manual download required)
+- ⚠️ Extension not yet loaded (requires DLL file)
+- ✅ Configuration ready - will work once DLL is in place
 
 ### F3. PHPUnit Configuration Changes
 - [ ] **F3.1** Verify `phpunit.xml` coverage configuration:
