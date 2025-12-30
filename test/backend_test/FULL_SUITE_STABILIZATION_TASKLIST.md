@@ -104,15 +104,17 @@
   - [x] Test transaction rollback behavior in nested scenarios - **✅ All rollback scenarios tested and working correctly**
 
 ### A5. Test Execution Order Analysis
-- [ ] **A5.1** Identify test execution order dependencies:
-  - [ ] Run PHPUnit with `--testdox` to see execution order
-  - [ ] Document if certain test sequences trigger failures
-  - [ ] Check if alphabetical ordering affects transaction state
+- [x] **A5.1** Identify test execution order dependencies:
+  - [x] Run PHPUnit with `--testdox` to see execution order
+  - [x] Document if certain test sequences trigger failures
+  - [x] Check if alphabetical ordering affects transaction state
 
-- [ ] **A5.2** Identify shared state between tests:
-  - [ ] Check for static variables or singletons
-  - [ ] Check for cached data that persists between tests
-  - [ ] Verify `RefreshDatabase` properly resets state
+- [x] **A5.2** Identify shared state between tests:
+  - [x] Check for static variables or singletons
+  - [x] Check for cached data that persists between tests
+  - [x] Verify `LazilyRefreshDatabase` properly resets state
+  - [x] Fix cache state pollution by adding `Cache::flush()` in `BackendTestCase::setUp()`
+  - [x] Fix risky test `AvatarTest::it_handles_storage_failure_gracefully` with proper assertions
 
 ---
 
