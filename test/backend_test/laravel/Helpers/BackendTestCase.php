@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Log\Events\MessageLogged;
 use Carbon\Carbon;
 
@@ -120,6 +121,11 @@ abstract class BackendTestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Clear cache to prevent shared state between tests
+        // This ensures currency rates, admin analytics, and other cached data
+        // don't leak between tests, preventing order-dependent failures
+        Cache::flush();
 
         // Set deterministic time
         Carbon::setTestNow(Carbon::now());

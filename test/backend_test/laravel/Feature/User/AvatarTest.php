@@ -121,17 +121,41 @@ class AvatarTest extends BackendTestCase
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
         
-        // Force storage failure by using invalid disk
-        // This test may need adjustment based on actual storage implementation
-        
         $file = UploadedFile::fake()->image('avatar.jpg');
         
-        // Mock storage to return false
-        Storage::shouldReceive('disk->put')
+        // Clear the fake storage and use real mocking to simulate failure
+        Storage::fake(); // Clear previous fake
+        Storage::shouldReceive('disk')
+            ->with('s3')
+            ->andReturnSelf();
+        
+        Storage::shouldReceive('exists')
             ->andReturn(false);
         
-        // Note: This test may need to be adjusted based on actual implementation
-        // The controller may handle storage failures differently
+        Storage::shouldReceive('put')
+            ->andReturn(false);
+        
+        Storage::shouldReceive('url')
+            ->never(); // Should not be called if put fails
+        
+        // Allow error log for storage failure (expected behavior)
+        $this->allowErrorLogs(['Avatar upload failed - storage error']);
+        
+        $response = $this->withHeader('Authorization', "Bearer {$token}")
+            ->postJson('/api/v1/user/avatar', [
+                'avatar' => $file,
+            ]);
+        
+        // Assert that storage failure returns 500 error
+        $response->assertStatus(500)
+            ->assertJson([
+                'success' => false,
+                'message' => 'Failed to upload avatar. Please try again later.',
+            ]);
+        
+        // Assert user avatar was not updated
+        $user->refresh();
+        $this->assertNull($user->avatar_url);
     }
 }
 

@@ -1,0 +1,1740 @@
+﻿
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest::it_calculates_revenue_cost_and_profit(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest::it_calculates_profit_margins_correctly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest::it_provides_breakdown_by_model(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest::it_provides_breakdown_by_provider(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest::it_provides_historical_comparison(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest::it_provides_profit_margins_over_time(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest::it_supports_date_range_filtering(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest::it_supports_range_parameter(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest::it_caches_cost_profit_data(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest::it_returns_usage_statistics_per_model(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest::it_calculates_success_and_failure_rates(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest::it_calculates_average_latency(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest::it_tracks_tokens_consumed_per_model(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest::it_tracks_cost_and_revenue_per_model(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest::it_supports_date_range_filtering(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest::it_supports_range_parameter(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest::it_caches_models_usage_data(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest::it_handles_breakdown_by_job_type(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminRbacTest::it_requires_admin_role_for_admin_endpoints(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminRbacTest::it_rejects_non_admin_users_with_403(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminRbacTest::it_rejects_unauthenticated_users_with_401(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminRbacTest::it_verifies_admin_middleware_works(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest::it_returns_revenue_by_period(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest::it_calculates_total_revenue_correctly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest::it_returns_top_selling_bundles(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest::it_tracks_refunds(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest::it_supports_date_range_filtering(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest::it_caches_sales_summary(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest::it_returns_tokens_consumption_by_provider(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest::it_returns_tokens_consumption_by_type(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest::it_returns_cost_per_provider(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest::it_returns_time_series_data(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest::it_supports_date_range_filtering(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest::it_supports_range_parameter(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest::it_caches_token_analytics_data(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminUsersTest::it_calculates_dau_wau_mau_correctly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminUsersTest::it_returns_top_users_by_generation(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminUsersTest::it_returns_top_users_by_spending(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminUsersTest::it_performs_cohort_analysis(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminUsersTest::it_searches_users_by_name_phone_or_email(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminUsersTest::it_filters_users_by_role(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminUsersTest::it_filters_users_by_date_range(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminUsersTest::it_paginates_users_list(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\AdminUsersTest::it_caches_users_summary(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\DashboardSummaryTest::it_returns_sales_summary(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\DashboardSummaryTest::it_returns_users_summary(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\DashboardSummaryTest::it_returns_tokens_summary(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\DashboardSummaryTest::it_returns_cost_profit_summary(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\DashboardSummaryTest::it_returns_models_usage_summary(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\DashboardSummaryTest::it_returns_users_list(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\DashboardSummaryTest::it_filters_users_list_by_role(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\DashboardSummaryTest::it_rejects_admin_endpoints_for_non_admin(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\GalleryAdminTest::it_curates_post_as_admin(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\GalleryAdminTest::it_rejects_curating_private_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\GalleryAdminTest::it_uncurates_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\GalleryAdminTest::it_features_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\GalleryAdminTest::it_performs_bulk_curation(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\GalleryAdminTest::it_lists_curated_posts(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\ModerationAdminTest::it_returns_moderation_queue(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\ModerationAdminTest::it_returns_reports_list(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\ModerationAdminTest::it_approves_post_in_moderation(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\ModerationAdminTest::it_rejects_post_in_moderation(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\ModerationAdminTest::it_resolves_report(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest::it_returns_system_health_metrics(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest::it_caches_system_health(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest::it_rejects_system_health_access_for_non_admin(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest::it_tracks_failed_jobs_count(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest::it_calculates_error_rate(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest::it_tracks_api_latency(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest::it_tracks_storage_usage(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest::it_tracks_queue_length_by_type(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdminTest::it_creates_token_bundle_as_admin(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdminTest::it_rejects_bundle_creation_for_non_admin(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdminTest::it_updates_token_bundle(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdminTest::it_deletes_token_bundle(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdminTest::it_activates_token_bundle(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdminTest::it_deactivates_token_bundle(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\LogoutTest::it_logs_out_authenticated_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\LogoutTest::it_rejects_logout_for_unauthenticated_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\LogoutTest::it_rejects_logout_with_invalid_token(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_can_request_otp_with_valid_phone_number(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_rejects_invalid_phone_format(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_enforces_rate_limiting_on_otp_requests(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_prevents_multiple_active_otps_for_same_phone(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_allows_new_otp_after_previous_one_expires(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_handles_melipayamak_service_failure_gracefully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_normalizes_phone_number_format(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_sets_otp_expiration_to_5_minutes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_generates_unique_request_ids(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_requires_phone_parameter(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_validates_phone_minimum_length(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest::it_validates_phone_maximum_length(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpResendTest::it_resends_otp_successfully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpResendTest::it_rejects_resend_for_invalid_request_id(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpResendTest::it_rejects_resend_for_already_verified_otp(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpResendTest::it_enforces_resend_rate_limiting(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpResendTest::it_validates_request_id_format(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpResendTest::it_handles_melipayamak_failure_on_resend(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpVerifyTest::it_verifies_valid_otp_code_and_creates_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpVerifyTest::it_verifies_valid_otp_code_and_updates_existing_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpVerifyTest::it_rejects_invalid_otp_code(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpVerifyTest::it_enforces_max_attempts_limit(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpVerifyTest::it_rejects_expired_otp(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpVerifyTest::it_rejects_already_verified_otp(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpVerifyTest::it_rejects_invalid_request_id(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpVerifyTest::it_validates_request_id_format(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpVerifyTest::it_validates_code_format(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Auth\OtpVerifyTest::it_requires_both_request_id_and_code(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Currency\RateTest::it_returns_current_currency_rate(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Currency\RateTest::it_returns_503_when_no_rate_available(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Currency\RateTest::it_uses_cached_rate_from_service(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Currency\RateTest::it_is_public_endpoint_no_auth_required(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNestingTest::it_handles_single_transaction(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNestingTest::it_prevents_nested_transactions_in_sqlite(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNestingTest::it_tests_transaction_level_tracking(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNestingTest::it_tests_transaction_rollback_in_nested_scenario(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNestingTest::it_tests_transaction_rollback_propagates_to_outer(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNestingTest::it_tests_begin_transaction_does_not_nest_with_laravel_transaction(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNestingTest::it_tests_pdo_in_transaction_detection(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedCacheTest::it_caches_feed_posts(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedCacheTest::it_invalidates_cache_when_post_is_curated(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedCacheTest::it_caches_different_cursor_pages_separately(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedCopyTest::it_copies_prompt_from_feed_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedCopyTest::it_rejects_copying_prompt_when_not_visible(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedCopyTest::it_copies_model_from_feed_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedCopyTest::it_rejects_copying_model_when_not_visible(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedCopyTest::it_rejects_copying_from_non_curated_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedListTest::it_returns_curated_public_feed(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedListTest::it_decrements_view_limits_when_viewing_feed(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedListTest::it_returns_empty_feed_when_view_limit_reached(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedListTest::it_excludes_private_posts_from_feed(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedListTest::it_excludes_non_curated_posts_from_feed(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedListTest::it_supports_cursor_pagination(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedVisibilityTest::it_respects_prompt_visibility_in_feed(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedVisibilityTest::it_respects_model_visibility_in_feed(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedVisibilityTest::it_excludes_audio_posts_from_feed(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedVisibilityTest::it_allows_admin_unlimited_views(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Feed\FeedVisibilityTest::it_resets_daily_view_limits(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagementTest::it_returns_gallery_post_details(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagementTest::it_hides_private_posts_from_other_users(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagementTest::it_allows_owner_to_view_private_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagementTest::it_updates_gallery_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagementTest::it_rejects_updating_other_user_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagementTest::it_deletes_gallery_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagementTest::it_rejects_deleting_other_user_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagementTest::it_returns_user_own_posts(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostTest::it_creates_gallery_post_from_completed_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostTest::it_rejects_post_from_incomplete_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostTest::it_rejects_post_from_other_user_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostTest::it_prevents_duplicate_posts_for_same_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Gallery\GalleryPostTest::it_respects_prompt_and_model_visibility_flags(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\ImageGenerationTest::it_creates_image_generation_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\ImageGenerationTest::it_rejects_generation_with_insufficient_tokens(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\ImageGenerationTest::it_rejects_unavailable_model(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\ImageGenerationTest::it_rejects_wrong_model_type(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\ImageGenerationTest::it_validates_required_prompt(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\ImageGenerationTest::it_stores_generation_parameters(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_returns_user_generation_jobs(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_filters_jobs_by_type(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_filters_jobs_by_status(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_returns_single_job_details(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_rejects_access_to_other_user_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_cancels_pending_job_and_refunds_tokens(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_rejects_cancelling_completed_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_retries_failed_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_rejects_retrying_non_failed_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_shows_status_transitions(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_tracks_progress_with_timestamps(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_includes_result_urls_when_available(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_includes_error_message_when_job_failed(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_paginates_job_listing(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\JobStatusTest::it_handles_cancelling_processing_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessingTest::it_processes_image_generation_job_successfully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessingTest::it_handles_image_generation_failure_and_refunds_tokens(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessingTest::it_processes_video_generation_job_successfully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessingTest::it_processes_audio_generation_job_successfully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessingTest::it_is_idempotent_and_skips_already_completed_jobs(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessingTest::it_is_idempotent_and_skips_already_failed_jobs(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessingTest::it_updates_job_status_to_processing_when_handling(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessingTest::it_handles_retries_safely_without_duplicate_operations(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\VideoAudioGenerationTest::it_creates_video_generation_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\VideoAudioGenerationTest::it_rejects_video_generation_with_wrong_model_type(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\VideoAudioGenerationTest::it_creates_audio_generation_job(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\VideoAudioGenerationTest::it_rejects_audio_generation_with_wrong_model_type(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\VideoAudioGenerationTest::it_stores_video_generation_parameters(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Generation\VideoAudioGenerationTest::it_stores_audio_generation_parameters(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Notifications\NotificationTest::it_returns_user_notifications(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Notifications\NotificationTest::it_filters_notifications_by_read_status(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Notifications\NotificationTest::it_filters_notifications_by_type(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Notifications\NotificationTest::it_returns_single_notification(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Notifications\NotificationTest::it_rejects_access_to_other_user_notification(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Notifications\NotificationTest::it_marks_notification_as_read(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Notifications\NotificationTest::it_marks_notification_as_unread(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Notifications\NotificationTest::it_marks_all_notifications_as_read(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Notifications\NotificationTest::it_rejects_notification_access_for_unauthenticated_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\ErrorHandlingTest::it_returns_proper_status_codes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\ErrorHandlingTest::it_does_not_expose_sensitive_data_in_errors(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\ErrorHandlingTest::it_returns_validation_error_details(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\ErrorHandlingTest::it_handles_database_errors_gracefully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\ErrorHandlingTest::it_logs_errors_without_exposing_them(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\ErrorHandlingTest::it_returns_consistent_error_format(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\RouteRegistrationTest::it_registers_all_public_routes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\RouteRegistrationTest::it_registers_all_protected_routes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\RouteRegistrationTest::it_registers_all_admin_routes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\RouteRegistrationTest::it_returns_404_for_non_existent_endpoints(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\RouteRegistrationTest::it_returns_401_for_unauthenticated_protected_routes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\RouteRegistrationTest::it_returns_403_for_non_admin_on_admin_routes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\RouteRegistrationTest::it_validates_route_parameters(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\SmokeTest::it_health_check_returns_ok(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\SmokeTest::it_public_endpoints_are_accessible(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\SmokeTest::it_protected_endpoints_require_authentication(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\SmokeTest::it_database_connection_works(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\SmokeTest::it_api_returns_consistent_response_format(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\SmokeTest::it_handles_invalid_routes_gracefully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\SmokeTest::it_handles_invalid_methods_gracefully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\SmokeTest::it_returns_proper_status_codes_for_auth_errors(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\SmokeTest::it_logs_errors_without_exposing_sensitive_data(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\SmokeTest::it_validates_route_parameters(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Observability\SmokeTest::it_logs_validation_errors_appropriately(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\CallbackTest::it_processes_successful_payment_callback(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\CallbackTest::it_is_idempotent_prevents_double_credit(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\CallbackTest::it_handles_failed_payment_status(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\CallbackTest::it_handles_missing_authority_parameter(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\CallbackTest::it_handles_invalid_authority(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\CallbackTest::it_handles_zarinpal_verification_failure(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\CallbackTest::it_prevents_processing_non_pending_orders(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\CallbackTest::it_handles_mismatched_amount(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\PurchaseTest::it_creates_order_and_requests_payment(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\PurchaseTest::it_rejects_inactive_bundle_purchase(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\PurchaseTest::it_calculates_price_using_current_rate(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\PurchaseTest::it_includes_bonus_tokens_in_order(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\PurchaseTest::it_handles_zarinpal_failure_gracefully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Payments\PurchaseTest::it_rejects_purchase_for_unauthenticated_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Reports\ReportTest::it_creates_report_for_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Reports\ReportTest::it_rejects_reporting_own_content(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Reports\ReportTest::it_prevents_duplicate_reports_within_24_hours(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Reports\ReportTest::it_enforces_daily_report_limit(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Reports\ReportTest::it_adds_post_to_moderation_queue_on_threshold(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Reports\ReportTest::it_validates_report_reason(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\InputValidationTest::it_prevents_sql_injection_in_search_queries(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\InputValidationTest::it_sanitizes_user_input_in_comments(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\InputValidationTest::it_validates_phone_number_format(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\InputValidationTest::it_validates_email_format(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\InputValidationTest::it_validates_numeric_inputs(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\InputValidationTest::it_handles_oversized_inputs(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\InputValidationTest::it_validates_file_uploads(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\MiddlewareTest::it_requires_authentication_for_protected_routes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\MiddlewareTest::it_rejects_invalid_token(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\MiddlewareTest::it_rejects_expired_token(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\MiddlewareTest::it_rejects_missing_token(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\MiddlewareTest::it_requires_admin_role_for_admin_endpoints(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\MiddlewareTest::it_allows_admin_access_to_admin_endpoints(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\MiddlewareTest::it_rejects_regular_user_from_admin_endpoints(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\MiddlewareTest::it_allows_unauthenticated_access_to_public_endpoints(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\MiddlewareTest::it_validates_token_format(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\MiddlewareTest::it_handles_malformed_authorization_header(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\RateLimitingTest::it_enforces_rate_limiting_on_otp_requests(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\RateLimitingTest::it_enforces_rate_limiting_per_phone_number(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\RateLimitingTest::it_resets_rate_limit_after_time_window(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Security\RateLimitingTest::it_enforces_rate_limiting_on_generation_requests(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentAccuracyTest::it_maintains_accurate_comments_count(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentAccuracyTest::it_decrements_comments_count_when_deleting_comment(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentAccuracyTest::it_decrements_comments_count_when_deleting_comment_with_replies(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentAccuracyTest::it_handles_nested_replies_correctly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentDeleteTest::it_deletes_own_comment(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentDeleteTest::it_deletes_comment_with_replies(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentDeleteTest::it_rejects_deleting_other_user_comment(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentDeleteTest::it_allows_admin_to_delete_any_comment(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentTest::it_creates_comment_on_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentTest::it_creates_nested_reply_comment(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentTest::it_rejects_reply_to_invalid_parent_comment(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentTest::it_validates_comment_body(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\CommentTest::it_rejects_comment_for_unauthenticated_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\LikeTest::it_likes_a_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\LikeTest::it_is_idempotent_prevents_duplicate_likes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\LikeTest::it_unlikes_a_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\LikeTest::it_rejects_like_for_unauthenticated_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\LikeTest::it_allows_liking_own_post(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Social\LikeTest::it_maintains_accurate_likes_count(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Tokens\TokenBundlesTest::it_returns_active_token_bundles_with_toman_prices(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Tokens\TokenBundlesTest::it_returns_bundles_ordered_by_display_order(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Tokens\TokenBundlesTest::it_uses_cached_currency_rate(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Tokens\TokenBundlesTest::it_falls_back_to_database_rate_if_cache_missing(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Tokens\TokenBundlesTest::it_is_public_endpoint_no_auth_required(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Tokens\TransactionTypesTest::it_creates_purchase_transaction_correctly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Tokens\TransactionTypesTest::it_creates_consume_transaction_correctly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Tokens\TransactionTypesTest::it_creates_refund_transaction_correctly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Tokens\TransactionTypesTest::it_creates_bonus_transaction_correctly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Tokens\TransactionTypesTest::it_creates_adjustment_transaction_correctly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Tokens\TransactionTypesTest::it_reconciles_balance_across_all_transaction_types(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Transactions\BalanceTest::it_returns_user_token_balance(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Transactions\BalanceTest::it_detects_balance_mismatch(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Transactions\BalanceTest::it_handles_user_with_no_transactions(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Transactions\BalanceTest::it_rejects_balance_access_for_unauthenticated_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Transactions\HistoryTest::it_returns_user_transaction_history(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Transactions\HistoryTest::it_filters_transactions_by_type(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Transactions\HistoryTest::it_filters_transactions_by_date_range(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Transactions\HistoryTest::it_paginates_transaction_history(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Transactions\HistoryTest::it_orders_transactions_by_created_at_desc(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Transactions\HistoryTest::it_rejects_history_access_for_unauthenticated_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\Transactions\HistoryTest::it_only_returns_current_user_transactions(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\User\AvatarTest::it_uploads_avatar_successfully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\User\AvatarTest::it_deletes_old_avatar_on_new_upload(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\User\AvatarTest::it_rejects_invalid_file_type(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\User\AvatarTest::it_rejects_avatar_upload_for_unauthenticated_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\User\AvatarTest::it_handles_storage_failure_gracefully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\User\ProfileTest::it_returns_authenticated_user_profile(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\User\ProfileTest::it_rejects_profile_access_for_unauthenticated_user(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\User\ProfileTest::it_updates_user_profile(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\User\ProfileTest::it_resets_email_verification_when_email_changes(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\User\ProfileTest::it_validates_email_format(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Feature\User\ProfileTest::it_rejects_updating_forbidden_fields(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Unit\Services\TgjuScraperServiceTest::it_fetches_and_stores_usd_rate_from_tgju(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Unit\Services\TgjuScraperServiceTest::it_caches_rate_after_fetching(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Unit\Services\TgjuScraperServiceTest::it_handles_http_failure_gracefully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Unit\Services\TgjuScraperServiceTest::it_handles_html_parsing_failure_gracefully(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Unit\Services\TgjuScraperServiceTest::it_validates_rate_is_reasonable(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Test\BackendTest\Laravel\Unit\Services\TgjuScraperServiceTest::it_converts_rials_to_toman_correctly(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  No code coverage driver available
+PHPUnit 11.5.33 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.4.14
+Configuration: C:\Users\Nadali\Documents\GitHub\negarify-backend\phpunit.xml
+
+
+   WARN  Test\BackendTest\Laravel\Feature\Admin\AdminCostProfitTest
+  ! it calculates revenue cost and profit ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 2.07s  
+  ! it calculates profit margins correctly ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backenظخ 0.03s  
+  ! it provides breakdown by model ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.03s  
+  ! it provides breakdown by provider ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.enظخ 0.03s  
+  ! it provides historical comparison ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.enظخ 0.03s  
+  ! it provides profit margins over time ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+  ! it supports date range filtering ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it supports range parameter ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+  ! it caches cost profit data ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faiظخ 0.03s  
+[2025-12-30 19:30:53] testing.WARNING: AnalyticsModelsUsage table not available, using raw data {"error":"SQLSTATE[HY000]: General error: 1 no such table: analytics_models_usages (Connection: sqlite, SQL: select exists(select * from \"analytics_models_usages\" where \"period_start\" >= 2025-11-30 00:00:00 and \"period_end\" <= 2025-12-30 23:59:59) as \"exists\")"} 
+[2025-12-30 19:30:53] testing.WARNING: AnalyticsModelsUsage table not available, using raw data {"error":"SQLSTATE[HY000]: General error: 1 no such table: analytics_models_usages (Connection: sqlite, SQL: select exists(select * from \"analytics_models_usages\" where \"period_start\" >= 2025-11-30 00:00:00 and \"period_end\" <= 2025-12-30 23:59:59) as \"exists\")"} 
+[2025-12-30 19:30:53] testing.WARNING: AnalyticsModelsUsage table not available, using raw data {"error":"SQLSTATE[HY000]: General error: 1 no such table: analytics_models_usages (Connection: sqlite, SQL: select exists(select * from \"analytics_models_usages\" where \"period_start\" >= 2025-11-30 00:00:00 and \"period_end\" <= 2025-12-30 23:59:59) as \"exists\")"} 
+[2025-12-30 19:30:53] testing.WARNING: AnalyticsModelsUsage table not available, using raw data {"error":"SQLSTATE[HY000]: General error: 1 no such table: analytics_models_usages (Connection: sqlite, SQL: select exists(select * from \"analytics_models_usages\" where \"period_start\" >= 2025-11-30 00:00:00 and \"period_end\" <= 2025-12-30 23:59:59) as \"exists\")"} 
+[2025-12-30 19:30:53] testing.WARNING: AnalyticsModelsUsage table not available, using raw data {"error":"SQLSTATE[HY000]: General error: 1 no such table: analytics_models_usages (Connection: sqlite, SQL: select exists(select * from \"analytics_models_usages\" where \"period_start\" >= 2025-11-30 00:00:00 and \"period_end\" <= 2025-12-30 23:59:59) as \"exists\")"} 
+[2025-12-30 19:30:53] testing.WARNING: AnalyticsModelsUsage table not available, using raw data {"error":"SQLSTATE[HY000]: General error: 1 no such table: analytics_models_usages (Connection: sqlite, SQL: select exists(select * from \"analytics_models_usages\" where \"period_start\" >= 2025-12-23 00:00:00 and \"period_end\" <= 2025-12-30 23:59:59) as \"exists\")"} 
+[2025-12-30 19:30:53] testing.WARNING: AnalyticsModelsUsage table not available, using raw data {"error":"SQLSTATE[HY000]: General error: 1 no such table: analytics_models_usages (Connection: sqlite, SQL: select exists(select * from \"analytics_models_usages\" where \"period_start\" >= 2025-12-23 00:00:00 and \"period_end\" <= 2025-12-30 23:59:59) as \"exists\")"} 
+[2025-12-30 19:30:53] testing.WARNING: AnalyticsModelsUsage table not available, using raw data {"error":"SQLSTATE[HY000]: General error: 1 no such table: analytics_models_usages (Connection: sqlite, SQL: select exists(select * from \"analytics_models_usages\" where \"period_start\" >= 2025-11-30 00:00:00 and \"period_end\" <= 2025-12-30 23:59:59) as \"exists\")"} 
+[2025-12-30 19:30:53] testing.WARNING: AnalyticsModelsUsage table not available, using raw data {"error":"SQLSTATE[HY000]: General error: 1 no such table: analytics_models_usages (Connection: sqlite, SQL: select exists(select * from \"analytics_models_usages\" where \"period_start\" >= 2025-11-30 00:00:00 and \"period_end\" <= 2025-12-30 23:59:59) as \"exists\")"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Admin\AdminModelsTest
+  ! it returns usage statistics per model ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.05s  
+  ! it calculates success and failure rates ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backeظخ 0.03s  
+  ! it calculates average latency ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.03s  
+  ! it tracks tokens consumed per model ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.03s  
+  ! it tracks cost and revenue per model ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+  ! it supports date range filtering ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it supports range parameter ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+  ! it caches models usage data ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+  ! it handles breakdown by job type ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Admin\AdminRbacTest
+  ! it requires admin role for admin endpoints ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-baظخ 0.06s  
+  ! it rejects non admin users with 403 ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.03s  
+  ! it rejects unauthenticated users with 401 ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.04s  
+  ! it verifies admin middleware works ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.eظخ 0.02s  
+[2025-12-30 19:30:53] testing.WARNING: AnalyticsModelsUsage table not available, using raw data {"error":"SQLSTATE[HY000]: General error: 1 no such table: analytics_models_usages (Connection: sqlite, SQL: select exists(select * from \"analytics_models_usages\" where \"period_start\" >= 2025-11-30 00:00:00 and \"period_end\" <= 2025-12-30 23:59:59) as \"exists\")"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Admin\AdminSalesTest
+  ! it returns revenue by period ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Fظخ 0.03s  
+  ! it calculates total revenue correctly ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+  ! it returns top selling bundles ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.03s  
+  ! it tracks refunds ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failed to opظخ 0.02s  
+  ! it supports date range filtering ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it caches sales summary ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.03s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Admin\AdminTokensTest
+  ! it returns tokens consumption by provider ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.03s  
+  ! it returns tokens consumption by type ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+  ! it returns cost per provider ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Fظخ 0.03s  
+  ! it returns time series data ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+  ! it supports date range filtering ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it supports range parameter ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+  ! it caches token analytics data ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.03s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Admin\AdminUsersTest
+  ! it calculates dau wau mau correctly ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.04s  
+  ! it returns top users by generation ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.eظخ 0.03s  
+  ! it returns top users by spending ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it performs cohort analysis ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+  ! it searches users by name phone or email ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.03s  
+  ! it filters users by role ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faileظخ 0.02s  
+  ! it filters users by date range ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.02s  
+  ! it paginates users list ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.03s  
+  ! it caches users summary ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.03s  
+[2025-12-30 19:30:54] testing.WARNING: AnalyticsModelsUsage table not available, using raw data {"error":"SQLSTATE[HY000]: General error: 1 no such table: analytics_models_usages (Connection: sqlite, SQL: select exists(select * from \"analytics_models_usages\" where \"period_start\" >= 2025-11-30 00:00:00 and \"period_end\" <= 2025-12-30 23:59:59) as \"exists\")"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Admin\DashboardSummaryTest
+  ! it returns sales summary ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faileظخ 0.04s  
+  ! it returns users summary ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faileظخ 0.03s  
+  ! it returns tokens summary ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failظخ 0.03s  
+  ! it returns cost profit summary ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.03s  
+  ! it returns models usage summary ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.03s  
+  ! it returns users list ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failed tظخ 0.02s  
+  ! it filters users list by role ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.02s  
+  ! it rejects admin endpoints for non admin ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.03s  
+[2025-12-30 19:30:54] testing.INFO: Post curated by admin {"post_id":1,"admin_id":1} 
+[2025-12-30 19:30:54] testing.INFO: Notification created {"notification_id":1,"user_id":2,"type":"post_curated"} 
+[2025-12-30 19:30:54] testing.INFO: Post uncurated by admin {"post_id":1,"admin_id":1} 
+[2025-12-30 19:30:54] testing.INFO: Post featured by admin {"post_id":1,"admin_id":1} 
+[2025-12-30 19:30:54] testing.INFO: Bulk curation by admin {"admin_id":1,"requested_count":3,"curated_count":3} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Admin\GalleryAdminTest
+  ! it curates post as admin ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faileظخ 0.04s  
+  ! it rejects curating private post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it uncurates post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failed to opظخ 0.03s  
+  ! it features post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failed to opeظخ 0.03s  
+  ! it performs bulk curation ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failظخ 0.03s  
+  ! it lists curated posts ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ  0.04s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Admin\ModerationAdminTest
+  ! it returns moderation queue ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.04s  
+  ! it returns reports list ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.03s  
+  ! it approves post in moderation ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.03s  
+  ! it rejects post in moderation ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.03s  
+  ! it resolves report ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failed to oظخ 0.03s  
+[2025-12-30 19:30:55] testing.INFO: Content approved by moderator {"queue_id":1,"post_id":1,"reviewer_id":1,"notes":"Content is appropriate"} 
+[2025-12-30 19:30:55] testing.INFO: Content rejected by moderator {"queue_id":1,"post_id":1,"reviewer_id":1,"action":"hide","notes":"Inappropriate content"} 
+[2025-12-30 19:30:55] testing.INFO: Report resolved by admin {"report_id":1,"admin_id":1} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Admin\SystemHealthTest
+  ! it returns system health metrics ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it caches system health ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.03s  
+  ! it rejects system health access for non admin ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifyظخ 0.03s  
+  ! it tracks failed jobs count ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+  ! it calculates error rate ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faileظخ 0.03s  
+  ! it tracks api latency ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failed tظخ 0.03s  
+  ! it tracks storage usage ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.03s  
+  ! it tracks queue length by type ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.03s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdminTest
+  ! it creates token bundle as admin ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.04s  
+  ! it rejects bundle creation for non admin ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.02s  
+  ! it updates token bundle ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.03s  
+  ! it deletes token bundle ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.03s  
+  ! it activates token bundle ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failظخ 0.02s  
+  ! it deactivates token bundle ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.02s  
+[2025-12-30 19:30:55] testing.INFO: Token bundle created {"bundle_id":1,"name":"Premium Pack","admin_id":1} 
+[2025-12-30 19:30:55] testing.INFO: Token bundle updated {"bundle_id":1,"updated_fields":["name","price_usd","is_active"],"admin_id":1} 
+[2025-12-30 19:30:55] testing.INFO: Token bundle deleted {"bundle_id":1,"admin_id":1} 
+[2025-12-30 19:30:55] testing.INFO: Token bundle activated {"bundle_id":1,"admin_id":1} 
+[2025-12-30 19:30:55] testing.INFO: Token bundle deactivated {"bundle_id":1,"admin_id":1} 
+[2025-12-30 19:30:55] testing.INFO: User logged out {"user_id":1} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Auth\LogoutTest
+  ! it logs out authenticated user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.04s  
+  ! it rejects logout for unauthenticated user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-baظخ 0.02s  
+  ! it rejects logout with invalid token ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.02s  
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"8a02a654-d37b-4b6a-9479-be0ea24e816b"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"7f530474-21a2-4dba-91db-d15fe135f8a6"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"e356c49c-5058-44bf-a6d2-c289a9aefd0b"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"018251f8-1dcf-4e20-9f93-9e8cd9bcac55"} 
+[2025-12-30 19:30:55] testing.WARNING: OTP request rate limited {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","retry_after":900} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"d964264c-438d-4566-b905-34dea262af65"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Auth\OtpRequestTest
+  ! it can request otp with valid phone number ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-baظخ 0.06s  
+  ! it rejects invalid phone format ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.02s  
+  ! it enforces rate limiting on otp requests ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.03s  
+  ! it prevents multiple active otps for same phone ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negariظخ 0.03s  
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"ad67b1b0-ffe6-46af-ac70-6b679617a132"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"099a148f-3b1d-4ade-8552-0c05405fcead"} 
+[2025-12-30 19:30:55] testing.WARNING: Melipayamak template SMS HTTP error {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","status":500,"response":"{\"StrRetStatus\":\"Error\",\"RetStatus\":0}"} 
+[2025-12-30 19:30:55] testing.ERROR: OTP SMS send failed {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"af9382c0-a07d-40d2-aa75-6cb2f0c95f47","error":"SMS provider network error. HTTP 500","error_code":503} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"9eb86592-d84a-47bb-9d49-d67a199b9fb8"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"4f5c34fe-2b12-45e6-a990-5f3a2e7ed1db"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"85437ce1-9880-431d-917d-6a15c8cdfe7d"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"11bc27ba-6d32-47f0-829b-204f581beb62"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"01ae5b73-bd5e-4803-b76b-6d34efbb1a03"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"bee29648-a8b5-44bc-b64e-df020d80dcc5"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"a1508bec-a80b-45f2-832d-c9beeccc66db"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"bce3c5e2-0481-4de9-abfb-92ccb7ec4bf4"} 
+[2025-12-30 19:30:55] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:55] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"faedad48-1028-471f-9ce3-9ebf97ee2358"} 
+  ! it allows new otp after previous one expires ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-ظخ 0.03s  
+  ! it handles melipayamak service failure gracefully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negaظخ 0.02s  
+  ! it normalizes phone number format ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.enظخ 0.04s  
+  ! it sets otp expiration to 5 minutes ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.02s  
+  ! it generates unique request ids ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.03s  
+  ! it requires phone parameter ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.02s  
+  ! it validates phone minimum length ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.enظخ 0.02s  
+  ! it validates phone maximum length ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.enظخ 0.02s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Auth\OtpResendTest
+  ! it resends otp successfully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.04s  
+  ! it rejects resend for invalid request id ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.02s  
+  ! it rejects resend for already verified otp ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-baظخ 0.02s  
+  ! it enforces resend rate limiting ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it validates request id format ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.02s  
+  ! it handles melipayamak failure on resend ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.02s  
+[2025-12-30 19:30:56] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:56] testing.INFO: OTP resent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","old_request_id":"929cb974-4159-496f-b6c3-14c267bce8f5","new_request_id":"cb0739dd-b37f-4f3c-a28c-72c7d002bc03"} 
+[2025-12-30 19:30:56] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:56] testing.INFO: OTP resent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","old_request_id":"30fb2698-161d-4fa9-81d6-1f76a8e3a7cb","new_request_id":"65226ca0-a811-4cb7-aa00-767c63c94bc0"} 
+[2025-12-30 19:30:56] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:30:56] testing.INFO: OTP resent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","old_request_id":"65226ca0-a811-4cb7-aa00-767c63c94bc0","new_request_id":"cbdca54d-89eb-47da-aa3c-b61353406ec6"} 
+[2025-12-30 19:30:56] testing.WARNING: OTP resend rate limited {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"cbdca54d-89eb-47da-aa3c-b61353406ec6","retry_after":600} 
+[2025-12-30 19:30:56] testing.WARNING: Melipayamak template SMS HTTP error {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","status":500,"response":"{\"StrRetStatus\":\"InsufficientCredit\",\"RetStatus\":0}"} 
+[2025-12-30 19:30:56] testing.ERROR: OTP resend SMS send failed {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"6a9d0678-49f2-499f-b601-60f626374043","error":"SMS provider network error. HTTP 500","error_code":503} 
+[2025-12-30 19:30:56] testing.INFO: OTP verified successfully {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"bc5cff7d-084f-4fcd-b0a3-e36956f2bf17","user_id":1} 
+[2025-12-30 19:30:56] testing.INFO: OTP verified successfully {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"36ce9727-a5b5-4410-9d2f-61c5dbdda32e","user_id":1} 
+[2025-12-30 19:30:56] testing.WARNING: OTP verification failed - invalid code {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"46f242d7-817b-4d1e-89b7-467a49f17e29","attempts":1,"attempts_remaining":2} 
+[2025-12-30 19:30:56] testing.WARNING: OTP verification failed - invalid code {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"85fa5e6e-8299-4668-b131-c4d8dffd05ef","attempts":1,"attempts_remaining":2} 
+[2025-12-30 19:30:56] testing.WARNING: OTP verification failed - invalid code {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"85fa5e6e-8299-4668-b131-c4d8dffd05ef","attempts":2,"attempts_remaining":1} 
+[2025-12-30 19:30:56] testing.WARNING: OTP verification failed - invalid code {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"85fa5e6e-8299-4668-b131-c4d8dffd05ef","attempts":3,"attempts_remaining":0} 
+[2025-12-30 19:30:56] testing.WARNING: OTP verification failed - max attempts exceeded {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"85fa5e6e-8299-4668-b131-c4d8dffd05ef","attempts":3} 
+[2025-12-30 19:30:56] testing.WARNING: OTP verification failed - expired {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"d0307d9e-57ef-4dd4-8cc6-9d624fd30d95"} 
+[2025-12-30 19:30:56] testing.WARNING: OTP verification failed - already verified {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"04757381-23fd-4e9f-ae52-d4dc5b4acefd"} 
+[2025-12-30 19:30:56] testing.WARNING: OTP verification failed - invalid request_id {"request_id":"00000000-0000-0000-0000-000000000000"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Auth\OtpVerifyTest
+  ! it verifies valid otp code and creates user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bظخ 0.03s  
+  ! it verifies valid otp code and updates existing user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\nظخ 0.03s  
+  ! it rejects invalid otp code ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.02s  
+  ! it enforces max attempts limit ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.03s  
+  ! it rejects expired otp ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ  0.02s  
+  ! it rejects already verified otp ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.02s  
+  ! it rejects invalid request id ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.02s  
+  ! it validates request id format ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.02s  
+  ! it validates code format ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faileظخ 0.03s  
+  ! it requires both request id and code ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.02s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Currency\RateTest
+  ! it returns current currency rate ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.04s  
+  ! it returns 503 when no rate available ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.02s  
+  ! it uses cached rate from service ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.02s  
+  ! it is public endpoint no auth required ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backenظخ 0.02s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNestingTest
+  ! it handles single transaction ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.02s  
+  ! it prevents nested transactions in sqlite ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.02s  
+  ! it tests transaction level tracking ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.02s  
+  ! it tests transaction rollback in nested scenario ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarظخ 0.02s  
+  ! it tests transaction rollback propagates to outer ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negaظخ 0.02s  
+  ! it tests begin transaction does not nest with laravel transaction ظْ file_get_contents(C:\Users\Nadali\Documظخ 0.02s  
+  ! it tests pdo in transaction detection ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.02s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Feed\FeedCacheTest
+  ! it caches feed posts ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failed toظخ 0.04s  
+  ! it invalidates cache when post is curated ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.04s  
+  ! it caches different cursor pages separately ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bظخ 0.06s  
+[2025-12-30 19:30:56] testing.INFO: Post curated by admin {"post_id":1,"admin_id":2} 
+[2025-12-30 19:30:56] testing.INFO: Notification created {"notification_id":1,"user_id":3,"type":"post_curated"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Feed\FeedCopyTest
+  ! it copies prompt from feed post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.04s  
+  ! it rejects copying prompt when not visible ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-baظخ 0.03s  
+  ! it copies model from feed post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.03s  
+  ! it rejects copying model when not visible ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.03s  
+  ! it rejects copying from non curated post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.03s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Feed\FeedListTest
+  ! it returns curated public feed ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.04s  
+  ! it decrements view limits when viewing feed ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bظخ 0.04s  
+  ! it returns empty feed when view limit reached ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifyظخ 0.03s  
+  ! it excludes private posts from feed ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.03s  
+  ! it excludes non curated posts from feed ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backeظخ 0.03s  
+  ! it supports cursor pagination ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.05s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Feed\FeedVisibilityTest
+  ! it respects prompt visibility in feed ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.05s  
+  ! it respects model visibility in feed ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+  ! it excludes audio posts from feed ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.enظخ 0.03s  
+  ! it allows admin unlimited views ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.06s  
+  ! it resets daily view limits ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagementTest
+  ! it returns gallery post details ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.03s  
+  ! it hides private posts from other users ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backeظخ 0.03s  
+  ! it allows owner to view private post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+  ! it updates gallery post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.03s  
+  ! it rejects updating other user post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.03s  
+  ! it deletes gallery post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.02s  
+  ! it rejects deleting other user post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.02s  
+  ! it returns user own posts ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failظخ 0.04s  
+[2025-12-30 19:30:57] testing.INFO: Gallery post updated {"post_id":1,"user_id":1} 
+[2025-12-30 19:30:57] testing.INFO: Gallery post deleted {"post_id":1,"user_id":1} 
+[2025-12-30 19:30:57] testing.INFO: Gallery post created {"post_id":1,"user_id":1,"generation_job_id":1} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Gallery\GalleryPostTest
+  ! it creates gallery post from completed job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-baظخ 0.04s  
+  ! it rejects post from incomplete job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.03s  
+  ! it rejects post from other user job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.03s  
+  ! it prevents duplicate posts for same job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.03s  
+  ! it respects prompt and model visibility flags ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifyظخ 0.04s  
+[2025-12-30 19:30:57] testing.INFO: Gallery post created {"post_id":1,"user_id":1,"generation_job_id":1} 
+[2025-12-30 19:30:57] testing.INFO: Gallery post updated {"post_id":1,"user_id":1} 
+[2025-12-30 19:30:57] testing.INFO: Image generation job created {"job_id":1,"user_id":1,"model_id":1,"tokens_reserved":10} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Generation\ImageGenerationTest
+  ! it creates image generation job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.04s  
+  ! it rejects generation with insufficient tokens ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifظخ 0.03s  
+  ! it rejects unavailable model ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Fظخ 0.02s  
+  ! it rejects wrong model type ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+  ! it validates required prompt ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Fظخ 0.02s  
+  ! it stores generation parameters ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.03s  
+[2025-12-30 19:30:57] testing.INFO: Image generation job created {"job_id":1,"user_id":1,"model_id":1,"tokens_reserved":10} 
+[2025-12-30 19:30:58] testing.INFO: Generation job cancelled {"job_id":1,"user_id":1,"tokens_refunded":10} 
+[2025-12-30 19:30:58] testing.INFO: Generation job retried {"old_job_id":1,"new_job_id":2,"user_id":1} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Generation\JobStatusTest
+  ! it returns user generation jobs ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.03s  
+  ! it filters jobs by type ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.03s  
+  ! it filters jobs by status ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failظخ 0.02s  
+  ! it returns single job details ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.02s  
+  ! it rejects access to other user job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.02s  
+  ! it cancels pending job and refunds tokens ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.03s  
+  ! it rejects cancelling completed job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.02s  
+  ! it retries failed job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failed tظخ 0.03s  
+  ! it rejects retrying non failed job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.eظخ 0.02s  
+  ! it shows status transitions ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+  ! it tracks progress with timestamps ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.eظخ 0.02s  
+  ! it includes result urls when available ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backenظخ 0.03s  
+  ! it includes error message when job failed ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.03s  
+  ! it paginates job listing ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faileظخ 0.04s  
+  ! it handles cancelling processing job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+[2025-12-30 19:30:58] testing.INFO: Generation job cancelled {"job_id":1,"user_id":1,"tokens_refunded":50} 
+[2025-12-30 19:30:58] testing.INFO: Segmind API request {"provider":"Test Provider","endpoint":"/v1/test-model","method":"POST","data":{"prompt":"A beautiful sunset","width":1024,"height":1024},"attempt":1} 
+[2025-12-30 19:30:58] testing.INFO: Segmind API response {"provider":"Test Provider","endpoint":"/v1/test-model","status":200,"response":{"image_url":"https://segmind.com/generated/image123.png"},"attempt":1} 
+[2025-12-30 19:30:58] testing.INFO: Image generation completed {"job_id":1,"user_id":1,"result_url":"/storage/generations/image/1/1.png"} 
+[2025-12-30 19:30:58] testing.INFO: Notification created {"notification_id":1,"user_id":1,"type":"generation_completed"} 
+[2025-12-30 19:30:58] testing.INFO: Segmind API request {"provider":"Test Provider","endpoint":"/v1/test-model","method":"POST","data":{"prompt":"A beautiful sunset","width":512,"height":512},"attempt":1} 
+[2025-12-30 19:30:58] testing.INFO: Segmind API response {"provider":"Test Provider","endpoint":"/v1/test-model","status":500,"response":{"error":"API request failed: timeout"},"attempt":1} 
+[2025-12-30 19:30:58] testing.WARNING: Segmind API server error {"provider":"Test Provider","endpoint":"/v1/test-model","status":500,"attempt":1} 
+[2025-12-30 19:30:59] testing.INFO: Segmind API request {"provider":"Test Provider","endpoint":"/v1/test-model","method":"POST","data":{"prompt":"A beautiful sunset","width":512,"height":512},"attempt":2} 
+[2025-12-30 19:30:59] testing.INFO: Segmind API response {"provider":"Test Provider","endpoint":"/v1/test-model","status":500,"response":{"error":"API request failed: timeout"},"attempt":2} 
+[2025-12-30 19:30:59] testing.WARNING: Segmind API server error {"provider":"Test Provider","endpoint":"/v1/test-model","status":500,"attempt":2} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API request {"provider":"Test Provider","endpoint":"/v1/test-model","method":"POST","data":{"prompt":"A beautiful sunset","width":512,"height":512},"attempt":3} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API response {"provider":"Test Provider","endpoint":"/v1/test-model","status":500,"response":{"error":"API request failed: timeout"},"attempt":3} 
+[2025-12-30 19:31:01] testing.WARNING: Segmind API server error {"provider":"Test Provider","endpoint":"/v1/test-model","status":500,"attempt":3} 
+[2025-12-30 19:31:01] testing.ERROR: Segmind API exception {"provider":"Test Provider","endpoint":"/v1/test-model","error":"Segmind API request failed after 3 attempts. Status: 500"} 
+[2025-12-30 19:31:01] testing.ERROR: Image generation failed {"job_id":1,"user_id":1,"error":"Segmind API request failed after 3 attempts. Status: 500","tokens_refunded":10} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API request {"provider":"Test Provider","endpoint":"/v1/test-model","method":"POST","data":{"prompt":"A beautiful sunset video","duration":10,"width":1920,"height":1080},"attempt":1} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API response {"provider":"Test Provider","endpoint":"/v1/test-model","status":200,"response":{"video_url":"https://segmind.com/generated/video123.mp4"},"attempt":1} 
+[2025-12-30 19:31:01] testing.INFO: Video thumbnail generation not yet implemented {"job_id":1} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API request {"provider":"Test Provider","endpoint":"/v1/test-model","method":"POST","data":{"prompt":"A beautiful melody","duration":30,"format":"mp3"},"attempt":1} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API response {"provider":"Test Provider","endpoint":"/v1/test-model","status":200,"response":{"audio_url":"https://segmind.com/generated/audio123.mp3"},"attempt":1} 
+[2025-12-30 19:31:01] testing.INFO: Audio generation completed {"job_id":1,"user_id":1,"result_url":"/storage/generations/audio/1/1.mp3"} 
+[2025-12-30 19:31:01] testing.INFO: Notification created {"notification_id":1,"user_id":1,"type":"generation_completed"} 
+[2025-12-30 19:31:01] testing.INFO: Generation job already processed (idempotent) {"job_id":1,"status":"completed"} 
+[2025-12-30 19:31:01] testing.INFO: Generation job already processed (idempotent) {"job_id":1,"status":"failed"} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API request {"provider":"Test Provider","endpoint":"/v1/test-model","method":"POST","data":{"prompt":"Test","width":512,"height":512},"attempt":1} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API response {"provider":"Test Provider","endpoint":"/v1/test-model","status":200,"response":{"image_url":"https://example.com/image.png"},"attempt":1} 
+[2025-12-30 19:31:01] testing.INFO: Image generation completed {"job_id":1,"user_id":1,"result_url":"/storage/generations/image/1/1.png"} 
+[2025-12-30 19:31:01] testing.INFO: Notification created {"notification_id":1,"user_id":1,"type":"generation_completed"} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API request {"provider":"Test Provider","endpoint":"/v1/test-model","method":"POST","data":{"prompt":"Test retry safety","width":512,"height":512},"attempt":1} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API response {"provider":"Test Provider","endpoint":"/v1/test-model","status":200,"response":{"image_url":"https://segmind.com/generated/image123.png"},"attempt":1} 
+[2025-12-30 19:31:01] testing.ERROR: Image generation failed {"job_id":1,"user_id":1,"error":"Failed to process image result: Failed to download image: HTTP 500","tokens_refunded":10} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API request {"provider":"Test Provider","endpoint":"/v1/test-model","method":"POST","data":{"prompt":"Test retry safety","width":512,"height":512},"attempt":1} 
+[2025-12-30 19:31:01] testing.INFO: Segmind API response {"provider":"Test Provider","endpoint":"/v1/test-model","status":200,"response":{"image_url":"https://segmind.com/generated/image123.png"},"attempt":1} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessingTest
+  ! it processes image generation job successfully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifظخ 0.08s  
+  ! it handles image generation failure and refunds tokens ظْ file_get_contents(C:\Users\Nadali\Documents\GitHubظخ 3.06s  
+  ! it processes video generation job successfully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifظخ 0.03s  
+  ! it processes audio generation job successfully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifظخ 0.03s  
+  ! it is idempotent and skips already completed jobs ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negaظخ 0.03s  
+  ! it is idempotent and skips already failed jobs ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifظخ 0.03s  
+  ! it updates job status to processing when handling ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negaظخ 0.06s  
+  ! it handles retries safely without duplicate operations ظْ file_get_contents(C:\Users\Nadali\Documents\GitHubظخ 0.07s  
+[2025-12-30 19:31:01] testing.INFO: Image generation completed {"job_id":1,"user_id":1,"result_url":"/storage/generations/image/1/1.png"} 
+[2025-12-30 19:31:01] testing.INFO: Notification created {"notification_id":1,"user_id":1,"type":"generation_completed"} 
+[2025-12-30 19:31:01] testing.INFO: Generation job already processed (idempotent) {"job_id":1,"status":"completed"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Generation\VideoAudioGenerationTest
+  ! it creates video generation job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.04s  
+  ! it rejects video generation with wrong model type ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negaظخ 0.02s  
+  ! it creates audio generation job ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.04s  
+  ! it rejects audio generation with wrong model type ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negaظخ 0.03s  
+  ! it stores video generation parameters ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+  ! it stores audio generation parameters ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+[2025-12-30 19:31:02] testing.INFO: Notification marked as read {"notification_id":1,"user_id":1} 
+[2025-12-30 19:31:02] testing.INFO: Notification marked as unread {"notification_id":1,"user_id":1} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Notifications\NotificationTest
+  ! it returns user notifications ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.03s  
+  ! it filters notifications by read status ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backeظخ 0.03s  
+  ! it filters notifications by type ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it returns single notification ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.02s  
+  ! it rejects access to other user notification ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-ظخ 0.03s  
+  ! it marks notification as read ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.02s  
+  ! it marks notification as unread ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.02s  
+  ! it marks all notifications as read ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.eظخ 0.02s  
+  ! it rejects notification access for unauthenticated user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHuظخ 0.02s  
+[2025-12-30 19:31:02] testing.INFO: All notifications marked as read {"user_id":1,"updated_count":2} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Observability\ErrorHandlingTest
+  ! it returns proper status codes ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.04s  
+  ! it does not expose sensitive data in errors ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bظخ 0.02s  
+  ! it returns validation error details ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.02s  
+  ! it handles database errors gracefully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+  ! it logs errors without exposing them ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.02s  
+  ! it returns consistent error format ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.eظخ 0.03s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Observability\RouteRegistrationTest
+  ! it registers all public routes ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.02s  
+  ! it registers all protected routes ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.enظخ 0.02s  
+  ! it registers all admin routes ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.02s  
+  ! it returns 404 for non existent endpoints ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.02s  
+  ! it returns 401 for unauthenticated protected routes ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\neظخ 0.02s  
+  ! it returns 403 for non admin on admin routes ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-ظخ 0.03s  
+  ! it validates route parameters ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.02s  
+[2025-12-30 19:31:02] testing.WARNING: No currency rate available in cache or database  
+[2025-12-30 19:31:02] testing.ERROR: Currency rate unavailable, using emergency fallback  
+[2025-12-30 19:31:02] testing.WARNING: No currency rate available in cache or database  
+[2025-12-30 19:31:02] testing.ERROR: Currency rate unavailable, using emergency fallback  
+
+   WARN  Test\BackendTest\Laravel\Feature\Observability\SmokeTest
+  ! it health check returns ok ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faiظخ 0.04s  
+  ! it public endpoints are accessible ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.eظخ 0.02s  
+  ! it protected endpoints require authentication ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifyظخ 0.02s  
+  ! it database connection works ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Fظخ 0.02s  
+  ! it api returns consistent response format ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.02s  
+  ! it handles invalid routes gracefully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.02s  
+  ! it handles invalid methods gracefully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.02s  
+  ! it returns proper status codes for auth errors ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifظخ 0.02s  
+  ! it logs errors without exposing sensitive data ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifظخ 0.02s  
+  ! it validates route parameters ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.02s  
+  ! it logs validation errors appropriately ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backeظخ 0.02s  
+[2025-12-30 19:31:02] testing.INFO: Zarinpal payment verification {"authority":"A00000000000006953f73ec3957643434855","amount":50000} 
+[2025-12-30 19:31:02] testing.INFO: Zarinpal payment verification successful {"authority":"A00000000000006953f73ec3957643434855","ref_id":"1890573984"} 
+[2025-12-30 19:31:02] testing.INFO: Payment processed successfully {"order_id":1,"user_id":1,"authority":"A00000000000006953f73ec3957643434855","ref_id":"1890573984","tokens_credited":100,"transaction_id":1} 
+[2025-12-30 19:31:02] testing.INFO: Zarinpal callback - order already paid (idempotent) {"order_id":1,"authority":"A00000000000006953f73ec9a66538969712"} 
+[2025-12-30 19:31:02] testing.INFO: Zarinpal callback - payment failed or cancelled {"order_id":1,"authority":"A00000000000006953f73ed16e1588242030","status":"NOK"} 
+[2025-12-30 19:31:02] testing.WARNING: Zarinpal callback missing authority {"query":{"Status":"OK"}} 
+[2025-12-30 19:31:02] testing.WARNING: Zarinpal callback - order not found {"authority":"INVALID_AUTHORITY"} 
+[2025-12-30 19:31:02] testing.INFO: Zarinpal payment verification {"authority":"A00000000000006953f73ee1115337761293","amount":50000} 
+[2025-12-30 19:31:02] testing.ERROR: Zarinpal payment verification error {"authority":"A00000000000006953f73ee1115337761293","code":-11,"message":"Payment not found"} 
+[2025-12-30 19:31:02] testing.ERROR: Zarinpal payment verification failed {"order_id":1,"authority":"A00000000000006953f73ee1115337761293","error":"Payment not found"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Payments\CallbackTest
+  ! it processes successful payment callback ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.04s  
+  ! it is idempotent prevents double credit ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backeظخ 0.02s  
+  ! it handles failed payment status ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it handles missing authority parameter ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backenظخ 0.02s  
+  ! it handles invalid authority ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Fظخ 0.02s  
+  ! it handles zarinpal verification failure ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.02s  
+  ! it prevents processing non pending orders ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.02s  
+  ! it handles mismatched amount ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Fظخ 0.02s  
+[2025-12-30 19:31:02] testing.WARNING: Zarinpal callback - order in invalid state {"order_id":1,"status":"failed","authority":"A00000000000006953f73ee6cc6516753813"} 
+[2025-12-30 19:31:02] testing.INFO: Zarinpal payment verification {"authority":"A00000000000006953f73eeca9f216926630","amount":50000} 
+[2025-12-30 19:31:02] testing.ERROR: Zarinpal payment verification error {"authority":"A00000000000006953f73eeca9f216926630","code":-11,"message":"Amount mismatch"} 
+[2025-12-30 19:31:02] testing.ERROR: Zarinpal payment verification failed {"order_id":1,"authority":"A00000000000006953f73eeca9f216926630","error":"Amount mismatch"} 
+[2025-12-30 19:31:03] testing.INFO: Zarinpal payment request {"amount":50000,"merchant_id":"test-merchant-id","sandbox":true} 
+[2025-12-30 19:31:03] testing.INFO: Zarinpal payment request successful {"authority":"A00000000000006953f73f01d81841477398"} 
+[2025-12-30 19:31:03] testing.INFO: Order created and payment requested {"order_id":1,"user_id":1,"bundle_id":1,"amount_toman":50000,"authority":"A00000000000006953f73f01d81841477398"} 
+[2025-12-30 19:31:03] testing.INFO: Zarinpal payment request {"amount":60000,"merchant_id":"test-merchant-id","sandbox":true} 
+[2025-12-30 19:31:03] testing.INFO: Zarinpal payment request successful {"authority":"A00000000000006953f73f0ed4d437964312"} 
+[2025-12-30 19:31:03] testing.INFO: Order created and payment requested {"order_id":1,"user_id":1,"bundle_id":1,"amount_toman":60000,"authority":"A00000000000006953f73f0ed4d437964312"} 
+[2025-12-30 19:31:03] testing.INFO: Zarinpal payment request {"amount":50000,"merchant_id":"test-merchant-id","sandbox":true} 
+[2025-12-30 19:31:03] testing.INFO: Zarinpal payment request successful {"authority":"A00000000000006953f73f15d70053431837"} 
+[2025-12-30 19:31:03] testing.INFO: Order created and payment requested {"order_id":1,"user_id":1,"bundle_id":1,"amount_toman":50000,"authority":"A00000000000006953f73f15d70053431837"} 
+[2025-12-30 19:31:03] testing.WARNING: No currency rate available in cache or database  
+[2025-12-30 19:31:03] testing.ERROR: Currency rate unavailable, using emergency fallback  
+[2025-12-30 19:31:03] testing.INFO: Zarinpal payment request {"amount":50000,"merchant_id":"test-merchant-id","sandbox":true} 
+[2025-12-30 19:31:03] testing.ERROR: Zarinpal payment request error {"code":-9,"message":"Invalid merchant"} 
+[2025-12-30 19:31:03] testing.ERROR: Zarinpal payment request failed {"order_id":1,"user_id":1,"bundle_id":1,"error":"Invalid merchant"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Payments\PurchaseTest
+  ! it creates order and requests payment ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.04s  
+  ! it rejects inactive bundle purchase ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.02s  
+  ! it calculates price using current rate ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backenظخ 0.03s  
+  ! it includes bonus tokens in order ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.enظخ 0.03s  
+  ! it handles zarinpal failure gracefully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backenظخ 0.03s  
+  ! it rejects purchase for unauthenticated user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-ظخ 0.02s  
+[2025-12-30 19:31:03] testing.INFO: Report created {"report_id":1,"post_id":1,"user_id":1,"reason":"inappropriate"} 
+[2025-12-30 19:31:03] testing.INFO: Post added to moderation queue {"post_id":1,"queue_id":1,"reason":"multiple_reports","source":"Automated flag: Multiple reports received"} 
+[2025-12-30 19:31:03] testing.INFO: Report created {"report_id":3,"post_id":1,"user_id":1,"reason":"inappropriate"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Reports\ReportTest
+  ! it creates report for post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faiظخ 0.04s  
+  ! it rejects reporting own content ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.04s  
+  ! it prevents duplicate reports within 24 hours ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifyظخ 0.03s  
+  ! it enforces daily report limit ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.04s  
+  ! it adds post to moderation queue on threshold ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarifyظخ 0.03s  
+  ! it validates report reason ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faiظخ 0.03s  
+[2025-12-30 19:31:03] testing.INFO: Comment created {"comment_id":1,"post_id":1,"user_id":1} 
+[2025-12-30 19:31:03] testing.INFO: Notification created {"notification_id":1,"user_id":3,"type":"comment_added"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Security\InputValidationTest
+  ! it prevents sql injection in search queries ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bظخ 0.04s  
+  ! it sanitizes user input in comments ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.03s  
+  ! it validates phone number format ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it validates email format ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failظخ 0.04s  
+  ! it validates numeric inputs ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+  ! it handles oversized inputs ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.03s  
+  ! it validates file uploads ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failظخ 0.03s  
+[2025-12-30 19:31:04] testing.ERROR: Melipayamak template SMS exception {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","error":"cURL error 60: SSL certificate problem: unable to get local issuer certificate (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://rest.payamak-panel.com/api/SendSMS/BaseServiceNumber"} 
+[2025-12-30 19:31:04] testing.ERROR: OTP SMS send failed {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"e2a01174-bbc6-4ddd-bc91-8cd23db075ab","error":"SMS provider network error. cURL error 60: SSL certificate problem: unable to get local issuer certificate (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for https://rest.payamak-panel.com/api/SendSMS/BaseServiceNumber","error_code":503} 
+[2025-12-30 19:31:04] testing.WARNING: No currency rate available in cache or database  
+[2025-12-30 19:31:04] testing.ERROR: Currency rate unavailable, using emergency fallback  
+
+   WARN  Test\BackendTest\Laravel\Feature\Security\MiddlewareTest
+  ! it requires authentication for protected routes ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negariظخ 0.04s  
+  ! it rejects invalid token ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faileظخ 0.02s  
+  ! it rejects expired token ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faileظخ 0.02s  
+  ! it rejects missing token ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faileظخ 0.02s  
+  ! it requires admin role for admin endpoints ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-baظخ 0.03s  
+  ! it allows admin access to admin endpoints ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.02s  
+  ! it rejects regular user from admin endpoints ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-ظخ 0.02s  
+  ! it allows unauthenticated access to public endpoints ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\nظخ 0.58s  
+  ! it validates token format ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failظخ 0.02s  
+  ! it handles malformed authorization header ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.02s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Security\RateLimitingTest
+  ! it enforces rate limiting on otp requests ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.04s  
+  ! it enforces rate limiting per phone number ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-baظخ 0.03s  
+  ! it resets rate limit after time window ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backenظخ 0.03s  
+  ! it enforces rate limiting on generation requests ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarظخ 0.03s  
+[2025-12-30 19:31:04] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:31:04] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"9500df65-083c-42bf-8364-b99082ba2e05"} 
+[2025-12-30 19:31:04] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:31:04] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"5d2615de-dae6-4c2d-8ba4-0bc0f0c1d7af"} 
+[2025-12-30 19:31:04] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:31:04] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"6c5074b6-e55b-4859-86bf-fba7284600a5"} 
+[2025-12-30 19:31:04] testing.WARNING: OTP request rate limited {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","retry_after":900} 
+[2025-12-30 19:31:04] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:31:04] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"7f95738b-41c5-4a79-a1e1-fe0ccafd3cc0"} 
+[2025-12-30 19:31:04] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:31:04] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"0b65f4cf-23bc-4791-a6e8-ef462ebc8282"} 
+[2025-12-30 19:31:04] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:31:04] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"8d0ea9d1-de31-4fe8-98d8-3d27908d063d"} 
+[2025-12-30 19:31:04] testing.WARNING: OTP request rate limited {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","retry_after":900} 
+[2025-12-30 19:31:04] testing.INFO: Melipayamak template OTP sent {"phone_hash":"6472bd0114fe2348d44f84ef2096fac4427097fc3bc33419135d4ac096926c1a","message_id":"123456","template_id":372382} 
+[2025-12-30 19:31:04] testing.INFO: OTP requested {"phone_hash":"6472bd0114fe2348d44f84ef2096fac4427097fc3bc33419135d4ac096926c1a","request_id":"9798cf0b-5c83-4019-b0f1-7d1c25ac7d29"} 
+[2025-12-30 19:31:04] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:31:04] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"4be3f431-ea47-4dcb-8eda-fc3e58f7898a"} 
+[2025-12-30 19:31:04] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:31:04] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"1c9dc5b3-29ce-44d9-8eb0-c88c045b11af"} 
+[2025-12-30 19:31:04] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:31:04] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"ae2a553b-5196-4447-9ec4-b512e6ebca99"} 
+[2025-12-30 19:31:04] testing.WARNING: OTP request rate limited {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","retry_after":900} 
+[2025-12-30 19:31:04] testing.INFO: Melipayamak template OTP sent {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","message_id":"123456","template_id":372382} 
+[2025-12-30 19:31:04] testing.INFO: OTP requested {"phone_hash":"2dd87679ddc4f65dd928c3f6518fc580e249de66934e2088e8e4bcbdf90e7960","request_id":"baaf0c24-13a5-414f-ba0f-9a0fc5f6ec06"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Social\CommentAccuracyTest
+  ! it maintains accurate comments count ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.04s  
+  ! it decrements comments count when deleting comment ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negظخ 0.03s  
+  ! it decrements comments count when deleting comment with replies ظْ file_get_contents(C:\Users\Nadali\Documenظخ 0.03s  
+  ! it handles nested replies correctly ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.03s  
+[2025-12-30 19:31:04] testing.INFO: Comment created {"comment_id":1,"post_id":1,"user_id":1} 
+[2025-12-30 19:31:04] testing.INFO: Notification created {"notification_id":1,"user_id":2,"type":"comment_added"} 
+[2025-12-30 19:31:04] testing.INFO: Comment created {"comment_id":2,"post_id":1,"user_id":1} 
+[2025-12-30 19:31:04] testing.INFO: Notification created {"notification_id":2,"user_id":2,"type":"comment_added"} 
+[2025-12-30 19:31:04] testing.INFO: Comment created {"comment_id":3,"post_id":1,"user_id":1} 
+[2025-12-30 19:31:04] testing.INFO: Notification created {"notification_id":3,"user_id":2,"type":"comment_added"} 
+[2025-12-30 19:31:04] testing.INFO: Comment deleted {"comment_id":1,"post_id":1,"user_id":1,"replies_deleted":0} 
+[2025-12-30 19:31:04] testing.INFO: Comment deleted {"comment_id":1,"post_id":1,"user_id":1,"replies_deleted":2} 
+[2025-12-30 19:31:04] testing.INFO: Comment created {"comment_id":1,"post_id":1,"user_id":1} 
+[2025-12-30 19:31:04] testing.INFO: Notification created {"notification_id":1,"user_id":2,"type":"comment_added"} 
+[2025-12-30 19:31:04] testing.INFO: Comment created {"comment_id":2,"post_id":1,"user_id":1} 
+[2025-12-30 19:31:04] testing.INFO: Notification created {"notification_id":2,"user_id":2,"type":"comment_added"} 
+[2025-12-30 19:31:04] testing.INFO: Comment deleted {"comment_id":1,"post_id":1,"user_id":1,"replies_deleted":0} 
+[2025-12-30 19:31:04] testing.INFO: Comment deleted {"comment_id":1,"post_id":1,"user_id":1,"replies_deleted":2} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Social\CommentDeleteTest
+  ! it deletes own comment ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ  0.03s  
+  ! it deletes comment with replies ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.03s  
+  ! it rejects deleting other user comment ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backenظخ 0.03s  
+  ! it allows admin to delete any comment ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Social\CommentTest
+  ! it creates comment on post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faiظخ 0.03s  
+  ! it creates nested reply comment ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.03s  
+  ! it rejects reply to invalid parent comment ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-baظخ 0.03s  
+  ! it validates comment body ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failظخ 0.03s  
+  ! it rejects comment for unauthenticated user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bظخ 0.02s  
+[2025-12-30 19:31:04] testing.INFO: Comment deleted {"comment_id":1,"post_id":1,"user_id":1,"replies_deleted":0} 
+[2025-12-30 19:31:04] testing.INFO: Comment created {"comment_id":1,"post_id":1,"user_id":1} 
+[2025-12-30 19:31:04] testing.INFO: Notification created {"notification_id":1,"user_id":2,"type":"comment_added"} 
+[2025-12-30 19:31:04] testing.INFO: Comment created {"comment_id":2,"post_id":1,"user_id":1} 
+[2025-12-30 19:31:04] testing.INFO: Notification created {"notification_id":1,"user_id":2,"type":"comment_added"} 
+[2025-12-30 19:31:04] testing.INFO: Notification created {"notification_id":2,"user_id":3,"type":"comment_added"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Social\LikeTest
+  ! it likes a post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failed to openظخ 0.03s  
+  ! it is idempotent prevents duplicate likes ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.03s  
+  ! it unlikes a post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failed to opظخ 0.03s  
+  ! it rejects like for unauthenticated user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.02s  
+  ! it allows liking own post ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failظخ 0.03s  
+  ! it maintains accurate likes count ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.enظخ 0.04s  
+[2025-12-30 19:31:05] testing.INFO: Post liked {"post_id":1,"user_id":1} 
+[2025-12-30 19:31:05] testing.INFO: Notification created {"notification_id":1,"user_id":2,"type":"post_liked"} 
+[2025-12-30 19:31:05] testing.INFO: Post liked {"post_id":1,"user_id":1} 
+[2025-12-30 19:31:05] testing.INFO: Notification created {"notification_id":1,"user_id":2,"type":"post_liked"} 
+[2025-12-30 19:31:05] testing.INFO: Post unliked {"post_id":1,"user_id":1} 
+[2025-12-30 19:31:05] testing.INFO: Post liked {"post_id":1,"user_id":1} 
+[2025-12-30 19:31:05] testing.INFO: Post liked {"post_id":1,"user_id":1} 
+[2025-12-30 19:31:05] testing.INFO: Notification created {"notification_id":1,"user_id":4,"type":"post_liked"} 
+[2025-12-30 19:31:05] testing.INFO: Post liked {"post_id":1,"user_id":2} 
+[2025-12-30 19:31:05] testing.INFO: Notification created {"notification_id":2,"user_id":4,"type":"post_liked"} 
+[2025-12-30 19:31:05] testing.INFO: Post liked {"post_id":1,"user_id":3} 
+[2025-12-30 19:31:05] testing.INFO: Notification created {"notification_id":3,"user_id":4,"type":"post_liked"} 
+[2025-12-30 19:31:05] testing.INFO: Post unliked {"post_id":1,"user_id":2} 
+
+   WARN  Test\BackendTest\Laravel\Feature\Tokens\TokenBundlesTest
+  ! it returns active token bundles with toman prices ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negaظخ 0.03s  
+  ! it returns bundles ordered by display order ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bظخ 0.02s  
+  ! it uses cached currency rate ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Fظخ 0.02s  
+  ! it falls back to database rate if cache missing ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negariظخ 0.02s  
+  ! it is public endpoint no auth required ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backenظخ 0.02s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Tokens\TransactionTypesTest
+  ! it creates purchase transaction correctly ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.04s  
+  ! it creates consume transaction correctly ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.02s  
+  ! it creates refund transaction correctly ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backeظخ 0.02s  
+  ! it creates bonus transaction correctly ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backenظخ 0.02s  
+  ! it creates adjustment transaction correctly ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bظخ 0.02s  
+  ! it reconciles balance across all transaction types ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negظخ 0.02s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Transactions\BalanceTest
+  ! it returns user token balance ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.03s  
+  ! it detects balance mismatch ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Faظخ 0.02s  
+  ! it handles user with no transactions ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.02s  
+  ! it rejects balance access for unauthenticated user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negظخ 0.02s  
+
+   WARN  Test\BackendTest\Laravel\Feature\Transactions\HistoryTest
+  ! it returns user transaction history ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.03s  
+  ! it filters transactions by type ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.02s  
+  ! it filters transactions by date range ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.02s  
+  ! it paginates transaction history ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.envظخ 0.03s  
+  ! it orders transactions by created at desc ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.03s  
+  ! it rejects history access for unauthenticated user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negظخ 0.02s  
+  ! it only returns current user transactions ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-bacظخ 0.03s  
+[2025-12-30 19:31:05] testing.INFO: Avatar uploaded {"user_id":1,"path":"avatars/1/ogarYl7JCBwez8KZmKd70o1bHrMpxuIKXt2o1byC.jpg"} 
+[2025-12-30 19:31:05] testing.INFO: Avatar uploaded {"user_id":1,"path":"avatars/1/bekWvfWCFitS0U4oWi15tLxrIqJmz6bWBXZoehhx.jpg"} 
+
+   WARN  Test\BackendTest\Laravel\Feature\User\AvatarTest
+  ! it uploads avatar successfully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ 0.04s  
+  ! it deletes old avatar on new upload ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.ظخ 0.03s  
+  ! it rejects invalid file type ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Fظخ 0.03s  
+  ! it rejects avatar upload for unauthenticated user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negaظخ 0.02s  
+  ! it handles storage failure gracefully ظْ This test did not perform any assertions                             0.03s  
+[2025-12-30 19:31:05] testing.INFO: User profile updated {"user_id":1,"updated_fields":["name","email"]} 
+[2025-12-30 19:31:06] testing.INFO: User profile updated {"user_id":1,"updated_fields":["email"]} 
+
+   WARN  Test\BackendTest\Laravel\Feature\User\ProfileTest
+  ! it returns authenticated user profile ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+  ! it rejects profile access for unauthenticated user ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negظخ 0.02s  
+  ! it updates user profile ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failedظخ 0.02s  
+  ! it resets email verification when email changes ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negariظخ 0.02s  
+  ! it validates email format ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env): Failظخ 0.02s  
+  ! it rejects updating forbidden fields ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.03s  
+
+   WARN  Test\BackendTest\Laravel\Unit\Services\TgjuScraperServiceTest
+  ! it fetches and stores usd rate from tgju ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backظخ 0.03s  
+  ! it caches rate after fetching ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env):ظخ  0.02s  
+  ! it handles http failure gracefully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.eظخ 0.02s  
+  ! it handles html parsing failure gracefully ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-baظخ 0.02s  
+  ! it validates rate is reasonable ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backend\.env)ظخ 0.02s  
+  ! it converts rials to toman correctly ظْ file_get_contents(C:\Users\Nadali\Documents\GitHub\negarify-backendظخ 0.02s  
+
+  Tests:    317 warnings, 1 risky (1761 assertions)
+  Duration: 15.48s
+
+Time: 00:15.052, Memory: 94.00 MB
+
+Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)
+ ظ£¤ It calculates revenue cost and profit
+ ظ£¤ It calculates profit margins correctly
+ ظ£¤ It provides breakdown by model
+ ظ£¤ It provides breakdown by provider
+ ظ£¤ It provides historical comparison
+ ظ£¤ It provides profit margins over time
+ ظ£¤ It supports date range filtering
+ ظ£¤ It supports range parameter
+ ظ£¤ It caches cost profit data
+
+Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)
+ ظ£¤ It returns usage statistics per model
+ ظ£¤ It calculates success and failure rates
+ ظ£¤ It calculates average latency
+ ظ£¤ It tracks tokens consumed per model
+ ظ£¤ It tracks cost and revenue per model
+ ظ£¤ It supports date range filtering
+ ظ£¤ It supports range parameter
+ ظ£¤ It caches models usage data
+ ظ£¤ It handles breakdown by job type
+
+Admin Rbac (Test\BackendTest\Laravel\Feature\Admin\AdminRbac)
+ ظ£¤ It requires admin role for admin endpoints
+ ظ£¤ It rejects non admin users with 403
+ ظ£¤ It rejects unauthenticated users with 401
+ ظ£¤ It verifies admin middleware works
+
+Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)
+ ظ£¤ It returns revenue by period
+ ظ£¤ It calculates total revenue correctly
+ ظ£¤ It returns top selling bundles
+ ظ£¤ It tracks refunds
+ ظ£¤ It supports date range filtering
+ ظ£¤ It caches sales summary
+
+Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)
+ ظ£¤ It returns tokens consumption by provider
+ ظ£¤ It returns tokens consumption by type
+ ظ£¤ It returns cost per provider
+ ظ£¤ It returns time series data
+ ظ£¤ It supports date range filtering
+ ظ£¤ It supports range parameter
+ ظ£¤ It caches token analytics data
+
+Admin Users (Test\BackendTest\Laravel\Feature\Admin\AdminUsers)
+ ظ£¤ It calculates dau wau mau correctly
+ ظ£¤ It returns top users by generation
+ ظ£¤ It returns top users by spending
+ ظ£¤ It performs cohort analysis
+ ظ£¤ It searches users by name phone or email
+ ظ£¤ It filters users by role
+ ظ£¤ It filters users by date range
+ ظ£¤ It paginates users list
+ ظ£¤ It caches users summary
+
+Avatar (Test\BackendTest\Laravel\Feature\User\Avatar)
+ ظ£¤ It uploads avatar successfully
+ ظ£¤ It deletes old avatar on new upload
+ ظ£¤ It rejects invalid file type
+ ظ£¤ It rejects avatar upload for unauthenticated user
+ ظأب It handles storage failure gracefully
+
+Balance (Test\BackendTest\Laravel\Feature\Transactions\Balance)
+ ظ£¤ It returns user token balance
+ ظ£¤ It detects balance mismatch
+ ظ£¤ It handles user with no transactions
+ ظ£¤ It rejects balance access for unauthenticated user
+
+Callback (Test\BackendTest\Laravel\Feature\Payments\Callback)
+ ظ£¤ It processes successful payment callback
+ ظ£¤ It is idempotent prevents double credit
+ ظ£¤ It handles failed payment status
+ ظ£¤ It handles missing authority parameter
+ ظ£¤ It handles invalid authority
+ ظ£¤ It handles zarinpal verification failure
+ ظ£¤ It prevents processing non pending orders
+ ظ£¤ It handles mismatched amount
+
+Comment (Test\BackendTest\Laravel\Feature\Social\Comment)
+ ظ£¤ It creates comment on post
+ ظ£¤ It creates nested reply comment
+ ظ£¤ It rejects reply to invalid parent comment
+ ظ£¤ It validates comment body
+ ظ£¤ It rejects comment for unauthenticated user
+
+Comment Accuracy (Test\BackendTest\Laravel\Feature\Social\CommentAccuracy)
+ ظ£¤ It maintains accurate comments count
+ ظ£¤ It decrements comments count when deleting comment
+ ظ£¤ It decrements comments count when deleting comment with replies
+ ظ£¤ It handles nested replies correctly
+
+Comment Delete (Test\BackendTest\Laravel\Feature\Social\CommentDelete)
+ ظ£¤ It deletes own comment
+ ظ£¤ It deletes comment with replies
+ ظ£¤ It rejects deleting other user comment
+ ظ£¤ It allows admin to delete any comment
+
+Dashboard Summary (Test\BackendTest\Laravel\Feature\Admin\DashboardSummary)
+ ظ£¤ It returns sales summary
+ ظ£¤ It returns users summary
+ ظ£¤ It returns tokens summary
+ ظ£¤ It returns cost profit summary
+ ظ£¤ It returns models usage summary
+ ظ£¤ It returns users list
+ ظ£¤ It filters users list by role
+ ظ£¤ It rejects admin endpoints for non admin
+
+Error Handling (Test\BackendTest\Laravel\Feature\Observability\ErrorHandling)
+ ظ£¤ It returns proper status codes
+ ظ£¤ It does not expose sensitive data in errors
+ ظ£¤ It returns validation error details
+ ظ£¤ It handles database errors gracefully
+ ظ£¤ It logs errors without exposing them
+ ظ£¤ It returns consistent error format
+
+Feed Cache (Test\BackendTest\Laravel\Feature\Feed\FeedCache)
+ ظ£¤ It caches feed posts
+ ظ£¤ It invalidates cache when post is curated
+ ظ£¤ It caches different cursor pages separately
+
+Feed Copy (Test\BackendTest\Laravel\Feature\Feed\FeedCopy)
+ ظ£¤ It copies prompt from feed post
+ ظ£¤ It rejects copying prompt when not visible
+ ظ£¤ It copies model from feed post
+ ظ£¤ It rejects copying model when not visible
+ ظ£¤ It rejects copying from non curated post
+
+Feed List (Test\BackendTest\Laravel\Feature\Feed\FeedList)
+ ظ£¤ It returns curated public feed
+ ظ£¤ It decrements view limits when viewing feed
+ ظ£¤ It returns empty feed when view limit reached
+ ظ£¤ It excludes private posts from feed
+ ظ£¤ It excludes non curated posts from feed
+ ظ£¤ It supports cursor pagination
+
+Feed Visibility (Test\BackendTest\Laravel\Feature\Feed\FeedVisibility)
+ ظ£¤ It respects prompt visibility in feed
+ ظ£¤ It respects model visibility in feed
+ ظ£¤ It excludes audio posts from feed
+ ظ£¤ It allows admin unlimited views
+ ظ£¤ It resets daily view limits
+
+Gallery Admin (Test\BackendTest\Laravel\Feature\Admin\GalleryAdmin)
+ ظ£¤ It curates post as admin
+ ظ£¤ It rejects curating private post
+ ظ£¤ It uncurates post
+ ظ£¤ It features post
+ ظ£¤ It performs bulk curation
+ ظ£¤ It lists curated posts
+
+Gallery Post (Test\BackendTest\Laravel\Feature\Gallery\GalleryPost)
+ ظ£¤ It creates gallery post from completed job
+ ظ£¤ It rejects post from incomplete job
+ ظ£¤ It rejects post from other user job
+ ظ£¤ It prevents duplicate posts for same job
+ ظ£¤ It respects prompt and model visibility flags
+
+Gallery Post Management (Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagement)
+ ظ£¤ It returns gallery post details
+ ظ£¤ It hides private posts from other users
+ ظ£¤ It allows owner to view private post
+ ظ£¤ It updates gallery post
+ ظ£¤ It rejects updating other user post
+ ظ£¤ It deletes gallery post
+ ظ£¤ It rejects deleting other user post
+ ظ£¤ It returns user own posts
+
+History (Test\BackendTest\Laravel\Feature\Transactions\History)
+ ظ£¤ It returns user transaction history
+ ظ£¤ It filters transactions by type
+ ظ£¤ It filters transactions by date range
+ ظ£¤ It paginates transaction history
+ ظ£¤ It orders transactions by created at desc
+ ظ£¤ It rejects history access for unauthenticated user
+ ظ£¤ It only returns current user transactions
+
+Image Generation (Test\BackendTest\Laravel\Feature\Generation\ImageGeneration)
+ ظ£¤ It creates image generation job
+ ظ£¤ It rejects generation with insufficient tokens
+ ظ£¤ It rejects unavailable model
+ ظ£¤ It rejects wrong model type
+ ظ£¤ It validates required prompt
+ ظ£¤ It stores generation parameters
+
+Input Validation (Test\BackendTest\Laravel\Feature\Security\InputValidation)
+ ظ£¤ It prevents sql injection in search queries
+ ظ£¤ It sanitizes user input in comments
+ ظ£¤ It validates phone number format
+ ظ£¤ It validates email format
+ ظ£¤ It validates numeric inputs
+ ظ£¤ It handles oversized inputs
+ ظ£¤ It validates file uploads
+
+Job Status (Test\BackendTest\Laravel\Feature\Generation\JobStatus)
+ ظ£¤ It returns user generation jobs
+ ظ£¤ It filters jobs by type
+ ظ£¤ It filters jobs by status
+ ظ£¤ It returns single job details
+ ظ£¤ It rejects access to other user job
+ ظ£¤ It cancels pending job and refunds tokens
+ ظ£¤ It rejects cancelling completed job
+ ظ£¤ It retries failed job
+ ظ£¤ It rejects retrying non failed job
+ ظ£¤ It shows status transitions
+ ظ£¤ It tracks progress with timestamps
+ ظ£¤ It includes result urls when available
+ ظ£¤ It includes error message when job failed
+ ظ£¤ It paginates job listing
+ ظ£¤ It handles cancelling processing job
+
+Like (Test\BackendTest\Laravel\Feature\Social\Like)
+ ظ£¤ It likes a post
+ ظ£¤ It is idempotent prevents duplicate likes
+ ظ£¤ It unlikes a post
+ ظ£¤ It rejects like for unauthenticated user
+ ظ£¤ It allows liking own post
+ ظ£¤ It maintains accurate likes count
+
+Logout (Test\BackendTest\Laravel\Feature\Auth\Logout)
+ ظ£¤ It logs out authenticated user
+ ظ£¤ It rejects logout for unauthenticated user
+ ظ£¤ It rejects logout with invalid token
+
+Middleware (Test\BackendTest\Laravel\Feature\Security\Middleware)
+ ظ£¤ It requires authentication for protected routes
+ ظ£¤ It rejects invalid token
+ ظ£¤ It rejects expired token
+ ظ£¤ It rejects missing token
+ ظ£¤ It requires admin role for admin endpoints
+ ظ£¤ It allows admin access to admin endpoints
+ ظ£¤ It rejects regular user from admin endpoints
+ ظ£¤ It allows unauthenticated access to public endpoints
+ ظ£¤ It validates token format
+ ظ£¤ It handles malformed authorization header
+
+Moderation Admin (Test\BackendTest\Laravel\Feature\Admin\ModerationAdmin)
+ ظ£¤ It returns moderation queue
+ ظ£¤ It returns reports list
+ ظ£¤ It approves post in moderation
+ ظ£¤ It rejects post in moderation
+ ظ£¤ It resolves report
+
+Notification (Test\BackendTest\Laravel\Feature\Notifications\Notification)
+ ظ£¤ It returns user notifications
+ ظ£¤ It filters notifications by read status
+ ظ£¤ It filters notifications by type
+ ظ£¤ It returns single notification
+ ظ£¤ It rejects access to other user notification
+ ظ£¤ It marks notification as read
+ ظ£¤ It marks notification as unread
+ ظ£¤ It marks all notifications as read
+ ظ£¤ It rejects notification access for unauthenticated user
+
+Otp Request (Test\BackendTest\Laravel\Feature\Auth\OtpRequest)
+ ظ£¤ It can request otp with valid phone number
+ ظ£¤ It rejects invalid phone format
+ ظ£¤ It enforces rate limiting on otp requests
+ ظ£¤ It prevents multiple active otps for same phone
+ ظ£¤ It allows new otp after previous one expires
+ ظ£¤ It handles melipayamak service failure gracefully
+ ظ£¤ It normalizes phone number format
+ ظ£¤ It sets otp expiration to 5 minutes
+ ظ£¤ It generates unique request ids
+ ظ£¤ It requires phone parameter
+ ظ£¤ It validates phone minimum length
+ ظ£¤ It validates phone maximum length
+
+Otp Resend (Test\BackendTest\Laravel\Feature\Auth\OtpResend)
+ ظ£¤ It resends otp successfully
+ ظ£¤ It rejects resend for invalid request id
+ ظ£¤ It rejects resend for already verified otp
+ ظ£¤ It enforces resend rate limiting
+ ظ£¤ It validates request id format
+ ظ£¤ It handles melipayamak failure on resend
+
+Otp Verify (Test\BackendTest\Laravel\Feature\Auth\OtpVerify)
+ ظ£¤ It verifies valid otp code and creates user
+ ظ£¤ It verifies valid otp code and updates existing user
+ ظ£¤ It rejects invalid otp code
+ ظ£¤ It enforces max attempts limit
+ ظ£¤ It rejects expired otp
+ ظ£¤ It rejects already verified otp
+ ظ£¤ It rejects invalid request id
+ ظ£¤ It validates request id format
+ ظ£¤ It validates code format
+ ظ£¤ It requires both request id and code
+
+Profile (Test\BackendTest\Laravel\Feature\User\Profile)
+ ظ£¤ It returns authenticated user profile
+ ظ£¤ It rejects profile access for unauthenticated user
+ ظ£¤ It updates user profile
+ ظ£¤ It resets email verification when email changes
+ ظ£¤ It validates email format
+ ظ£¤ It rejects updating forbidden fields
+
+Purchase (Test\BackendTest\Laravel\Feature\Payments\Purchase)
+ ظ£¤ It creates order and requests payment
+ ظ£¤ It rejects inactive bundle purchase
+ ظ£¤ It calculates price using current rate
+ ظ£¤ It includes bonus tokens in order
+ ظ£¤ It handles zarinpal failure gracefully
+ ظ£¤ It rejects purchase for unauthenticated user
+
+Queue Job Processing (Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessing)
+ ظ£¤ It processes image generation job successfully
+ ظ£¤ It handles image generation failure and refunds tokens
+ ظ£¤ It processes video generation job successfully
+ ظ£¤ It processes audio generation job successfully
+ ظ£¤ It is idempotent and skips already completed jobs
+ ظ£¤ It is idempotent and skips already failed jobs
+ ظ£¤ It updates job status to processing when handling
+ ظ£¤ It handles retries safely without duplicate operations
+
+Rate (Test\BackendTest\Laravel\Feature\Currency\Rate)
+ ظ£¤ It returns current currency rate
+ ظ£¤ It returns 503 when no rate available
+ ظ£¤ It uses cached rate from service
+ ظ£¤ It is public endpoint no auth required
+
+Rate Limiting (Test\BackendTest\Laravel\Feature\Security\RateLimiting)
+ ظ£¤ It enforces rate limiting on otp requests
+ ظ£¤ It enforces rate limiting per phone number
+ ظ£¤ It resets rate limit after time window
+ ظ£¤ It enforces rate limiting on generation requests
+
+Report (Test\BackendTest\Laravel\Feature\Reports\Report)
+ ظ£¤ It creates report for post
+ ظ£¤ It rejects reporting own content
+ ظ£¤ It prevents duplicate reports within 24 hours
+ ظ£¤ It enforces daily report limit
+ ظ£¤ It adds post to moderation queue on threshold
+ ظ£¤ It validates report reason
+
+Route Registration (Test\BackendTest\Laravel\Feature\Observability\RouteRegistration)
+ ظ£¤ It registers all public routes
+ ظ£¤ It registers all protected routes
+ ظ£¤ It registers all admin routes
+ ظ£¤ It returns 404 for non existent endpoints
+ ظ£¤ It returns 401 for unauthenticated protected routes
+ ظ£¤ It returns 403 for non admin on admin routes
+ ظ£¤ It validates route parameters
+
+Smoke (Test\BackendTest\Laravel\Feature\Observability\Smoke)
+ ظ£¤ It health check returns ok
+ ظ£¤ It public endpoints are accessible
+ ظ£¤ It protected endpoints require authentication
+ ظ£¤ It database connection works
+ ظ£¤ It api returns consistent response format
+ ظ£¤ It handles invalid routes gracefully
+ ظ£¤ It handles invalid methods gracefully
+ ظ£¤ It returns proper status codes for auth errors
+ ظ£¤ It logs errors without exposing sensitive data
+ ظ£¤ It validates route parameters
+ ظ£¤ It logs validation errors appropriately
+
+Sqlite Transaction Nesting (Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNesting)
+ ظ£¤ It handles single transaction
+ ظ£¤ It prevents nested transactions in sqlite
+ ظ£¤ It tests transaction level tracking
+ ظ£¤ It tests transaction rollback in nested scenario
+ ظ£¤ It tests transaction rollback propagates to outer
+ ظ£¤ It tests begin transaction does not nest with laravel transaction
+ ظ£¤ It tests pdo in transaction detection
+
+System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)
+ ظ£¤ It returns system health metrics
+ ظ£¤ It caches system health
+ ظ£¤ It rejects system health access for non admin
+ ظ£¤ It tracks failed jobs count
+ ظ£¤ It calculates error rate
+ ظ£¤ It tracks api latency
+ ظ£¤ It tracks storage usage
+ ظ£¤ It tracks queue length by type
+
+Tgju Scraper Service (Test\BackendTest\Laravel\Unit\Services\TgjuScraperService)
+ ظ£¤ It fetches and stores usd rate from tgju
+ ظ£¤ It caches rate after fetching
+ ظ£¤ It handles http failure gracefully
+ ظ£¤ It handles html parsing failure gracefully
+ ظ£¤ It validates rate is reasonable
+ ظ£¤ It converts rials to toman correctly
+
+Token Bundle Admin (Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdmin)
+ ظ£¤ It creates token bundle as admin
+ ظ£¤ It rejects bundle creation for non admin
+ ظ£¤ It updates token bundle
+ ظ£¤ It deletes token bundle
+ ظ£¤ It activates token bundle
+ ظ£¤ It deactivates token bundle
+
+Token Bundles (Test\BackendTest\Laravel\Feature\Tokens\TokenBundles)
+ ظ£¤ It returns active token bundles with toman prices
+ ظ£¤ It returns bundles ordered by display order
+ ظ£¤ It uses cached currency rate
+ ظ£¤ It falls back to database rate if cache missing
+ ظ£¤ It is public endpoint no auth required
+
+Transaction Types (Test\BackendTest\Laravel\Feature\Tokens\TransactionTypes)
+ ظ£¤ It creates purchase transaction correctly
+ ظ£¤ It creates consume transaction correctly
+ ظ£¤ It creates refund transaction correctly
+ ظ£¤ It creates bonus transaction correctly
+ ظ£¤ It creates adjustment transaction correctly
+ ظ£¤ It reconciles balance across all transaction types
+
+Video Audio Generation (Test\BackendTest\Laravel\Feature\Generation\VideoAudioGeneration)
+ ظ£¤ It creates video generation job
+ ظ£¤ It rejects video generation with wrong model type
+ ظ£¤ It creates audio generation job
+ ظ£¤ It rejects audio generation with wrong model type
+ ظ£¤ It stores video generation parameters
+ ظ£¤ It stores audio generation parameters
+
+There was 1 PHPUnit test runner warning:
+
+1) No code coverage driver available
+
+--
+
+There was 1 risky test:
+
+1) Test\BackendTest\Laravel\Feature\User\AvatarTest::it_handles_storage_failure_gracefully
+This test did not perform any assertions
+
+C:\Users\Nadali\Documents\GitHub\negarify-backend\test\backend_test\laravel\Feature\User\AvatarTest.php:119
+
+OK, but there were issues!
+Tests: 318, Assertions: 1761, PHPUnit Warnings: 1, PHPUnit Deprecations: 318, Risky: 1.
+[2025-12-30 19:31:06] testing.INFO: User profile updated {"user_id":1,"updated_fields":[]} 
+[2025-12-30 19:31:06] testing.INFO: Fetching USD rate from TGJU.org  
+[2025-12-30 19:31:06] testing.INFO: USD rate fetched and stored successfully {"rials_rate":50000.0,"toman_rate":5000.0,"currency_rate_id":1} 
+[2025-12-30 19:31:06] testing.INFO: Fetching USD rate from TGJU.org  
+[2025-12-30 19:31:06] testing.INFO: USD rate fetched and stored successfully {"rials_rate":50000.0,"toman_rate":5000.0,"currency_rate_id":1} 
+[2025-12-30 19:31:06] testing.INFO: Fetching USD rate from TGJU.org  
+[2025-12-30 19:31:06] testing.ERROR: TGJU.org request failed {"status":500,"url":"https://www.tgju.org/profile/price_dollar_rl"} 
+[2025-12-30 19:31:06] testing.INFO: Fetching USD rate from TGJU.org  
+[2025-12-30 19:31:06] testing.WARNING: Could not extract rate from TGJU.org HTML using any method  
+[2025-12-30 19:31:06] testing.ERROR: Failed to extract rate from TGJU.org HTML  
+[2025-12-30 19:31:06] testing.INFO: Fetching USD rate from TGJU.org  
+[2025-12-30 19:31:06] testing.WARNING: Could not extract rate from TGJU.org HTML using any method  
+[2025-12-30 19:31:06] testing.ERROR: Failed to extract rate from TGJU.org HTML  
+[2025-12-30 19:31:06] testing.INFO: Fetching USD rate from TGJU.org  
+[2025-12-30 19:31:06] testing.INFO: USD rate fetched and stored successfully {"rials_rate":100000.0,"toman_rate":10000.0,"currency_rate_id":1} 
