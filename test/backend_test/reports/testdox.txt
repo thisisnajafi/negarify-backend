@@ -1,3 +1,82 @@
+Admin Cost Profit (Test\BackendTest\Laravel\Feature\Admin\AdminCostProfit)
+ [x] It calculates revenue cost and profit
+ [x] It calculates profit margins correctly
+ [x] It provides breakdown by model
+ [x] It provides breakdown by provider
+ [x] It provides historical comparison
+ [x] It provides profit margins over time
+ [x] It supports date range filtering
+ [x] It supports range parameter
+ [x] It caches cost profit data
+
+Admin Models (Test\BackendTest\Laravel\Feature\Admin\AdminModels)
+ [x] It returns usage statistics per model
+ [x] It calculates success and failure rates
+ [x] It calculates average latency
+ [x] It tracks tokens consumed per model
+ [x] It tracks cost and revenue per model
+ [x] It supports date range filtering
+ [x] It supports range parameter
+ [x] It caches models usage data
+ [x] It handles breakdown by job type
+
+Admin Rbac (Test\BackendTest\Laravel\Feature\Admin\AdminRbac)
+ [x] It requires admin role for admin endpoints
+ [x] It rejects non admin users with 403
+ [x] It rejects unauthenticated users with 401
+ [x] It verifies admin middleware works
+
+Admin Sales (Test\BackendTest\Laravel\Feature\Admin\AdminSales)
+ [x] It returns revenue by period
+ [x] It calculates total revenue correctly
+ [x] It returns top selling bundles
+ [x] It tracks refunds
+ [x] It supports date range filtering
+ [x] It caches sales summary
+
+Admin Tokens (Test\BackendTest\Laravel\Feature\Admin\AdminTokens)
+ [x] It returns tokens consumption by provider
+ [x] It returns tokens consumption by type
+ [x] It returns cost per provider
+ [x] It returns time series data
+ [x] It supports date range filtering
+ [x] It supports range parameter
+ [x] It caches token analytics data
+
+Admin Users (Test\BackendTest\Laravel\Feature\Admin\AdminUsers)
+ [x] It calculates dau wau mau correctly
+ [x] It returns top users by generation
+ [x] It returns top users by spending
+ [x] It performs cohort analysis
+ [x] It searches users by name phone or email
+ [x] It filters users by role
+ [x] It filters users by date range
+ [x] It paginates users list
+ [x] It caches users summary
+
+Avatar (Test\BackendTest\Laravel\Feature\User\Avatar)
+ [x] It uploads avatar successfully
+ [x] It deletes old avatar on new upload
+ [x] It rejects invalid file type
+ [x] It rejects avatar upload for unauthenticated user
+ [x] It handles storage failure gracefully
+
+Balance (Test\BackendTest\Laravel\Feature\Transactions\Balance)
+ [x] It returns user token balance
+ [x] It detects balance mismatch
+ [x] It handles user with no transactions
+ [x] It rejects balance access for unauthenticated user
+
+Callback (Test\BackendTest\Laravel\Feature\Payments\Callback)
+ [x] It processes successful payment callback
+ [x] It is idempotent prevents double credit
+ [x] It handles failed payment status
+ [x] It handles missing authority parameter
+ [x] It handles invalid authority
+ [x] It handles zarinpal verification failure
+ [x] It prevents processing non pending orders
+ [x] It handles mismatched amount
+
 Comment (Test\BackendTest\Laravel\Feature\Social\Comment)
  [x] It creates comment on post
  [x] It creates nested reply comment
@@ -17,6 +96,119 @@ Comment Delete (Test\BackendTest\Laravel\Feature\Social\CommentDelete)
  [x] It rejects deleting other user comment
  [x] It allows admin to delete any comment
 
+Dashboard Summary (Test\BackendTest\Laravel\Feature\Admin\DashboardSummary)
+ [x] It returns sales summary
+ [x] It returns users summary
+ [x] It returns tokens summary
+ [x] It returns cost profit summary
+ [x] It returns models usage summary
+ [x] It returns users list
+ [x] It filters users list by role
+ [x] It rejects admin endpoints for non admin
+
+Error Handling (Test\BackendTest\Laravel\Feature\Observability\ErrorHandling)
+ [x] It returns proper status codes
+ [x] It does not expose sensitive data in errors
+ [x] It returns validation error details
+ [x] It handles database errors gracefully
+ [x] It logs errors without exposing them
+ [x] It returns consistent error format
+
+Feed Cache (Test\BackendTest\Laravel\Feature\Feed\FeedCache)
+ [x] It caches feed posts
+ [x] It invalidates cache when post is curated
+ [x] It caches different cursor pages separately
+
+Feed Copy (Test\BackendTest\Laravel\Feature\Feed\FeedCopy)
+ [x] It copies prompt from feed post
+ [x] It rejects copying prompt when not visible
+ [x] It copies model from feed post
+ [x] It rejects copying model when not visible
+ [x] It rejects copying from non curated post
+
+Feed List (Test\BackendTest\Laravel\Feature\Feed\FeedList)
+ [x] It returns curated public feed
+ [x] It decrements view limits when viewing feed
+ [x] It returns empty feed when view limit reached
+ [x] It excludes private posts from feed
+ [x] It excludes non curated posts from feed
+ [x] It supports cursor pagination
+
+Feed Visibility (Test\BackendTest\Laravel\Feature\Feed\FeedVisibility)
+ [x] It respects prompt visibility in feed
+ [x] It respects model visibility in feed
+ [x] It excludes audio posts from feed
+ [x] It allows admin unlimited views
+ [x] It resets daily view limits
+
+Gallery Admin (Test\BackendTest\Laravel\Feature\Admin\GalleryAdmin)
+ [x] It curates post as admin
+ [x] It rejects curating private post
+ [x] It uncurates post
+ [x] It features post
+ [x] It performs bulk curation
+ [x] It lists curated posts
+
+Gallery Post (Test\BackendTest\Laravel\Feature\Gallery\GalleryPost)
+ [x] It creates gallery post from completed job
+ [x] It rejects post from incomplete job
+ [x] It rejects post from other user job
+ [x] It prevents duplicate posts for same job
+ [x] It respects prompt and model visibility flags
+
+Gallery Post Management (Test\BackendTest\Laravel\Feature\Gallery\GalleryPostManagement)
+ [x] It returns gallery post details
+ [x] It hides private posts from other users
+ [x] It allows owner to view private post
+ [x] It updates gallery post
+ [x] It rejects updating other user post
+ [x] It deletes gallery post
+ [x] It rejects deleting other user post
+ [x] It returns user own posts
+
+History (Test\BackendTest\Laravel\Feature\Transactions\History)
+ [x] It returns user transaction history
+ [x] It filters transactions by type
+ [x] It filters transactions by date range
+ [x] It paginates transaction history
+ [x] It orders transactions by created at desc
+ [x] It rejects history access for unauthenticated user
+ [x] It only returns current user transactions
+
+Image Generation (Test\BackendTest\Laravel\Feature\Generation\ImageGeneration)
+ [x] It creates image generation job
+ [x] It rejects generation with insufficient tokens
+ [x] It rejects unavailable model
+ [x] It rejects wrong model type
+ [x] It validates required prompt
+ [x] It stores generation parameters
+
+Input Validation (Test\BackendTest\Laravel\Feature\Security\InputValidation)
+ [x] It prevents sql injection in search queries
+ [x] It sanitizes user input in comments
+ [x] It validates phone number format
+ [x] It validates email format
+ [x] It validates numeric inputs
+ [x] It handles oversized inputs
+ [x] It validates file uploads
+
+Job Status (Test\BackendTest\Laravel\Feature\Generation\JobStatus)
+ [x] It returns user generation jobs
+ [x] It filters jobs by type
+ [x] It filters jobs by status
+ [x] It returns single job details
+ [x] It rejects access to other user job
+ [x] It cancels pending job and refunds tokens
+ [x] It rejects cancelling completed job
+ [x] It retries failed job
+ [x] It rejects retrying non failed job
+ [x] It shows status transitions
+ [x] It tracks progress with timestamps
+ [x] It includes result urls when available
+ [x] It includes error message when job failed
+ [x] It paginates job listing
+ [x] It handles cancelling processing job
+
 Like (Test\BackendTest\Laravel\Feature\Social\Like)
  [x] It likes a post
  [x] It is idempotent prevents duplicate likes
@@ -24,4 +216,199 @@ Like (Test\BackendTest\Laravel\Feature\Social\Like)
  [x] It rejects like for unauthenticated user
  [x] It allows liking own post
  [x] It maintains accurate likes count
+
+Logout (Test\BackendTest\Laravel\Feature\Auth\Logout)
+ [x] It logs out authenticated user
+ [x] It rejects logout for unauthenticated user
+ [x] It rejects logout with invalid token
+
+Middleware (Test\BackendTest\Laravel\Feature\Security\Middleware)
+ [x] It requires authentication for protected routes
+ [x] It rejects invalid token
+ [x] It rejects expired token
+ [x] It rejects missing token
+ [x] It requires admin role for admin endpoints
+ [x] It allows admin access to admin endpoints
+ [x] It rejects regular user from admin endpoints
+ [x] It allows unauthenticated access to public endpoints
+ [x] It validates token format
+ [x] It handles malformed authorization header
+
+Moderation Admin (Test\BackendTest\Laravel\Feature\Admin\ModerationAdmin)
+ [x] It returns moderation queue
+ [x] It returns reports list
+ [x] It approves post in moderation
+ [x] It rejects post in moderation
+ [x] It resolves report
+
+Notification (Test\BackendTest\Laravel\Feature\Notifications\Notification)
+ [x] It returns user notifications
+ [x] It filters notifications by read status
+ [x] It filters notifications by type
+ [x] It returns single notification
+ [x] It rejects access to other user notification
+ [x] It marks notification as read
+ [x] It marks notification as unread
+ [x] It marks all notifications as read
+ [x] It rejects notification access for unauthenticated user
+
+Otp Request (Test\BackendTest\Laravel\Feature\Auth\OtpRequest)
+ [x] It can request otp with valid phone number
+ [x] It rejects invalid phone format
+ [x] It enforces rate limiting on otp requests
+ [x] It prevents multiple active otps for same phone
+ [x] It allows new otp after previous one expires
+ [x] It handles melipayamak service failure gracefully
+ [x] It normalizes phone number format
+ [x] It sets otp expiration to 5 minutes
+ [x] It generates unique request ids
+ [x] It requires phone parameter
+ [x] It validates phone minimum length
+ [x] It validates phone maximum length
+
+Otp Resend (Test\BackendTest\Laravel\Feature\Auth\OtpResend)
+ [x] It resends otp successfully
+ [x] It rejects resend for invalid request id
+ [x] It rejects resend for already verified otp
+ [x] It enforces resend rate limiting
+ [x] It validates request id format
+ [x] It handles melipayamak failure on resend
+
+Otp Verify (Test\BackendTest\Laravel\Feature\Auth\OtpVerify)
+ [x] It verifies valid otp code and creates user
+ [x] It verifies valid otp code and updates existing user
+ [x] It rejects invalid otp code
+ [x] It enforces max attempts limit
+ [x] It rejects expired otp
+ [x] It rejects already verified otp
+ [x] It rejects invalid request id
+ [x] It validates request id format
+ [x] It validates code format
+ [x] It requires both request id and code
+
+Profile (Test\BackendTest\Laravel\Feature\User\Profile)
+ [x] It returns authenticated user profile
+ [x] It rejects profile access for unauthenticated user
+ [x] It updates user profile
+ [x] It resets email verification when email changes
+ [x] It validates email format
+ [x] It rejects updating forbidden fields
+
+Purchase (Test\BackendTest\Laravel\Feature\Payments\Purchase)
+ [x] It creates order and requests payment
+ [x] It rejects inactive bundle purchase
+ [x] It calculates price using current rate
+ [x] It includes bonus tokens in order
+ [x] It handles zarinpal failure gracefully
+ [x] It rejects purchase for unauthenticated user
+
+Queue Job Processing (Test\BackendTest\Laravel\Feature\Generation\QueueJobProcessing)
+ [x] It processes image generation job successfully
+ [x] It handles image generation failure and refunds tokens
+ [x] It processes video generation job successfully
+ [x] It processes audio generation job successfully
+ [x] It is idempotent and skips already completed jobs
+ [x] It is idempotent and skips already failed jobs
+ [x] It updates job status to processing when handling
+ [x] It handles retries safely without duplicate operations
+
+Rate (Test\BackendTest\Laravel\Feature\Currency\Rate)
+ [x] It returns current currency rate
+ [x] It returns 503 when no rate available
+ [x] It uses cached rate from service
+ [x] It is public endpoint no auth required
+
+Rate Limiting (Test\BackendTest\Laravel\Feature\Security\RateLimiting)
+ [x] It enforces rate limiting on otp requests
+ [x] It enforces rate limiting per phone number
+ [x] It resets rate limit after time window
+ [x] It enforces rate limiting on generation requests
+
+Report (Test\BackendTest\Laravel\Feature\Reports\Report)
+ [x] It creates report for post
+ [x] It rejects reporting own content
+ [x] It prevents duplicate reports within 24 hours
+ [x] It enforces daily report limit
+ [x] It adds post to moderation queue on threshold
+ [x] It validates report reason
+
+Route Registration (Test\BackendTest\Laravel\Feature\Observability\RouteRegistration)
+ [x] It registers all public routes
+ [x] It registers all protected routes
+ [x] It registers all admin routes
+ [x] It returns 404 for non existent endpoints
+ [x] It returns 401 for unauthenticated protected routes
+ [x] It returns 403 for non admin on admin routes
+ [x] It validates route parameters
+
+Smoke (Test\BackendTest\Laravel\Feature\Observability\Smoke)
+ [x] It health check returns ok
+ [x] It public endpoints are accessible
+ [x] It protected endpoints require authentication
+ [x] It database connection works
+ [x] It api returns consistent response format
+ [x] It handles invalid routes gracefully
+ [x] It handles invalid methods gracefully
+ [x] It returns proper status codes for auth errors
+ [x] It logs errors without exposing sensitive data
+ [x] It validates route parameters
+ [x] It logs validation errors appropriately
+
+Sqlite Transaction Nesting (Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNesting)
+ [x] It handles single transaction
+ [x] It prevents nested transactions in sqlite
+ [x] It tests transaction level tracking
+ [x] It tests transaction rollback in nested scenario
+ [x] It tests transaction rollback propagates to outer
+ [x] It tests begin transaction does not nest with laravel transaction
+ [x] It tests pdo in transaction detection
+
+System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)
+ [x] It returns system health metrics
+ [x] It caches system health
+ [x] It rejects system health access for non admin
+ [x] It tracks failed jobs count
+ [x] It calculates error rate
+ [x] It tracks api latency
+ [x] It tracks storage usage
+ [x] It tracks queue length by type
+
+Tgju Scraper Service (Test\BackendTest\Laravel\Unit\Services\TgjuScraperService)
+ [x] It fetches and stores usd rate from tgju
+ [x] It caches rate after fetching
+ [x] It handles http failure gracefully
+ [x] It handles html parsing failure gracefully
+ [x] It validates rate is reasonable
+ [x] It converts rials to toman correctly
+
+Token Bundle Admin (Test\BackendTest\Laravel\Feature\Admin\TokenBundleAdmin)
+ [x] It creates token bundle as admin
+ [x] It rejects bundle creation for non admin
+ [x] It updates token bundle
+ [x] It deletes token bundle
+ [x] It activates token bundle
+ [x] It deactivates token bundle
+
+Token Bundles (Test\BackendTest\Laravel\Feature\Tokens\TokenBundles)
+ [x] It returns active token bundles with toman prices
+ [x] It returns bundles ordered by display order
+ [x] It uses cached currency rate
+ [x] It falls back to database rate if cache missing
+ [x] It is public endpoint no auth required
+
+Transaction Types (Test\BackendTest\Laravel\Feature\Tokens\TransactionTypes)
+ [x] It creates purchase transaction correctly
+ [x] It creates consume transaction correctly
+ [x] It creates refund transaction correctly
+ [x] It creates bonus transaction correctly
+ [x] It creates adjustment transaction correctly
+ [x] It reconciles balance across all transaction types
+
+Video Audio Generation (Test\BackendTest\Laravel\Feature\Generation\VideoAudioGeneration)
+ [x] It creates video generation job
+ [x] It rejects video generation with wrong model type
+ [x] It creates audio generation job
+ [x] It rejects audio generation with wrong model type
+ [x] It stores video generation parameters
+ [x] It stores audio generation parameters
 
