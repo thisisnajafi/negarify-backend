@@ -51,16 +51,36 @@
         </style>
     </head>
     <body>
-        <h2>Callback (Test\BackendTest\Laravel\Feature\Payments\Callback)</h2>
+        <h2>Comment (Test\BackendTest\Laravel\Feature\Social\Comment)</h2>
         <ul>
-            <li class="success">It processes successful payment callback</li>
-            <li class="success">It is idempotent prevents double credit</li>
-            <li class="success">It handles failed payment status</li>
-            <li class="success">It handles missing authority parameter</li>
-            <li class="success">It handles invalid authority</li>
-            <li class="success">It handles zarinpal verification failure</li>
-            <li class="success">It prevents processing non pending orders</li>
-            <li class="success">It handles mismatched amount</li>
+            <li class="success">It creates comment on post</li>
+            <li class="success">It creates nested reply comment</li>
+            <li class="success">It rejects reply to invalid parent comment</li>
+            <li class="success">It validates comment body</li>
+            <li class="success">It rejects comment for unauthenticated user</li>
+        </ul>
+        <h2>Comment Accuracy (Test\BackendTest\Laravel\Feature\Social\CommentAccuracy)</h2>
+        <ul>
+            <li class="success">It maintains accurate comments count</li>
+            <li class="success">It decrements comments count when deleting comment</li>
+            <li class="success">It decrements comments count when deleting comment with replies</li>
+            <li class="success">It handles nested replies correctly</li>
+        </ul>
+        <h2>Comment Delete (Test\BackendTest\Laravel\Feature\Social\CommentDelete)</h2>
+        <ul>
+            <li class="success">It deletes own comment</li>
+            <li class="success">It deletes comment with replies</li>
+            <li class="success">It rejects deleting other user comment</li>
+            <li class="success">It allows admin to delete any comment</li>
+        </ul>
+        <h2>Like (Test\BackendTest\Laravel\Feature\Social\Like)</h2>
+        <ul>
+            <li class="success">It likes a post</li>
+            <li class="success">It is idempotent prevents duplicate likes</li>
+            <li class="success">It unlikes a post</li>
+            <li class="success">It rejects like for unauthenticated user</li>
+            <li class="success">It allows liking own post</li>
+            <li class="success">It maintains accurate likes count</li>
         </ul>
     </body>
 </html>

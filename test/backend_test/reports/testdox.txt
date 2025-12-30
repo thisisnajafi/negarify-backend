@@ -1,10 +1,27 @@
-Callback (Test\BackendTest\Laravel\Feature\Payments\Callback)
- [x] It processes successful payment callback
- [x] It is idempotent prevents double credit
- [x] It handles failed payment status
- [x] It handles missing authority parameter
- [x] It handles invalid authority
- [x] It handles zarinpal verification failure
- [x] It prevents processing non pending orders
- [x] It handles mismatched amount
+Comment (Test\BackendTest\Laravel\Feature\Social\Comment)
+ [x] It creates comment on post
+ [x] It creates nested reply comment
+ [x] It rejects reply to invalid parent comment
+ [x] It validates comment body
+ [x] It rejects comment for unauthenticated user
+
+Comment Accuracy (Test\BackendTest\Laravel\Feature\Social\CommentAccuracy)
+ [x] It maintains accurate comments count
+ [x] It decrements comments count when deleting comment
+ [x] It decrements comments count when deleting comment with replies
+ [x] It handles nested replies correctly
+
+Comment Delete (Test\BackendTest\Laravel\Feature\Social\CommentDelete)
+ [x] It deletes own comment
+ [x] It deletes comment with replies
+ [x] It rejects deleting other user comment
+ [x] It allows admin to delete any comment
+
+Like (Test\BackendTest\Laravel\Feature\Social\Like)
+ [x] It likes a post
+ [x] It is idempotent prevents duplicate likes
+ [x] It unlikes a post
+ [x] It rejects like for unauthenticated user
+ [x] It allows liking own post
+ [x] It maintains accurate likes count
 
