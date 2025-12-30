@@ -626,27 +626,36 @@
 ## F) Coverage Enablement Tasks
 
 ### F1. Coverage Driver Selection
-- [ ] **F1.1** Evaluate PCOV vs Xdebug:
-  - [ ] **PCOV Pros:**
-    - [ ] Faster execution (native C extension)
-    - [ ] Lower memory usage
-    - [ ] Better performance
-    - [ ] Actively maintained
-  - [ ] **PCOV Cons:**
-    - [ ] Requires PHP 7.1+
-    - [ ] May not be available on all systems
-  - [ ] **Xdebug Pros:**
-    - [ ] More widely available
-    - [ ] Better IDE integration
-    - [ ] More features (debugging)
-  - [ ] **Xdebug Cons:**
-    - [ ] Slower execution
-    - [ ] Higher memory usage
-    - [ ] May impact test performance significantly
+**Status:** ✅ F1 Complete - Driver selected: PCOV (primary), Xdebug (fallback)
 
-- [ ] **F1.2** **SELECTED:** PCOV (for performance)
-  - [ ] Rationale: Test suite performance is critical, PCOV is faster
-  - [ ] Fallback: Xdebug if PCOV unavailable
+- [x] **F1.1** Evaluate PCOV vs Xdebug:
+  - [x] **PCOV Pros:**
+    - [x] Faster execution (native C extension) ✅
+    - [x] Lower memory usage ✅
+    - [x] Better performance ✅
+    - [x] Actively maintained ✅
+  - [x] **PCOV Cons:**
+    - [x] Requires PHP 7.1+ (we have PHP 8.2+ ✅)
+    - [x] May not be available on all systems ⚠️
+  - [x] **Xdebug Pros:**
+    - [x] More widely available ✅
+    - [x] Better IDE integration ✅
+    - [x] More features (debugging) ✅
+  - [x] **Xdebug Cons:**
+    - [x] Slower execution ⚠️
+    - [x] Higher memory usage ⚠️
+    - [x] May impact test performance significantly ⚠️
+
+- [x] **F1.2** Check installed extensions:
+  - [x] PCOV check: `php -r "echo extension_loaded('pcov') ? 'INSTALLED' : 'NOT INSTALLED';"` → **NOT INSTALLED** ✅
+  - [x] Xdebug check: `php -r "echo extension_loaded('xdebug') ? 'INSTALLED' : 'NOT INSTALLED';"` → **NOT INSTALLED** ✅
+
+- [x] **F1.3** **SELECTED:** PCOV (for performance)
+  - [x] Rationale: Test suite performance is critical, PCOV is faster ✅
+  - [x] Fallback: Xdebug if PCOV unavailable ✅
+  - [x] Current status: Neither extension installed - PCOV installation required ✅
+  - [x] Decision: Attempt to install PCOV first, fallback to Xdebug if needed ✅
+  - [x] Created documentation: `PHASE_F1_COVERAGE_DRIVER_SELECTION.md` ✅
 
 ### F2. Installation Steps
 - [ ] **F2.1** Install PCOV extension:
