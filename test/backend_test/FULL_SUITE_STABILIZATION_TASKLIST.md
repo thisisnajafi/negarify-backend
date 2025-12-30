@@ -412,6 +412,26 @@
 
 ## D) Test Impact Matrix
 
+**Status:** ✅ D Complete - Test Impact Matrix created and verified
+
+- [x] **D1** Scan all backend_test files and identify DB trait strategy:
+  - [x] All 48 test files scanned ✅
+  - [x] All files use `LazilyRefreshDatabase` (inherited from BackendTestCase) ✅
+  - [x] Zero trait overrides found ✅
+
+- [x] **D2** Verify "9 files needing refactor" claim:
+  - [x] Verified all 9 files previously had `DatabaseMigrations` override ✅
+  - [x] Confirmed all 9 overrides removed in Phase 2 (Task C2.1) ✅
+  - [x] All files now inherit `LazilyRefreshDatabase` ✅
+
+- [x] **D3** Create/update matrix document:
+  - [x] Created `TEST_IMPACT_MATRIX.md` with current state ✅
+  - [x] All 48 test files documented ✅
+  - [x] Counts verified: 48 files, 0 overrides, 100% inheritance ✅
+  - [x] Historical context documented (9 files that had overrides) ✅
+
+**Matrix Document:** `test/backend_test/TEST_IMPACT_MATRIX.md`
+
 | Test Suite Name | Current DB Strategy | Needs Refactor? | Reason | New Strategy |
 |----------------|---------------------|-----------------|--------|--------------|
 | **Auth/OTP** | `RefreshDatabase` (inherited) | No | No manual transactions | `LazilyRefreshDatabase` (inherited) |
