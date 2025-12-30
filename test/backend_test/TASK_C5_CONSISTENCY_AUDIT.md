@@ -90,7 +90,7 @@ grep -r "use.*RefreshDatabase" test/backend_test/laravel
 - ✅ Uses `LazilyRefreshDatabase` trait
 - ✅ Uses `LogsTestExecution` trait
 - ✅ Overrides `beginDatabaseTransaction()` for SQLite compatibility
-- ✅ Calls `Queue::fake()` in `setUp()` (line 61)
+- ✅ Calls `Queue::fake()` in `setUp()` (line 140)
 - ✅ Calls `Cache::flush()` in `setUp()` (line 128)
 - ✅ No orphaned configurations
 
@@ -254,7 +254,7 @@ find test/backend_test/laravel -name "*Test.php" | wc -l
 
 **Location:** `test/backend_test/laravel/Helpers/BackendTestCase.php`
 
-**Line 61:**
+**Line 140:**
 ```php
 Queue::fake();
 ```

@@ -383,7 +383,7 @@
   - [x] Tasklist status matches implementation ✅
   - [x] Phase 2 summary accurate ✅
 
-- [x] **C5.4** Verify queue behavior (Queue::fake() in BackendTestCase::setUp() line 61) ✅
+- [x] **C5.4** Verify queue behavior (Queue::fake() in BackendTestCase::setUp() line 140) ✅
 - [x] **C5.5** Verify database behavior (LazilyRefreshDatabase working correctly) ✅
 
 ### C6. Database Connection Lifecycle Changes
