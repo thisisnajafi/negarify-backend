@@ -17,6 +17,7 @@
 - ✅ Task C1: Finalized base test case and shared test infrastructure - BackendTestCase validated, all 318 tests passing
 - ✅ Task C2: Normalized shared test helpers and configuration - all helpers consistent, all 318 tests passing
 - ✅ Task C3: Finalized PHPUnit logical suites and validated suite boundaries - all 11 suites + full suite validated, all 318 tests passing
+- ✅ Task C4: Verified and finalized test environment variables - all 20 env vars validated, all 318 tests passing
 
 **Key Changes:**
 - BackendTestCase now uses LazilyRefreshDatabase instead of RefreshDatabase
@@ -347,11 +348,17 @@
   - [x] Suite boundaries match directories exactly
 
 ### C4. Environment Variable Changes
-- [ ] **C4.1** Verify `phpunit.xml` environment settings:
-  - [ ] `DB_CONNECTION=sqlite` (keep as-is)
-  - [ ] `DB_DATABASE=:memory:` (keep as-is)
-  - [ ] `QUEUE_CONNECTION=sync` (keep as-is)
-  - [ ] No changes needed for transaction fix
+**Status:** ✅ C4 Complete - All environment variables validated and finalized
+
+- [x] **C4.1** Verify `phpunit.xml` environment settings:
+  - [x] `DB_CONNECTION=sqlite` (keep as-is) ✅
+  - [x] `DB_DATABASE=:memory:` (keep as-is) ✅
+  - [x] `QUEUE_CONNECTION=sync` (keep as-is) ✅
+  - [x] All 20 env vars validated and correct ✅
+  - [x] No missing critical env vars ✅
+  - [x] No unused env vars ✅
+  - [x] All configuration files verified ✅
+  - [x] Full BackendTest suite passes with all env vars ✅
 
 ### C5. Queue/Job Execution Adjustments
 - [ ] **C5.1** Verify queue behavior:
