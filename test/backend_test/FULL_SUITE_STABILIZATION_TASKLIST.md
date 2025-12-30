@@ -54,28 +54,28 @@
   - [x] Other tests (5 files) - All use `LazilyRefreshDatabase`
 
 ### A2. Manual Transaction Identification
-- [ ] **A2.1** Document all `DB::beginTransaction()` calls in controllers:
-  - [ ] `app/Http/Controllers/Api/V1/OrderController.php` (2 calls: lines 60, 266)
-  - [ ] `app/Http/Controllers/Api/V1/GalleryPostController.php` (2 calls: lines 59, 154)
-  - [ ] `app/Http/Controllers/Api/V1/CommentController.php` (2 calls: lines 43, 145)
-  - [ ] `app/Http/Controllers/Api/V1/LikeController.php` (2 calls: lines 26, 121)
-  - [ ] `app/Http/Controllers/Api/V1/GenerationController.php` (3 calls: lines 70, 154, 211)
-  - [ ] `app/Http/Controllers/Api/V1/GenerationJobController.php` (2 calls: lines 113, 179)
-  - [ ] `app/Http/Controllers/Api/V1/AdminGalleryController.php` (4 calls: lines 46, 112, 269, 331)
-  - [ ] `app/Http/Controllers/Api/V1/ReportController.php` (1 call: line 61)
-  - [ ] Total: 18 manual transaction starts in controllers
+- [x] **A2.1** Document all `DB::beginTransaction()` calls in controllers:
+  - [x] `app/Http/Controllers/Api/V1/OrderController.php` (2 calls: lines 60, 266) - Actually uses conditional `DB::transaction()`
+  - [x] `app/Http/Controllers/Api/V1/GalleryPostController.php` (2 calls: lines 59, 154) - Uses `DB::beginTransaction()` unconditionally
+  - [x] `app/Http/Controllers/Api/V1/CommentController.php` (2 calls: lines 43, 145) - Actually uses conditional `DB::transaction()`
+  - [x] `app/Http/Controllers/Api/V1/LikeController.php` (2 calls: lines 26, 121) - Actually uses conditional `DB::transaction()`
+  - [x] `app/Http/Controllers/Api/V1/GenerationController.php` (3 calls: lines 70, 154, 211) - Uses `DB::beginTransaction()` unconditionally
+  - [x] `app/Http/Controllers/Api/V1/GenerationJobController.php` (2 calls: lines 113, 179) - Uses `DB::beginTransaction()` unconditionally
+  - [x] `app/Http/Controllers/Api/V1/AdminGalleryController.php` (4 calls: lines 46, 112, 269, 331) - Uses `DB::beginTransaction()` unconditionally
+  - [x] `app/Http/Controllers/Api/V1/ReportController.php` (1 call: line 61) - Actually uses conditional `DB::transaction()`
+  - [x] Total: 18 manual transaction operations in controllers (10 `DB::beginTransaction()`, 8 conditional `DB::transaction()`)
 
-- [ ] **A2.2** Document all `DB::transaction()` closures in services/jobs:
-  - [ ] `app/Services/ModerationService.php` (3 closures: lines 90, 116, 167)
-  - [ ] `app/Jobs/GenerateImageJob.php` (2 closures: lines 264, 289)
-  - [ ] `app/Jobs/GenerateVideoJob.php` (2 closures: lines 143, 157)
-  - [ ] `app/Jobs/GenerateAudioJob.php` (2 closures: lines 138, 152)
-  - [ ] Total: 9 transaction closures in services/jobs
+- [x] **A2.2** Document all `DB::transaction()` closures in services/jobs:
+  - [x] `app/Services/ModerationService.php` (3 closures: lines 90, 116, 167) - Uses conditional `DB::transaction()` (checks `DB::transactionLevel() > 0`)
+  - [x] `app/Jobs/GenerateImageJob.php` (2 closures: lines 264, 289) - Uses `DB::transaction()` unconditionally
+  - [x] `app/Jobs/GenerateVideoJob.php` (2 closures: lines 143, 157) - Uses `DB::transaction()` unconditionally
+  - [x] `app/Jobs/GenerateAudioJob.php` (2 closures: lines 138, 152) - Uses `DB::transaction()` unconditionally
+  - [x] Total: 9 transaction closures in services/jobs (3 conditional, 6 unconditional)
 
-- [ ] **A2.3** Create mapping document: `test/backend_test/MANUAL_TRANSACTIONS_MAP.md`
-  - [ ] List each controller/job/service with transaction usage
-  - [ ] Note which tests exercise each transaction
-  - [ ] Identify potential nested transaction scenarios
+- [x] **A2.3** Create mapping document: `test/backend_test/MANUAL_TRANSACTIONS_MAP.md`
+  - [x] List each controller/job/service with transaction usage
+  - [x] Note which tests exercise each transaction
+  - [x] Identify potential nested transaction scenarios
 
 ### A3. Queue Job Transaction Analysis
 - [ ] **A3.1** Identify which tests execute jobs synchronously vs asynchronously:
