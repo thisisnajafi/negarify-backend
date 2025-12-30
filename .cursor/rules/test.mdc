@@ -1,0 +1,274 @@
+---
+alwaysApply: true
+---
+
+# Cursor Project Rules — Backend Testing & Stabilization
+
+## 1. Execution Workflow
+
+### 1.1 Task-by-Task Execution
+- **MUST** execute tasks sequentially in the order specified in task lists
+- **MUST NOT** skip tasks or defer them with "later" or "TODO" comments
+- **MUST NOT** combine multiple tasks into a single implementation step
+- **MUST** mark each task as complete only after verification passes
+- **MUST** document completion with evidence (test output, logs, or code references)
+
+### 1.2 Test-Driven Workflow
+- **MUST** follow this cycle for every code change:
+  1. Run relevant test suite: `php artisan test --testsuite=<suite-name>`
+  2. Identify failures/errors
+  3. Fix code to resolve failures
+  4. Rerun the same test suite
+  5. Verify zero failures before proceeding
+- **MUST NOT** proceed to next task if current task's tests fail
+- **MUST** run full suite (`--testsuite=BackendTest`) after completing a phase or group of related tasks
+
+### 1.3 Non-Deferral Policy
+- **FORBIDDEN** to use phrases: "later", "TODO", "known issue", "will fix later", "out of scope"
+- **FORBIDDEN** to leave failing tests with comments explaining why they're skipped
+- **MUST** fix all test failures before marking task complete
+- **MUST** resolve all errors, warnings, and risky tests before proceeding
+- **MUST** document any legitimate exceptions in task list with explicit justification
+
+## 2. Definition of DONE
+
+### 2.1 Test Execution Requirements
+- **MUST** achieve zero failures: `Tests: XXX passed`
+- **MUST** achieve zero errors: No `ERROR` in output
+- **MUST** achieve zero risky tests: No `RISKY` warnings
+- **MUST** verify full suite passes: `php artisan test --testsuite=BackendTest`
+- **MUST** include test output in response as proof (terminal output or log file reference)
+
+### 2.2 Code Quality Requirements
+- **MUST** have zero linter errors: Run `read_lints` and fix all issues
+- **MUST** follow Laravel conventions and PSR-12 coding standards
+- **MUST** use `LazilyRefreshDatabase` trait (inherited from `BackendTestCase`)
+- **MUST NOT** override database traits in individual test files (no `DatabaseMigrations` or `DatabaseTransactions`)
+
+### 2.3 Evidence Requirements
+- **MUST** include test execution output showing pass count
+- **MUST** include assertion count: `XXX assertions`
+- **MUST** reference specific code changes using code references format: ````startLine:endLine:filepath`
+- **MUST** show before/after state when fixing issues
+
+## 3. Database & Transaction Handling
+
+### 3.1 Test Database Strategy
+- **MUST** use `LazilyRefreshDatabase` (inherited from `BackendTestCase`)
+- **MUST NOT** override database traits in test classes
+- **MUST NOT** use `DatabaseMigrations` or `DatabaseTransactions` in test files
+- **MUST** ensure test isolation (no shared state between tests)
+
+### 3.2 Transaction Handling in Code
+- **MUST** handle nested transactions correctly:
+  - Check `DB::transactionLevel() > 0` before starting new transactions
+  - Use conditional `DB::transaction()` when already in transaction context
+- **MUST** ensure manual transactions in controllers/jobs work with `LazilyRefreshDatabase`
+- **MUST** verify transaction rollback behavior in tests
+
+### 3.3 SQLite Limitations
+- **MUST** account for SQLite's lack of nested transaction support
+- **MUST** use `beginDatabaseTransaction()` override in `BackendTestCase` to prevent nesting errors
+- **MUST** verify transaction level before starting new transactions
+
+## 4. Test Determinism Requirements
+
+### 4.1 Deterministic Test Execution
+- **MUST** use `Carbon::setTestNow()` for time-dependent tests
+- **MUST** use `Queue::fake()` for queue operations (inherited from `BackendTestCase`)
+- **MUST** reset state between tests (handled by `LazilyRefreshDatabase`)
+- **MUST** verify tests pass consistently across multiple runs
+
+### 4.2 Test Isolation
+- **MUST** ensure no shared state between tests
+- **MUST** use factories for test data creation
+- **MUST** clean up test data (handled by database refresh)
+- **MUST** verify no test pollution (run full suite multiple times with identical results)
+
+### 4.3 Warning and Risky Test Handling
+- **MUST** fix all risky tests (tests without assertions)
+- **MUST** fix all warnings (deprecation, etc.)
+- **MUST** use `allowErrorLogs()` in `BackendTestCase` only for expected errors
+- **MUST** document why specific errors are allowed
+
+## 5. Test Execution Commands
+
+### 5.1 Standard Test Commands
+- Full suite: `php artisan test --testsuite=BackendTest`
+- Individual suite: `php artisan test --testsuite=BackendTest-<SuiteName>`
+- Single file: `php artisan test test/backend_test/laravel/Feature/<Category>/<TestFile>.php`
+- With coverage: `php artisan test --testsuite=BackendTest --coverage`
+- With testdox: `php artisan test --testsuite=BackendTest --testdox`
+
+### 5.2 Verification Commands
+- Check linter: `read_lints` tool on modified files
+- Verify git status: `git status` (must be clean or only report files)
+- Verify test logs: Check `test/backend_test/logs/` directory
+
+## 6. Git Commit & Push Rules
+
+### 6.1 Commit Requirements
+- **MUST** commit after completing each phase or logical group of tasks
+- **MUST** use descriptive commit messages: `Phase X Task Y: <description>`
+- **MUST** include test execution proof in commit message or as comment
+- **MUST NOT** commit with failing tests
+- **MUST** verify `git status` is clean (or only contains report/log files) before committing
+
+### 6.2 Push Requirements
+- **MUST** push to `origin/BackEnd` branch after each phase completion
+- **MUST** verify remote and local are in sync: `git status` shows "Your branch is up to date"
+- **MUST NOT** force push unless explicitly requested and justified
+- **MUST** include commit hash in task completion documentation
+
+### 6.3 Branch Management
+- **MUST** work on `BackEnd` branch
+- **MUST** create backup branch before major changes: `git branch backup-<description>`
+- **MUST** document rollback procedure if changes are risky
+
+## 7. Documentation & Tasklist Synchronization
+
+### 7.1 Task List Updates
+- **MUST** update `test/backend_test/FULL_SUITE_STABILIZATION_TASKLIST.md` as tasks complete
+- **MUST** mark tasks with `[x]` when complete
+- **MUST** update status sections (Phase summaries, commit lists)
+- **MUST** document any deviations from plan with justification
+
+### 7.2 Documentation Updates
+- **MUST** update `test/backend_test/todo.md` when test implementation completes
+- **MUST** update verification reports when full suite passes
+- **MUST** document all findings in appropriate markdown files
+- **MUST** remove "Known Issues" sections when issues are resolved
+
+### 7.3 Code Documentation
+- **MUST** add comments explaining non-obvious transaction handling
+- **MUST** document why specific database traits are used
+- **MUST** explain any workarounds or special handling
+
+## 8. Error Detection & Logging
+
+### 8.1 Error Log Detection
+- **MUST** use `BackendTestCase` error detection (automatic via `checkForErrors()`)
+- **MUST** fix all error-level logs unless explicitly allowed via `allowErrorLogs()`
+- **MUST** document why specific errors are allowed
+- **MUST** verify no unexpected errors in test logs
+
+### 8.2 Failed Job Detection
+- **MUST** use `BackendTestCase` failed job detection (automatic via `checkForFailedJobs()`)
+- **MUST** ensure no failed jobs remain after test execution
+- **MUST** use `assertNoFailedJobs()` when testing failure scenarios
+
+### 8.3 Log File Management
+- **MUST** generate per-test-file logs in `test/backend_test/logs/`
+- **MUST** preserve logs for debugging failed tests
+- **MUST** reference log files when reporting test failures
+
+## 9. Response Format Requirements
+
+### 9.1 Evidence in Responses
+- **MUST** include test execution output showing:
+  - Test count: `Tests: XXX passed`
+  - Assertion count: `XXX assertions`
+  - Zero failures/errors
+- **MUST** use code references for existing code: ````startLine:endLine:filepath`
+- **MUST** use markdown code blocks for new/proposed code: ` ```language`
+- **MUST** show before/after state when making changes
+
+### 9.2 Task Completion Reporting
+- **MUST** explicitly state: "Task X.Y completed"
+- **MUST** include verification proof (test output, log reference, or code reference)
+- **MUST** list next task(s) to execute
+- **MUST** update task list checkboxes in response
+
+### 9.3 Error Reporting
+- **MUST** include full error output when tests fail
+- **MUST** include captured logs from `BackendTestCase`
+- **MUST** include last HTTP response when API tests fail
+- **MUST** propose fix before implementing
+
+## 10. Allowed Stop Conditions
+
+### 10.1 Valid Stop Conditions
+- **ALLOWED** to stop when:
+  - All tests pass with zero failures
+  - All tasks in current phase are complete
+  - Full suite verification passes
+  - Git commit and push completed
+  - Documentation updated
+
+### 10.2 Invalid Stop Conditions
+- **FORBIDDEN** to stop when:
+  - Tests are failing (must fix first)
+  - Tasks are incomplete (must complete or explicitly defer with justification)
+  - Linter errors exist (must fix first)
+  - Git has uncommitted changes (must commit or document why not)
+
+### 10.3 Explicit Deferral (Rare Exception)
+- **ONLY ALLOWED** if:
+  - Task is explicitly marked as "out of scope" in task list
+  - Task requires external dependency that cannot be resolved
+  - Task is blocked by infrastructure issue
+- **MUST** document deferral with:
+  - Explicit justification
+  - Blocking issue description
+  - Alternative approach (if any)
+  - Updated task list with deferral note
+
+## 11. Test Suite Structure
+
+### 11.1 Test Organization
+- **MUST** place tests in `test/backend_test/laravel/Feature/<Category>/`
+- **MUST** extend `BackendTestCase` (not `TestCase` directly)
+- **MUST** use logical test suites defined in `phpunit.xml`
+- **MUST** follow naming convention: `<Feature>Test.php`
+
+### 11.2 Test File Requirements
+- **MUST** use `LazilyRefreshDatabase` (inherited, not explicit)
+- **MUST NOT** override database traits
+- **MUST** use `Queue::fake()` for queue operations (inherited from `BackendTestCase`)
+- **MUST** use factories for test data
+- **MUST** use `makeAuthenticatedRequest()` helper for authenticated requests
+
+## 12. Code Quality Standards
+
+### 12.1 Laravel Conventions
+- **MUST** follow Laravel naming conventions
+- **MUST** use Eloquent models and relationships correctly
+- **MUST** use Laravel facades appropriately
+- **MUST** follow PSR-12 coding standards
+
+### 12.2 Test Code Quality
+- **MUST** write clear, descriptive test method names
+- **MUST** use Arrange-Act-Assert pattern
+- **MUST** avoid test interdependencies
+- **MUST** use meaningful assertions with descriptive messages
+
+### 12.3 Service Layer Usage
+- **MUST** test services through controllers (integration tests)
+- **MUST** mock external services (Segmind, Zarinpal, Melipayamak)
+- **MUST** verify service behavior through HTTP responses
+- **MUST** test error handling and edge cases
+
+## 13. Verification Checklist
+
+Before marking any task or phase as complete, **MUST** verify:
+
+- [ ] All relevant tests pass: `php artisan test --testsuite=<suite>`
+- [ ] Zero failures, zero errors, zero risky tests
+- [ ] Full suite passes: `php artisan test --testsuite=BackendTest`
+- [ ] Linter shows no errors: `read_lints` on modified files
+- [ ] Test output included in response as proof
+- [ ] Task list updated with `[x]` checkmarks
+- [ ] Code changes documented with references
+- [ ] Git status is clean (or only report files)
+- [ ] Changes committed with descriptive message
+- [ ] Changes pushed to `origin/BackEnd`
+- [ ] Documentation updated (if applicable)
+
+## 14. Enforcement
+
+These rules are **MANDATORY** and **NON-NEGOTIABLE**. Any deviation must be:
+1. Explicitly justified in the response
+2. Documented in task list with reason
+3. Approved as exception (rare cases only)
+
+**Default behavior**: Enforce all rules automatically. User only needs to provide task description; AI enforces workflow, verification, and quality gates.
