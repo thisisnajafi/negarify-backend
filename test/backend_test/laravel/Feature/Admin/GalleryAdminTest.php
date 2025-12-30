@@ -225,6 +225,99 @@ class GalleryAdminTest extends BackendTestCase
     }
 
     /** @test */
+    public function it_unfeatures_post(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin'])->refresh();
+        Cache::flush();
+        
+        $provider = Provider::factory()->create();
+        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        
+        $postOwner = User::factory()->create();
+        $job = GenerationJob::create([
+            'user_id' => $postOwner->id,
+            'provider_id' => $provider->id,
+            'model_id' => $model->id,
+            'job_type' => 'image',
+            'prompt' => 'Test prompt',
+            'params_json' => json_encode([]),
+            'status' => 'completed',
+            'result_url' => 'https://example.com/image.jpg',
+        ]);
+        
+        $post = GalleryPost::create([
+            'user_id' => $postOwner->id,
+            'generation_job_id' => $job->id,
+            'visibility' => 'public',
+            'is_featured' => true,
+        ]);
+        
+        $response = $this->actingAs($admin)->makeRequest('POST', "/api/v1/admin/gallery/{$post->id}/unfeature");
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'message' => 'Post unfeatured successfully',
+                'data' => [
+                    'is_featured' => false,
+                ],
+            ]);
+
+        $post->refresh();
+        $this->assertFalse($post->is_featured);
+    }
+
+    /** @test */
+    public function it_performs_bulk_uncuration(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin'])->refresh();
+        Cache::flush();
+        
+        $provider = Provider::factory()->create();
+        $model = AiModel::factory()->create(['provider_id' => $provider->id]);
+        
+        $postIds = [];
+        for ($i = 0; $i < 3; $i++) {
+            $postOwner = User::factory()->create();
+            $job = GenerationJob::create([
+                'user_id' => $postOwner->id,
+                'provider_id' => $provider->id,
+                'model_id' => $model->id,
+                'job_type' => 'image',
+                'prompt' => 'Test prompt',
+                'params_json' => json_encode([]),
+                'status' => 'completed',
+                'result_url' => 'https://example.com/image.jpg',
+            ]);
+            
+            $post = GalleryPost::create([
+                'user_id' => $postOwner->id,
+                'generation_job_id' => $job->id,
+                'visibility' => 'public',
+                'is_curated' => true,
+                'curated_at' => now(),
+            ]);
+            $postIds[] = $post->id;
+        }
+        
+        $response = $this->actingAs($admin)->makeRequest('POST', '/api/v1/admin/gallery/bulk-uncurate', [
+            'post_ids' => $postIds,
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+            ]);
+
+        // Verify all posts uncurated
+        foreach ($postIds as $postId) {
+            $post = GalleryPost::find($postId);
+            $this->assertFalse($post->is_curated);
+            $this->assertNull($post->curated_at);
+        }
+    }
+
+    /** @test */
     public function it_lists_curated_posts(): void
     {
         $admin = User::factory()->create(['role' => 'admin'])->refresh();

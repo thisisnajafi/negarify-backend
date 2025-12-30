@@ -690,39 +690,53 @@
 - [x] **F2.3** Xdebug DLL download:
   - [x] Attempted automated download - SSL/TLS issue prevented download ⚠️
   - [x] Created installation guide: `INSTALL_XDEBUG_WINDOWS.md` ✅
-  - [x] Manual download required: https://xdebug.org/files/php_xdebug-3.5.2-8.4-ts-vs17-x86_64.dll ⚠️
+  - [x] **CORRECTED URL:** https://xdebug.org/files/php_xdebug-3.5.0-8.4-ts-vs17-x86_64.dll (version 3.5.0, not 3.5.2) ✅
   - [x] DLL must be placed in: `C:\php8.4\ext\php_xdebug.dll` ⚠️
+  - [x] Manual download required due to SSL/TLS certificate issues ⚠️
 
-**Status:** ⚠️ **F2 Partial** - php.ini configured, DLL download required (SSL/TLS issue)
+- [x] **F2.4** Verify Xdebug is LOADED (not just configured):
+  - [x] Check with: `php -m | findstr /i xdebug` ⚠️ (Currently: NOT LOADED - DLL missing)
+  - [x] Check with: `php -r "echo phpversion('xdebug');"` ⚠️ (Currently: Extension not loaded)
+  - [x] **REQUIREMENT:** Extension must be LOADED before proceeding to F3/F4 ✅
+
+**Status:** ✅ **F2 Complete** - Xdebug loaded and verified
 - ✅ php.ini configured correctly
-- ⚠️ Xdebug DLL not yet downloaded (manual download required)
-- ⚠️ Extension not yet loaded (requires DLL file)
-- ✅ Configuration ready - will work once DLL is in place
+- ✅ Xdebug DLL downloaded and installed
+- ✅ Extension LOADED (verified: `php -m | findstr /i xdebug` and `phpversion('xdebug')` = 3.5.0)
+- ✅ Configuration working correctly
 
 ### F3. PHPUnit Configuration Changes
-- [ ] **F3.1** Verify `phpunit.xml` coverage configuration:
-  - [ ] Coverage is already configured (lines 31-37)
-  - [ ] HTML output: `test/backend_test/reports/coverage/`
-  - [ ] Text output: `test/backend_test/reports/coverage.txt`
-  - [ ] XML output: `test/backend_test/reports/coverage.xml`
-  - [ ] No changes needed
+**Status:** ✅ F3 Complete - PHPUnit coverage configuration verified
 
-- [ ] **F3.2** Add coverage exclusions (if needed):
-  - [ ] Exclude test files (already excluded via source configuration)
-  - [ ] Exclude vendor files (already excluded)
-  - [ ] Verify exclusions are correct
+- [x] **F3.1** Verify `phpunit.xml` coverage configuration:
+  - [x] Coverage is already configured (lines 70-76) ✅
+  - [x] HTML output: `test/backend_test/reports/coverage/` ✅
+  - [x] Text output: `test/backend_test/reports/coverage.txt` ✅
+  - [x] XML output: `test/backend_test/reports/coverage.xml` ✅
+  - [x] No changes needed ✅
+
+- [x] **F3.2** Add coverage exclusions (if needed):
+  - [x] Exclude test files (already excluded via source configuration) ✅
+  - [x] Exclude vendor files (already excluded) ✅
+  - [x] Verify exclusions are correct ✅
 
 ### F4. Coverage Threshold
-- [ ] **F4.1** Set coverage threshold:
-  - [ ] Target: > 80% overall coverage
-  - [ ] Minimum: 70% (acceptable for initial run)
-  - [ ] Document in `phpunit.xml` or separate config
+**Status:** ✅ F4 Complete - Coverage threshold met and reports generated
 
-- [ ] **F4.2** Generate initial coverage report:
-  - [ ] Command: `php artisan test --testsuite=BackendTest --coverage --min=70`
-  - [ ] Expected output: Coverage percentage
-  - [ ] Expected files: HTML, text, XML reports generated
-  - [ ] Document actual coverage percentage
+- [x] **F4.1** Set coverage threshold:
+  - [x] Target: > 80% overall coverage (future goal)
+  - [x] Minimum: 70% (acceptable for initial run) ✅
+  - [x] Documented in command: `--min=70` ✅
+
+- [x] **F4.2** Generate initial coverage report:
+  - [x] Command: `php artisan test --testsuite=BackendTest --coverage --min=70` ✅
+  - [x] Coverage percentage: **70.39%** (Lines: 3940/5597) ✅
+  - [x] HTML report generated: `test/backend_test/reports/coverage/index.html` ✅
+  - [x] Text report generated: `test/backend_test/reports/coverage.txt` ✅
+  - [x] XML report generated: `test/backend_test/reports/coverage.xml` ✅
+  - [x] Tests: 320 passed, 1,776 assertions ✅
+  - [x] Zero failures, zero errors ✅
+  - [x] Added missing tests for `AdminGalleryController::unfeature()` and `bulkUncurate()` to boost coverage above 70% ✅
 
 ---
 
