@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Services\CurrencyRateService;
 use App\Services\ZarinpalService;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Test\BackendTest\Laravel\Helpers\BackendTestCase;
 
 class PurchaseTest extends BackendTestCase
@@ -21,35 +20,49 @@ class PurchaseTest extends BackendTestCase
         // Set Zarinpal config for tests
         config(['services.zarinpal.merchant_id' => 'test-merchant-id']);
         config(['services.zarinpal.sandbox' => true]);
-        
-        // Create currency rate
+    }
+    
+    /**
+     * Generate unique Zarinpal authority for tests (prevents unique constraint violations)
+     */
+    protected function generateUniqueAuthority(): string
+    {
+        // Generate unique 36-character authority: A + 35 chars (Zarinpal format)
+        return 'A' . str_pad(substr(str_replace(['-', '.'], '', uniqid('', true)), 0, 35), 35, '0', STR_PAD_LEFT);
+    }
+    
+    /**
+     * Create currency rate for tests
+     */
+    protected function createCurrencyRate(): void
+    {
         CurrencyRate::create([
             'currency_from' => 'USD',
             'currency_to' => 'IRR',
-            'rate' => 500000,
+            'rate' => 500000, // Rials
             'source' => 'tgju',
             'fetched_at' => now(),
         ]);
-        
-        app(CurrencyRateService::class)->cacheRate(50000);
     }
     
     /**
      * Set up successful HTTP fake for Zarinpal (can be overridden in tests)
+     * Generates unique authority per call to avoid unique constraint violations
      */
     protected function setUpZarinpalFake(): void
     {
+        $authority = $this->generateUniqueAuthority();
         Http::fake([
             'sandbox.zarinpal.com/*' => Http::response([
                 'data' => [
                     'code' => 100,
-                    'authority' => 'A00000000000000000000000000000000000',
+                    'authority' => $authority,
                 ],
             ], 200),
             'api.zarinpal.com/*' => Http::response([
                 'data' => [
                     'code' => 100,
-                    'authority' => 'A00000000000000000000000000000000000',
+                    'authority' => $authority,
                 ],
             ], 200),
         ]);
@@ -58,6 +71,7 @@ class PurchaseTest extends BackendTestCase
     /** @test */
     public function it_creates_order_and_requests_payment(): void
     {
+        $this->createCurrencyRate();
         $this->setUpZarinpalFake();
         
         $user = User::factory()->create();
@@ -177,6 +191,7 @@ class PurchaseTest extends BackendTestCase
     /** @test */
     public function it_includes_bonus_tokens_in_order(): void
     {
+        $this->createCurrencyRate();
         $this->setUpZarinpalFake();
         
         $user = User::factory()->create();
@@ -206,7 +221,7 @@ class PurchaseTest extends BackendTestCase
     public function it_handles_zarinpal_failure_gracefully(): void
     {
         // Allow expected error logs before making request
-        $this->allowErrorLogs(['Zarinpal payment request error', 'Zarinpal payment request failed']);
+        $this->allowErrorLogs(['Zarinpal payment request error', 'Zarinpal payment request failed', 'Currency rate unavailable, using emergency fallback']);
         
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
