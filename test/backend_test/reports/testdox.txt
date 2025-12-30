@@ -354,6 +354,15 @@ Smoke (Test\BackendTest\Laravel\Feature\Observability\Smoke)
  [x] It validates route parameters
  [x] It logs validation errors appropriately
 
+Sqlite Transaction Nesting (Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNesting)
+ [x] It handles single transaction
+ [x] It prevents nested transactions in sqlite
+ [x] It tests transaction level tracking
+ [x] It tests transaction rollback in nested scenario
+ [x] It tests transaction rollback propagates to outer
+ [x] It tests begin transaction does not nest with laravel transaction
+ [x] It tests pdo in transaction detection
+
 System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)
  [x] It returns system health metrics
  [x] It caches system health

@@ -448,6 +448,16 @@
             <li class="success">It validates route parameters</li>
             <li class="success">It logs validation errors appropriately</li>
         </ul>
+        <h2>Sqlite Transaction Nesting (Test\BackendTest\Laravel\Feature\Database\SqliteTransactionNesting)</h2>
+        <ul>
+            <li class="success">It handles single transaction</li>
+            <li class="success">It prevents nested transactions in sqlite</li>
+            <li class="success">It tests transaction level tracking</li>
+            <li class="success">It tests transaction rollback in nested scenario</li>
+            <li class="success">It tests transaction rollback propagates to outer</li>
+            <li class="success">It tests begin transaction does not nest with laravel transaction</li>
+            <li class="success">It tests pdo in transaction detection</li>
+        </ul>
         <h2>System Health (Test\BackendTest\Laravel\Feature\Admin\SystemHealth)</h2>
         <ul>
             <li class="success">It returns system health metrics</li>

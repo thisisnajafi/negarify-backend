@@ -93,15 +93,15 @@
   - [x] Document any `lockForUpdate()` usage that conflicts with transactions - **✅ SAFE:** All `lockForUpdate()` calls (10 locations) are in safe contexts, either within transactions or SQLite-safe
 
 ### A4. PHP 8.4+ SQLite Limitations
-- [ ] **A4.1** Research PHP 8.4 SQLite transaction behavior changes:
-  - [ ] Document `transaction_mode` configuration option
-  - [ ] Identify if `DEFERRED` vs `IMMEDIATE` vs `EXCLUSIVE` modes affect behavior
-  - [ ] Check Laravel framework version compatibility with PHP 8.4
+- [x] **A4.1** Research PHP 8.4 SQLite transaction behavior changes:
+  - [x] Document `transaction_mode` configuration option - **DEFERRED (default, optimal)**
+  - [x] Identify if `DEFERRED` vs `IMMEDIATE` vs `EXCLUSIVE` modes affect behavior - **DEFERRED is optimal, no changes needed**
+  - [x] Check Laravel framework version compatibility with PHP 8.4 - **✅ Laravel 12.0 fully compatible with PHP 8.4.14**
 
-- [ ] **A4.2** Test SQLite transaction nesting limits:
-  - [ ] Create isolated test to reproduce nested transaction error
-  - [ ] Document maximum nesting depth (if any)
-  - [ ] Test transaction rollback behavior in nested scenarios
+- [x] **A4.2** Test SQLite transaction nesting limits:
+  - [x] Create isolated test to reproduce nested transaction error - **Created `SqliteTransactionNestingTest.php` with 7 comprehensive tests**
+  - [x] Document maximum nesting depth (if any) - **No hard limit; Laravel uses savepoints (unlimited), application uses max 1-2 levels**
+  - [x] Test transaction rollback behavior in nested scenarios - **✅ All rollback scenarios tested and working correctly**
 
 ### A5. Test Execution Order Analysis
 - [ ] **A5.1** Identify test execution order dependencies:
