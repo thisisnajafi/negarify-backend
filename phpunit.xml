@@ -17,6 +17,45 @@
         <testsuite name="BackendTest">
             <directory>test/backend_test/laravel</directory>
         </testsuite>
+        <!-- Logical test suites for BackendTest -->
+        <testsuite name="BackendTest-Auth">
+            <directory>test/backend_test/laravel/Feature/Auth</directory>
+        </testsuite>
+        <testsuite name="BackendTest-Payments">
+            <directory>test/backend_test/laravel/Feature/Payments</directory>
+        </testsuite>
+        <testsuite name="BackendTest-Generation">
+            <directory>test/backend_test/laravel/Feature/Generation</directory>
+        </testsuite>
+        <testsuite name="BackendTest-Gallery">
+            <directory>test/backend_test/laravel/Feature/Gallery</directory>
+            <directory>test/backend_test/laravel/Feature/Feed</directory>
+        </testsuite>
+        <testsuite name="BackendTest-Social">
+            <directory>test/backend_test/laravel/Feature/Social</directory>
+        </testsuite>
+        <testsuite name="BackendTest-Admin">
+            <directory>test/backend_test/laravel/Feature/Admin</directory>
+        </testsuite>
+        <testsuite name="BackendTest-Security">
+            <directory>test/backend_test/laravel/Feature/Security</directory>
+        </testsuite>
+        <testsuite name="BackendTest-Observability">
+            <directory>test/backend_test/laravel/Feature/Observability</directory>
+        </testsuite>
+        <testsuite name="BackendTest-User">
+            <directory>test/backend_test/laravel/Feature/User</directory>
+        </testsuite>
+        <testsuite name="BackendTest-Transactions">
+            <directory>test/backend_test/laravel/Feature/Transactions</directory>
+        </testsuite>
+        <testsuite name="BackendTest-Other">
+            <directory>test/backend_test/laravel/Feature/Currency</directory>
+            <directory>test/backend_test/laravel/Feature/Notifications</directory>
+            <directory>test/backend_test/laravel/Feature/Reports</directory>
+            <directory>test/backend_test/laravel/Feature/Tokens</directory>
+            <directory>test/backend_test/laravel/Unit</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
