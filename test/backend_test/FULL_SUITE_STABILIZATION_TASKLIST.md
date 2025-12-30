@@ -445,6 +445,12 @@
 **Matrix Document:** `test/backend_test/TEST_IMPACT_MATRIX.md`  
 **Status:** ✅ **Phase D Complete** - All tests verified, no overrides remaining, full suite passes
 
+---
+
+### Historical Matrix (Pre-Phase 2 State)
+
+**Note:** The table below shows the ORIGINAL state before Phase 2 changes. For the CURRENT state, see `TEST_IMPACT_MATRIX.md`.
+
 | Test Suite Name | Current DB Strategy | Needs Refactor? | Reason | New Strategy |
 |----------------|---------------------|-----------------|--------|--------------|
 | **Auth/OTP** | `RefreshDatabase` (inherited) | No | No manual transactions | `LazilyRefreshDatabase` (inherited) |
