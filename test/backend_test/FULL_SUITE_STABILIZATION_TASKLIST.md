@@ -12,9 +12,10 @@
 - ✅ Task A5: Phase 1 verification - All Payment and Generation tests pass with zero transaction nesting errors
 
 **Phase 2 Summary (In Progress):**
-- ✅ Task C1: Removed all DatabaseMigrations overrides from 9 test files
-- ✅ Task C2: Fixed transaction nesting in ModerationService (DB::transactionLevel() check) and AdminModerationController bugs
-- ✅ Task C3: Normalized test behavior - verified all suites work correctly with LazilyRefreshDatabase, no dependencies on per-method rollback behavior detected
+- ✅ Task B1: Validated selected infrastructure strategy (Strategy 1 + Strategy 4) - fully implemented and working
+- ✅ Task C1: Base test case uses LazilyRefreshDatabase (already implemented, task list updated)
+- ✅ Task C2: Removed all DatabaseMigrations overrides from 9 test files
+- ✅ Task C3: Created logical test suites in phpunit.xml (already implemented, task list updated)
 
 **Key Changes:**
 - BackendTestCase now uses LazilyRefreshDatabase instead of RefreshDatabase
@@ -277,10 +278,10 @@
 ## C) Required Code & Config Changes
 
 ### C1. Base Test Case Changes
-- [ ] **C1.1** Modify `test/backend_test/laravel/Helpers/BackendTestCase.php`:
-  - [ ] Change line 5: `use Illuminate\Foundation\Testing\RefreshDatabase;` → `use Illuminate\Foundation\Testing\LazilyRefreshDatabase;`
-  - [ ] Change line 26: `use RefreshDatabase;` → `use LazilyRefreshDatabase;`
-  - [ ] Add comment explaining the change and rationale
+- [x] **C1.1** Modify `test/backend_test/laravel/Helpers/BackendTestCase.php`:
+  - [x] Change line 5: `use Illuminate\Foundation\Testing\RefreshDatabase;` → `use Illuminate\Foundation\Testing\LazilyRefreshDatabase;`
+  - [x] Change line 31: `use RefreshDatabase;` → `use LazilyRefreshDatabase;`
+  - [x] Add comment explaining the change and rationale
 
 ### C2. Remove Trait Overrides
 - [x] **C2.1** Remove `DatabaseMigrations` override from:
@@ -302,24 +303,24 @@
   - [x] Document any remaining overrides
 
 ### C3. PHPUnit Configuration Changes
-- [ ] **C3.1** Modify `phpunit.xml` to add logical test suites:
-  - [ ] Add `<testsuite name="BackendTest-Auth">` for Auth tests
-  - [ ] Add `<testsuite name="BackendTest-Payments">` for Payment tests
-  - [ ] Add `<testsuite name="BackendTest-Generation">` for Generation tests
-  - [ ] Add `<testsuite name="BackendTest-Gallery">` for Gallery/Feed tests
-  - [ ] Add `<testsuite name="BackendTest-Social">` for Social tests
-  - [ ] Add `<testsuite name="BackendTest-Admin">` for Admin tests
-  - [ ] Add `<testsuite name="BackendTest-Security">` for Security tests
-  - [ ] Add `<testsuite name="BackendTest-Observability">` for Observability tests
-  - [ ] Add `<testsuite name="BackendTest-User">` for User/Profile tests
-  - [ ] Add `<testsuite name="BackendTest-Transactions">` for Transaction tests
-  - [ ] Add `<testsuite name="BackendTest-Other">` for remaining tests
-  - [ ] Keep existing `<testsuite name="BackendTest">` for full suite execution
+- [x] **C3.1** Modify `phpunit.xml` to add logical test suites:
+  - [x] Add `<testsuite name="BackendTest-Auth">` for Auth tests
+  - [x] Add `<testsuite name="BackendTest-Payments">` for Payment tests
+  - [x] Add `<testsuite name="BackendTest-Generation">` for Generation tests
+  - [x] Add `<testsuite name="BackendTest-Gallery">` for Gallery/Feed tests
+  - [x] Add `<testsuite name="BackendTest-Social">` for Social tests
+  - [x] Add `<testsuite name="BackendTest-Admin">` for Admin tests
+  - [x] Add `<testsuite name="BackendTest-Security">` for Security tests
+  - [x] Add `<testsuite name="BackendTest-Observability">` for Observability tests
+  - [x] Add `<testsuite name="BackendTest-User">` for User/Profile tests
+  - [x] Add `<testsuite name="BackendTest-Transactions">` for Transaction tests
+  - [x] Add `<testsuite name="BackendTest-Other">` for remaining tests
+  - [x] Keep existing `<testsuite name="BackendTest">` for full suite execution
 
-- [ ] **C3.2** Verify suite definitions are correct:
-  - [ ] Each directory maps to correct test files
-  - [ ] No test files are missing from suites
-  - [ ] No test files are duplicated across suites
+- [x] **C3.2** Verify suite definitions are correct:
+  - [x] Each directory maps to correct test files
+  - [x] No test files are missing from suites
+  - [x] No test files are duplicated across suites
 
 ### C4. Environment Variable Changes
 - [ ] **C4.1** Verify `phpunit.xml` environment settings:
