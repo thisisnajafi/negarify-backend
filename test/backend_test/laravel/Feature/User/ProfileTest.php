@@ -99,16 +99,18 @@ class ProfileTest extends BackendTestCase
         ]);
         $token = $user->createToken('auth-token')->plainTextToken;
         
+        // Use unique email to avoid conflicts with other tests
+        $newEmail = 'new-' . uniqid() . '@example.com';
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('PUT', '/api/v1/user', [
-            'email' => 'new@example.com',
+            'email' => $newEmail,
         ]);
 
         $response->assertStatus(200);
 
         $user->refresh();
-        $this->assertEquals('new@example.com', $user->email);
+        $this->assertEquals($newEmail, $user->email);
         $this->assertNull($user->email_verified_at);
     }
 

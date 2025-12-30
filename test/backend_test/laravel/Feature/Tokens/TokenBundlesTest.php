@@ -30,6 +30,9 @@ class TokenBundlesTest extends BackendTestCase
     /** @test */
     public function it_returns_active_token_bundles_with_toman_prices(): void
     {
+        // Clean up any existing bundles to ensure test isolation
+        TokenBundle::query()->delete();
+        
         // Create test bundles
         $bundle1 = TokenBundle::create([
             'name' => 'Starter Pack',
@@ -103,6 +106,9 @@ class TokenBundlesTest extends BackendTestCase
     /** @test */
     public function it_returns_bundles_ordered_by_display_order(): void
     {
+        // Clean up any existing bundles to ensure test isolation
+        TokenBundle::query()->delete();
+        
         TokenBundle::create([
             'name' => 'Third',
             'token_amount' => 100,

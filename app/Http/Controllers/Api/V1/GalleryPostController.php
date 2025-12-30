@@ -105,11 +105,11 @@ class GalleryPostController extends Controller
      * - Owner can view their own posts (public or private)
      * - Others can only view public posts
      */
-    public function show(int $id): JsonResponse
+    public function show(string $id): JsonResponse
     {
         $user = auth()->user();
         $post = GalleryPost::with(['user', 'generationJob.model'])
-            ->findOrFail($id);
+            ->findOrFail((int) $id);
 
         // Check visibility: owner can see private posts, others cannot
         if ($post->isPrivate() && $post->user_id !== $user->id) {

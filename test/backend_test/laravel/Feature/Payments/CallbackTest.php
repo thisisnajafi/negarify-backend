@@ -22,30 +22,43 @@ class CallbackTest extends BackendTestCase
     }
     
     /**
-     * Set up successful Zarinpal verification fake (call in tests that need it)
+     * Generate unique Zarinpal authority for tests (prevents unique constraint violations)
      */
-    protected function setUpZarinpalSuccessFake(): void
+    protected function generateUniqueAuthority(): string
     {
+        // Generate unique 36-character authority: A + 35 chars (Zarinpal format)
+        return 'A' . str_pad(substr(str_replace(['-', '.'], '', uniqid('', true)), 0, 35), 35, '0', STR_PAD_LEFT);
+    }
+    
+    /**
+     * Set up successful Zarinpal verification fake (call in tests that need it)
+     * Returns a unique ref_id per call to avoid unique constraint violations
+     */
+    protected function setUpZarinpalSuccessFake(): array
+    {
+        $refId = (string) (123456789 + time() + rand(1000, 9999)); // Generate unique ref_id
         Http::fake([
             'sandbox.zarinpal.com/*' => Http::response([
                 'data' => [
                     'code' => 100,
-                    'ref_id' => 123456789,
+                    'ref_id' => $refId,
                 ],
             ], 200),
             'api.zarinpal.com/*' => Http::response([
                 'data' => [
                     'code' => 100,
-                    'ref_id' => 123456789,
+                    'ref_id' => $refId,
                 ],
             ], 200),
         ]);
+        return ['ref_id' => $refId];
     }
 
     /** @test */
     public function it_processes_successful_payment_callback(): void
     {
-        $this->setUpZarinpalSuccessFake();
+        $zarinpalResponse = $this->setUpZarinpalSuccessFake();
+        $expectedRefId = $zarinpalResponse['ref_id'];
         
         $user = User::factory()->create(['tokens_balance' => 0]);
         $bundle = TokenBundle::create([
@@ -55,6 +68,7 @@ class CallbackTest extends BackendTestCase
             'price_usd' => 1.00,
         ]);
         
+        $authority = $this->generateUniqueAuthority();
         $order = Order::create([
             'user_id' => $user->id,
             'token_bundle_id' => $bundle->id,
@@ -63,7 +77,7 @@ class CallbackTest extends BackendTestCase
             'price_usd' => 1.00,
             'dollar_rate' => 50000,
             'status' => 'pending',
-            'zarinpal_authority' => 'A00000000000000000000000000000000000',
+            'zarinpal_authority' => $authority,
         ]);
         
         $response = $this->getJson('/api/v1/tokens/purchase/callback?Authority=' . $order->zarinpal_authority . '&Status=OK');
@@ -87,7 +101,7 @@ class CallbackTest extends BackendTestCase
         // Verify order updated
         $order->refresh();
         $this->assertEquals('paid', $order->status);
-        $this->assertEquals(123456789, $order->zarinpal_ref_id);
+        $this->assertEquals($expectedRefId, $order->zarinpal_ref_id);
         $this->assertNotNull($order->paid_at);
 
         // Verify tokens credited
@@ -118,7 +132,9 @@ class CallbackTest extends BackendTestCase
     /** @test */
     public function it_is_idempotent_prevents_double_credit(): void
     {
-        $this->setUpZarinpalSuccessFake();
+        $zarinpalResponse = $this->setUpZarinpalSuccessFake();
+        $refId = $zarinpalResponse['ref_id'];
+        $authority = $this->generateUniqueAuthority();
         
         $user = User::factory()->create(['tokens_balance' => 0]);
         $bundle = TokenBundle::create([
@@ -135,8 +151,8 @@ class CallbackTest extends BackendTestCase
             'price_usd' => 1.00,
             'dollar_rate' => 50000,
             'status' => 'paid', // Already paid
-            'zarinpal_authority' => 'A00000000000000000000000000000000000',
-            'zarinpal_ref_id' => 123456789,
+            'zarinpal_authority' => $authority,
+            'zarinpal_ref_id' => $refId,
             'paid_at' => now(),
         ]);
         
@@ -168,6 +184,7 @@ class CallbackTest extends BackendTestCase
             'price_usd' => 1.00,
         ]);
         
+        $authority = $this->generateUniqueAuthority();
         $order = Order::create([
             'user_id' => $user->id,
             'token_bundle_id' => $bundle->id,
@@ -176,7 +193,7 @@ class CallbackTest extends BackendTestCase
             'price_usd' => 1.00,
             'dollar_rate' => 50000,
             'status' => 'pending',
-            'zarinpal_authority' => 'A00000000000000000000000000000000000',
+            'zarinpal_authority' => $authority,
         ]);
         
         $response = $this->getJson('/api/v1/tokens/purchase/callback?Authority=' . $order->zarinpal_authority . '&Status=NOK');
@@ -255,6 +272,7 @@ class CallbackTest extends BackendTestCase
             'price_usd' => 1.00,
         ]);
         
+        $authority = $this->generateUniqueAuthority();
         $order = Order::create([
             'user_id' => $user->id,
             'token_bundle_id' => $bundle->id,
@@ -263,7 +281,7 @@ class CallbackTest extends BackendTestCase
             'price_usd' => 1.00,
             'dollar_rate' => 50000,
             'status' => 'pending',
-            'zarinpal_authority' => 'A00000000000000000000000000000000000',
+            'zarinpal_authority' => $authority,
         ]);
         
         $response = $this->getJson('/api/v1/tokens/purchase/callback?Authority=' . $order->zarinpal_authority . '&Status=OK');
@@ -288,6 +306,7 @@ class CallbackTest extends BackendTestCase
             'price_usd' => 1.00,
         ]);
         
+        $authority = $this->generateUniqueAuthority();
         $order = Order::create([
             'user_id' => $user->id,
             'token_bundle_id' => $bundle->id,
@@ -296,7 +315,7 @@ class CallbackTest extends BackendTestCase
             'price_usd' => 1.00,
             'dollar_rate' => 50000,
             'status' => 'failed', // Not pending
-            'zarinpal_authority' => 'A00000000000000000000000000000000000',
+            'zarinpal_authority' => $authority,
         ]);
         
         $response = $this->getJson('/api/v1/tokens/purchase/callback?Authority=' . $order->zarinpal_authority . '&Status=OK');
@@ -343,6 +362,7 @@ class CallbackTest extends BackendTestCase
             'price_usd' => 1.00,
         ]);
         
+        $authority = $this->generateUniqueAuthority();
         $order = Order::create([
             'user_id' => $user->id,
             'token_bundle_id' => $bundle->id,
@@ -351,7 +371,7 @@ class CallbackTest extends BackendTestCase
             'price_usd' => 1.00,
             'dollar_rate' => 50000,
             'status' => 'pending',
-            'zarinpal_authority' => 'A00000000000000000000000000000000000',
+            'zarinpal_authority' => $authority,
         ]);
         
         // Zarinpal will verify amount server-side and reject if mismatch

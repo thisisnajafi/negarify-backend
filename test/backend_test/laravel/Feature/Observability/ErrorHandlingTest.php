@@ -10,33 +10,24 @@ class ErrorHandlingTest extends BackendTestCase
     /** @test */
     public function it_returns_proper_status_codes(): void
     {
+        // Test unauthenticated request (401) - test this FIRST to avoid auth state pollution
+        $response = $this->json('GET', '/api/v1/user');
+        $this->assertEquals(401, $response->status(), "Unauthenticated GET /api/v1/user should return 401");
+        
         $user = User::factory()->create();
         $token = $user->createToken('auth-token')->plainTextToken;
 
-        // Test various scenarios
-        $testCases = [
-            // 200 - Success
-            ['GET', '/api/v1/user', ['Authorization' => "Bearer {$token}"], 200],
-            
-            // 401 - Unauthenticated
-            ['GET', '/api/v1/user', [], 401],
-            
-            // 404 - Not Found
-            ['GET', '/api/v1/gallery/posts/99999', ['Authorization' => "Bearer {$token}"], 404],
-            
-            // 422 - Validation Error
-            ['POST', '/api/v1/auth/request-otp', [], 422],
-        ];
-
-        foreach ($testCases as [$method, $uri, $headers, $expectedStatus]) {
-            $response = $this->withHeaders($headers)->makeRequest($method, $uri);
-            
-            $this->assertEquals(
-                $expectedStatus,
-                $response->status(),
-                "Route {$method} {$uri} should return status {$expectedStatus}, got {$response->status()}"
-            );
-        }
+        // Test authenticated request (200)
+        $response = $this->json('GET', '/api/v1/user', [], ['Authorization' => "Bearer {$token}"]);
+        $this->assertEquals(200, $response->status(), "Authenticated GET /api/v1/user should return 200");
+        
+        // Test 404 - Not Found
+        $response = $this->json('GET', '/api/v1/gallery/posts/99999', [], ['Authorization' => "Bearer {$token}"]);
+        $this->assertEquals(404, $response->status(), "GET /api/v1/gallery/posts/99999 should return 404");
+        
+        // Test 422 - Validation Error
+        $response = $this->json('POST', '/api/v1/auth/request-otp');
+        $this->assertEquals(422, $response->status(), "POST /api/v1/auth/request-otp without phone should return 422");
     }
 
     /** @test */
@@ -92,10 +83,10 @@ class ErrorHandlingTest extends BackendTestCase
             'generation_job_id' => 99999, // Non-existent job
         ]);
 
-        // Should return 400/404, not 500
+        // Should return 400/404/422 (validation error for invalid generation_job_id is acceptable), not 500
         $this->assertContains(
             $response->status(),
-            [400, 404],
+            [400, 404, 422],
             'Database errors should be handled gracefully'
         );
     }

@@ -23,11 +23,15 @@ class ReportTest extends BackendTestCase
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
         $job = GenerationJob::create([
+            'user_id' => User::factory()->create()->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
@@ -39,7 +43,7 @@ class ReportTest extends BackendTestCase
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('POST', "/api/v1/gallery/posts/{$post->id}/report", [
-            'reason' => 'inappropriate_content',
+            'reason' => 'inappropriate',
         ]);
 
         $response->assertStatus(201)
@@ -63,7 +67,7 @@ class ReportTest extends BackendTestCase
         $this->assertDatabaseHas('reports', [
             'user_id' => $user->id,
             'gallery_post_id' => $post->id,
-            'reason' => 'inappropriate_content',
+            'reason' => 'inappropriate',
             'status' => 'pending',
         ]);
 
@@ -80,11 +84,15 @@ class ReportTest extends BackendTestCase
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
         $job = GenerationJob::create([
+            'user_id' => User::factory()->create()->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
@@ -96,7 +104,7 @@ class ReportTest extends BackendTestCase
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('POST', "/api/v1/gallery/posts/{$post->id}/report", [
-            'reason' => 'inappropriate_content',
+            'reason' => 'inappropriate',
         ]);
 
         $response->assertStatus(400)
@@ -116,11 +124,15 @@ class ReportTest extends BackendTestCase
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
         $job = GenerationJob::create([
+            'user_id' => User::factory()->create()->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
@@ -133,7 +145,7 @@ class ReportTest extends BackendTestCase
         Report::create([
             'user_id' => $user->id,
             'gallery_post_id' => $post->id,
-            'reason' => 'inappropriate_content',
+            'reason' => 'inappropriate',
             'status' => 'pending',
             'created_at' => now()->subHour(), // Within 24 hours
         ]);
@@ -164,11 +176,15 @@ class ReportTest extends BackendTestCase
         // Create 5 reports today (limit)
         for ($i = 0; $i < 5; $i++) {
             $job = GenerationJob::create([
+                'user_id' => User::factory()->create()->id,
                 'provider_id' => $provider->id,
                 'model_id' => $model->id,
                 'job_type' => 'image',
                 'status' => 'completed',
                 'result_url' => 'https://example.com/image.jpg',
+                'prompt' => 'Test prompt',
+                'params_json' => [],
+                'tokens_consumed' => 10,
             ]);
             
             $post = GalleryPost::create([
@@ -180,7 +196,7 @@ class ReportTest extends BackendTestCase
             Report::create([
                 'user_id' => $user->id,
                 'gallery_post_id' => $post->id,
-                'reason' => 'inappropriate_content',
+                'reason' => 'inappropriate',
                 'status' => 'pending',
                 'created_at' => now()->startOfDay()->addHours($i),
             ]);
@@ -188,11 +204,15 @@ class ReportTest extends BackendTestCase
         
         // Create another post to report
         $job = GenerationJob::create([
+            'user_id' => User::factory()->create()->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
@@ -205,7 +225,7 @@ class ReportTest extends BackendTestCase
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('POST', "/api/v1/gallery/posts/{$post->id}/report", [
-            'reason' => 'inappropriate_content',
+            'reason' => 'inappropriate',
         ]);
 
         $response->assertStatus(429)
@@ -225,11 +245,15 @@ class ReportTest extends BackendTestCase
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
         $job = GenerationJob::create([
+            'user_id' => User::factory()->create()->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([
@@ -242,7 +266,7 @@ class ReportTest extends BackendTestCase
         Report::create([
             'user_id' => User::factory()->create()->id,
             'gallery_post_id' => $post->id,
-            'reason' => 'inappropriate_content',
+            'reason' => 'inappropriate',
             'status' => 'pending',
         ]);
         
@@ -257,7 +281,7 @@ class ReportTest extends BackendTestCase
         $response = $this->withHeaders([
             'Authorization' => "Bearer {$token}",
         ])->makeRequest('POST', "/api/v1/gallery/posts/{$post->id}/report", [
-            'reason' => 'inappropriate_content',
+            'reason' => 'inappropriate',
         ]);
 
         $response->assertStatus(201);
@@ -279,11 +303,15 @@ class ReportTest extends BackendTestCase
         $model = AiModel::factory()->create(['provider_id' => $provider->id]);
         
         $job = GenerationJob::create([
+            'user_id' => User::factory()->create()->id,
             'provider_id' => $provider->id,
             'model_id' => $model->id,
             'job_type' => 'image',
             'status' => 'completed',
             'result_url' => 'https://example.com/image.jpg',
+            'prompt' => 'Test prompt',
+            'params_json' => [],
+            'tokens_consumed' => 10,
         ]);
         
         $post = GalleryPost::create([

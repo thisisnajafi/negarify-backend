@@ -58,29 +58,38 @@ class ReportController extends Controller
         }
 
         try {
-            DB::beginTransaction();
+            // SQLite doesn't support nested transactions, so check if we're already in one
+            $executeCreate = function () use ($user, $post, $validated) {
+                $report = Report::create([
+                    'user_id' => $user->id,
+                    'gallery_post_id' => $post->id,
+                    'reason' => $validated['reason'],
+                    'status' => 'pending',
+                ]);
 
-            $report = Report::create([
-                'user_id' => $user->id,
-                'gallery_post_id' => $post->id,
-                'reason' => $validated['reason'],
-                'status' => 'pending',
-            ]);
+                // Check if post should be added to moderation queue (threshold-based)
+                $pendingReports = Report::where('gallery_post_id', $post->id)
+                    ->where('status', 'pending')
+                    ->count();
 
-            // Check if post should be added to moderation queue (threshold-based)
-            $pendingReports = Report::where('gallery_post_id', $post->id)
-                ->where('status', 'pending')
-                ->count();
+                if ($pendingReports >= 3) {
+                    app(ModerationService::class)->addToModerationQueue(
+                        $post,
+                        'multiple_reports',
+                        'Automated flag: Multiple reports received'
+                    );
+                }
 
-            if ($pendingReports >= 3) {
-                app(ModerationService::class)->addToModerationQueue(
-                    $post,
-                    'multiple_reports',
-                    'Automated flag: Multiple reports received'
-                );
+                return $report;
+            };
+
+            if (DB::transactionLevel() > 0 || DB::connection()->getPdo()->inTransaction()) {
+                // Already in a transaction, execute directly
+                $report = $executeCreate();
+            } else {
+                // Not in a transaction, use DB::transaction()
+                $report = DB::transaction($executeCreate);
             }
-
-            DB::commit();
 
             Log::info('Report created', [
                 'report_id' => $report->id,
@@ -98,7 +107,11 @@ class ReportController extends Controller
                 ],
             ], 201);
         } catch (\Exception $e) {
-            DB::rollBack();
+            // Only rollback if we started a transaction
+            if (DB::transactionLevel() > 0 && !DB::connection()->getPdo()->inTransaction()) {
+                // We started a transaction, so rollback
+                DB::rollBack();
+            }
 
             Log::error('Failed to create report', [
                 'post_id' => $id,

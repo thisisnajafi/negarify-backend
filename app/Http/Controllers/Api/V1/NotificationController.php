@@ -48,7 +48,7 @@ class NotificationController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $notifications->items()->map(function ($notification) {
+            'data' => collect($notifications->items())->map(function ($notification) {
                 return $this->formatNotification($notification);
             }),
             'meta' => [

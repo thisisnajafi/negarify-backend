@@ -25,6 +25,8 @@ class TransactionTypesTest extends BackendTestCase
             'is_active' => true,
         ]);
         
+        $authority = 'A' . str_pad(substr(str_replace(['-', '.'], '', uniqid('', true)), 0, 35), 35, '0', STR_PAD_LEFT);
+        $refId = (string) (123456789 + time() + rand(1000, 9999)); // Generate unique ref_id
         $order = Order::create([
             'user_id' => $user->id,
             'token_bundle_id' => $bundle->id,
@@ -33,8 +35,8 @@ class TransactionTypesTest extends BackendTestCase
             'price_usd' => 1.00,
             'dollar_rate' => 50000,
             'status' => 'paid',
-            'zarinpal_authority' => 'A00000000000000000000000000000000000',
-            'zarinpal_ref_id' => 123456789,
+            'zarinpal_authority' => $authority,
+            'zarinpal_ref_id' => $refId,
             'paid_at' => now(),
         ]);
         
@@ -254,6 +256,8 @@ class TransactionTypesTest extends BackendTestCase
             'is_active' => true,
         ]);
         
+        $authority = 'A' . str_pad(substr(str_replace(['-', '.'], '', uniqid('', true)), 0, 35), 35, '0', STR_PAD_LEFT);
+        $refId = (string) (123456789 + time() + rand(1000, 9999)); // Generate unique ref_id
         $order = Order::create([
             'user_id' => $user->id,
             'token_bundle_id' => $bundle->id,
@@ -262,8 +266,8 @@ class TransactionTypesTest extends BackendTestCase
             'price_usd' => 1.00,
             'dollar_rate' => 50000,
             'status' => 'paid',
-            'zarinpal_authority' => 'A00000000000000000000000000000000000',
-            'zarinpal_ref_id' => 123456789,
+            'zarinpal_authority' => $authority,
+            'zarinpal_ref_id' => $refId,
             'paid_at' => now(),
         ]);
         

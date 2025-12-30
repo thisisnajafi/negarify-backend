@@ -23,17 +23,39 @@ class LikeController extends Controller
         $post = GalleryPost::findOrFail($id);
 
         try {
-            DB::beginTransaction();
+            // SQLite doesn't support nested transactions, so check if we're already in one
+            $executeLike = function () use ($user, $post) {
+                // Check if like already exists (idempotent)
+                $like = Like::where('user_id', $user->id)
+                    ->where('gallery_post_id', $post->id)
+                    ->first();
 
-            // Check if like already exists (idempotent)
-            $like = Like::where('user_id', $user->id)
-                ->where('gallery_post_id', $post->id)
-                ->first();
+                if ($like) {
+                    // Already liked - return success (idempotent)
+                    return ['exists' => true, 'like' => $like];
+                }
 
-            if ($like) {
-                // Already liked - return success (idempotent)
-                DB::commit();
+                // Create like
+                $like = Like::create([
+                    'user_id' => $user->id,
+                    'gallery_post_id' => $post->id,
+                ]);
 
+                // Increment counter atomically
+                $post->increment('likes_count');
+                
+                return ['exists' => false, 'like' => $like];
+            };
+
+            if (DB::transactionLevel() > 0 || DB::connection()->getPdo()->inTransaction()) {
+                // Already in a transaction, execute directly
+                $result = $executeLike();
+            } else {
+                // Not in a transaction, use DB::transaction()
+                $result = DB::transaction($executeLike);
+            }
+
+            if ($result['exists']) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Post already liked',
@@ -44,16 +66,7 @@ class LikeController extends Controller
                 ]);
             }
 
-            // Create like
-            $like = Like::create([
-                'user_id' => $user->id,
-                'gallery_post_id' => $post->id,
-            ]);
-
-            // Increment counter atomically
-            $post->increment('likes_count');
-
-            DB::commit();
+            $like = $result['like'];
 
             Log::info('Post liked', [
                 'post_id' => $post->id,
@@ -79,8 +92,6 @@ class LikeController extends Controller
                 ],
             ]);
         } catch (\Exception $e) {
-            DB::rollBack();
-
             // Check if it's a duplicate key error (race condition)
             if (str_contains($e->getMessage(), 'Duplicate entry')) {
                 // Another request created the like - return success (idempotent)
@@ -118,16 +129,39 @@ class LikeController extends Controller
         $post = GalleryPost::findOrFail($id);
 
         try {
-            DB::beginTransaction();
+            // SQLite doesn't support nested transactions, so check if we're already in one
+            $executeUnlike = function () use ($user, $post) {
+                $like = Like::where('user_id', $user->id)
+                    ->where('gallery_post_id', $post->id)
+                    ->first();
 
-            $like = Like::where('user_id', $user->id)
-                ->where('gallery_post_id', $post->id)
-                ->first();
+                if (!$like) {
+                    // Not liked - return success (safe operation)
+                    return ['exists' => false];
+                }
 
-            if (!$like) {
-                // Not liked - return success (safe operation)
-                DB::commit();
+                // Delete like
+                $like->delete();
 
+                // Decrement counter atomically (ensure it doesn't go below 0)
+                $post->decrement('likes_count');
+                if ($post->likes_count < 0) {
+                    $post->likes_count = 0;
+                    $post->save();
+                }
+                
+                return ['exists' => true];
+            };
+
+            if (DB::transactionLevel() > 0 || DB::connection()->getPdo()->inTransaction()) {
+                // Already in a transaction, execute directly
+                $result = $executeUnlike();
+            } else {
+                // Not in a transaction, use DB::transaction()
+                $result = DB::transaction($executeUnlike);
+            }
+
+            if (!$result['exists']) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Post not liked',
@@ -137,18 +171,6 @@ class LikeController extends Controller
                     ],
                 ]);
             }
-
-            // Delete like
-            $like->delete();
-
-            // Decrement counter atomically (ensure it doesn't go below 0)
-            $post->decrement('likes_count');
-            if ($post->likes_count < 0) {
-                $post->likes_count = 0;
-                $post->save();
-            }
-
-            DB::commit();
 
             Log::info('Post unliked', [
                 'post_id' => $post->id,
@@ -164,8 +186,6 @@ class LikeController extends Controller
                 ],
             ]);
         } catch (\Exception $e) {
-            DB::rollBack();
-
             Log::error('Failed to unlike post', [
                 'post_id' => $id,
                 'user_id' => $user->id,

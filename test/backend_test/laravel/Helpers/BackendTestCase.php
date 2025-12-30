@@ -31,6 +31,75 @@ abstract class BackendTestCase extends BaseTestCase
     use LogsTestExecution;
 
     /**
+     * Override beginDatabaseTransaction to prevent nested transactions in SQLite.
+     * LazilyRefreshDatabase triggers refreshDatabase() via beforeExecuting callback,
+     * which calls beginDatabaseTransaction(). If we're already in a transaction,
+     * skip starting a new one to avoid SQLite nested transaction errors.
+     * 
+     * Based on RefreshDatabase::beginDatabaseTransaction() but with transaction level check.
+     */
+    public function beginDatabaseTransaction()
+    {
+        $database = $this->app->make('db');
+        $connections = $this->connectionsToTransact();
+
+        // Check if any connection is already in a transaction (SQLite doesn't support nested transactions)
+        // Check both transactionLevel() and getPdo()->inTransaction() for reliability
+        foreach ($connections as $name) {
+            $connection = $database->connection($name);
+            $pdo = $connection->getPdo();
+            
+            // Check if already in a transaction (both methods for reliability)
+            if (($pdo && $pdo->inTransaction()) || $connection->transactionLevel() > 0) {
+                // Already in a transaction, skip starting a new one to avoid nested transaction error
+                return;
+            }
+        }
+
+        // Not in a transaction, proceed with normal implementation
+        $this->app->instance('db.transactions', $transactionsManager = new \Illuminate\Foundation\Testing\DatabaseTransactionsManager($connections));
+
+        foreach ($connections as $name) {
+            $connection = $database->connection($name);
+
+            $connection->setTransactionManager($transactionsManager);
+
+            if ($this->usingInMemoryDatabase($name)) {
+                \Illuminate\Foundation\Testing\RefreshDatabaseState::$inMemoryConnections[$name] ??= $connection->getPdo();
+            }
+
+            $dispatcher = $connection->getEventDispatcher();
+
+            $connection->unsetEventDispatcher();
+            
+            // Double-check before starting transaction
+            $pdo = $connection->getPdo();
+            if (!($pdo && $pdo->inTransaction()) && $connection->transactionLevel() === 0) {
+                $connection->beginTransaction();
+            }
+            
+            $connection->setEventDispatcher($dispatcher);
+        }
+
+        $this->beforeApplicationDestroyed(function () use ($database) {
+            foreach ($this->connectionsToTransact() as $name) {
+                $connection = $database->connection($name);
+                $dispatcher = $connection->getEventDispatcher();
+
+                $connection->unsetEventDispatcher();
+
+                if ($connection->getPdo() && ! $connection->getPdo()->inTransaction()) {
+                    \Illuminate\Foundation\Testing\RefreshDatabaseState::$migrated = false;
+                }
+
+                $connection->rollBack();
+                $connection->setEventDispatcher($dispatcher);
+                $connection->disconnect();
+            }
+        });
+    }
+
+    /**
      * Creates the application.
      */
     public function createApplication()

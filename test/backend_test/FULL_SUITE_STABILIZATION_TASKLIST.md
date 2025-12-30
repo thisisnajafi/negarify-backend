@@ -33,25 +33,25 @@
 ## A) Root Cause Analysis Tasks
 
 ### A1. Transaction Trait Mapping
-- [ ] **A1.1** Audit all test files to identify which trait each uses:
-  - [ ] Count tests using `RefreshDatabase` (default from `BackendTestCase`)
-  - [ ] Count tests using `DatabaseMigrations` (overrides)
-  - [ ] Count tests using `DatabaseTransactions` (if any)
-  - [ ] Count tests using `LazilyRefreshDatabase` (if any)
-  - [ ] Document findings in `test/backend_test/TRANSACTION_TRAIT_AUDIT.md`
+- [x] **A1.1** Audit all test files to identify which trait each uses:
+  - [x] Count tests using `RefreshDatabase` (default from `BackendTestCase`) - **0** (replaced by LazilyRefreshDatabase)
+  - [x] Count tests using `DatabaseMigrations` (overrides) - **0** (all removed in Phase 2)
+  - [x] Count tests using `DatabaseTransactions` (if any) - **0** (none found)
+  - [x] Count tests using `LazilyRefreshDatabase` (if any) - **47** (all tests inherit from BackendTestCase)
+  - [x] Document findings in `test/backend_test/TRANSACTION_TRAIT_AUDIT.md`
 
-- [ ] **A1.2** Map trait usage by test category:
-  - [ ] Auth/OTP tests (3 files)
-  - [ ] Payment tests (2 files: `CallbackTest`, `PurchaseTest`)
-  - [ ] Generation Job tests (5 files)
-  - [ ] Gallery & Feed tests (5 files)
-  - [ ] Social tests (4 files)
-  - [ ] Admin tests (9 files)
-  - [ ] Security tests (4 files)
-  - [ ] Observability tests (3 files)
-  - [ ] User/Profile tests (3 files)
-  - [ ] Transaction tests (3 files)
-  - [ ] Other tests (remaining files)
+- [x] **A1.2** Map trait usage by test category:
+  - [x] Auth/OTP tests (4 files) - All use `LazilyRefreshDatabase`
+  - [x] Payment tests (2 files: `CallbackTest`, `PurchaseTest`) - All use `LazilyRefreshDatabase`
+  - [x] Generation Job tests (4 files) - All use `LazilyRefreshDatabase`
+  - [x] Gallery & Feed tests (7 files) - All use `LazilyRefreshDatabase`
+  - [x] Social tests (4 files) - All use `LazilyRefreshDatabase`
+  - [x] Admin tests (11 files) - All use `LazilyRefreshDatabase`
+  - [x] Security tests (3 files) - All use `LazilyRefreshDatabase`
+  - [x] Observability tests (3 files) - All use `LazilyRefreshDatabase`
+  - [x] User/Profile tests (2 files) - All use `LazilyRefreshDatabase`
+  - [x] Transaction tests (2 files) - All use `LazilyRefreshDatabase`
+  - [x] Other tests (5 files) - All use `LazilyRefreshDatabase`
 
 ### A2. Manual Transaction Identification
 - [ ] **A2.1** Document all `DB::beginTransaction()` calls in controllers:

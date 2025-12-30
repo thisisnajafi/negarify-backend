@@ -58,10 +58,10 @@ class GenerationJobController extends Controller
     /**
      * Get job status and result
      */
-    public function show(int $id): JsonResponse
+    public function show(string $id): JsonResponse
     {
         $user = auth()->user();
-        $job = GenerationJob::where('user_id', $user->id)->findOrFail($id);
+        $job = GenerationJob::where('user_id', $user->id)->findOrFail((int) $id);
 
         return response()->json([
             'success' => true,

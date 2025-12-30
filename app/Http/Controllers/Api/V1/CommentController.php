@@ -40,19 +40,28 @@ class CommentController extends Controller
         }
 
         try {
-            DB::beginTransaction();
+            // SQLite doesn't support nested transactions, so check if we're already in one
+            $executeCreate = function () use ($user, $post, $validated) {
+                $comment = Comment::create([
+                    'user_id' => $user->id,
+                    'gallery_post_id' => $post->id,
+                    'body' => $validated['body'],
+                    'parent_id' => $validated['parent_id'] ?? null,
+                ]);
 
-            $comment = Comment::create([
-                'user_id' => $user->id,
-                'gallery_post_id' => $post->id,
-                'body' => $validated['body'],
-                'parent_id' => $validated['parent_id'] ?? null,
-            ]);
+                // Increment counter atomically
+                $post->increment('comments_count');
+                
+                return $comment;
+            };
 
-            // Increment counter atomically
-            $post->increment('comments_count');
-
-            DB::commit();
+            if (DB::transactionLevel() > 0 || DB::connection()->getPdo()->inTransaction()) {
+                // Already in a transaction, execute directly
+                $comment = $executeCreate();
+            } else {
+                // Not in a transaction, use DB::transaction()
+                $comment = DB::transaction($executeCreate);
+            }
 
             Log::info('Comment created', [
                 'comment_id' => $comment->id,
@@ -106,8 +115,6 @@ class CommentController extends Controller
                 ],
             ], 201);
         } catch (\Exception $e) {
-            DB::rollBack();
-
             Log::error('Failed to create comment', [
                 'post_id' => $id,
                 'user_id' => $user->id,
@@ -142,20 +149,29 @@ class CommentController extends Controller
         $post = $comment->galleryPost;
 
         try {
-            DB::beginTransaction();
+            // SQLite doesn't support nested transactions, so check if we're already in one
+            $executeDelete = function () use ($comment, $post) {
+                // Count replies (will be deleted by cascade)
+                $repliesCount = Comment::where('parent_id', $comment->id)->count();
 
-            // Count replies (will be deleted by cascade)
-            $repliesCount = Comment::where('parent_id', $comment->id)->count();
+                // Delete comment (cascade deletes replies)
+                $comment->delete();
 
-            // Delete comment (cascade deletes replies)
-            $comment->delete();
+                // Decrement counter atomically (including replies)
+                $totalDeleted = 1 + $repliesCount;
+                $post->comments_count = max(0, $post->comments_count - $totalDeleted);
+                $post->save();
+                
+                return $repliesCount;
+            };
 
-            // Decrement counter atomically (including replies)
-            $totalDeleted = 1 + $repliesCount;
-            $post->comments_count = max(0, $post->comments_count - $totalDeleted);
-            $post->save();
-
-            DB::commit();
+            if (DB::transactionLevel() > 0 || DB::connection()->getPdo()->inTransaction()) {
+                // Already in a transaction, execute directly
+                $repliesCount = $executeDelete();
+            } else {
+                // Not in a transaction, use DB::transaction()
+                $repliesCount = DB::transaction($executeDelete);
+            }
 
             Log::info('Comment deleted', [
                 'comment_id' => $id,
@@ -172,8 +188,6 @@ class CommentController extends Controller
                 ],
             ]);
         } catch (\Exception $e) {
-            DB::rollBack();
-
             Log::error('Failed to delete comment', [
                 'comment_id' => $id,
                 'user_id' => $user->id,

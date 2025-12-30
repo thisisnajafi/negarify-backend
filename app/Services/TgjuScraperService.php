@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\CurrencyRate;
 use App\Services\CurrencyRateService;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -66,6 +67,8 @@ class TgjuScraperService
             $tomanRate = $rialsRate / 10;
 
             // Store rate in database (append-only, never updates)
+            // Note: CurrencyRate::create() works fine with LazilyRefreshDatabase
+            // because it doesn't start a transaction - it just executes INSERT
             $currencyRate = CurrencyRate::create([
                 'currency_from' => 'USD',
                 'currency_to' => 'IRR',
