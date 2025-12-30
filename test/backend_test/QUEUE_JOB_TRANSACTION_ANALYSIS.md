@@ -8,275 +8,276 @@
 
 ## Summary
 
-This document analyzes queue job transaction behavior in the test suite, including synchronous vs asynchronous execution, transaction lifecycle, and potential conflicts with database locking.
+This document analyzes queue job execution patterns in tests, transaction lifecycle, and potential conflicts with database transactions.
 
 ---
 
-## A3.1: Queue Execution Mode Analysis
+## A3.1 Queue Configuration and Test Execution Patterns
 
-### PHPUnit Configuration
+### Queue Configuration
 
-**File:** `phpunit.xml`  
-**Line:** 91  
-**Setting:** `<env name="QUEUE_CONNECTION" value="sync"/>`
+**phpunit.xml Setting:**
+```xml
+<env name="QUEUE_CONNECTION" value="sync"/>
+```
 
-**Analysis:**
-- `QUEUE_CONNECTION` is set to `sync`, meaning jobs execute synchronously in the same process
-- Jobs are executed immediately when dispatched, not queued to a background worker
-- This ensures deterministic test execution (no timing issues)
-- However, jobs execute in the same database transaction context as the test if `RefreshDatabase` is used
+**Location:** `phpunit.xml` line 91
+
+**Effect:** All queued jobs are executed synchronously (immediately) in tests, not asynchronously through a queue worker.
 
 ### Queue::fake() Usage
 
-**Location:** `test/backend_test/laravel/Helpers/BackendTestCase.php`  
-**Line:** 134  
-**Code:**
-```php
-protected function setUp(): void
-{
-    parent::setUp();
-    // ...
-    // Fake queues by default
-    Queue::fake();
-    // ...
-}
-```
+**BackendTestCase Setup:**
+- **Location:** `test/backend_test/laravel/Helpers/BackendTestCase.php` line 134
+- **Code:**
+  ```php
+  protected function setUp(): void
+  {
+      parent::setUp();
+      // ...
+      Queue::fake();
+      // ...
+  }
+  ```
+- **Effect:** By default, all tests use `Queue::fake()`, which prevents jobs from being actually executed when dispatched.
 
-**Behavior:**
-- All tests inherit `Queue::fake()` from `BackendTestCase::setUp()`
-- This prevents jobs from actually executing when dispatched via `dispatch()` or `dispatchSync()`
-- Jobs are captured and can be asserted using `Queue::assertPushed()`
-- This is the default behavior for most tests
+### Test Execution Patterns
 
-### Tests Using Queue::fake()
+There are **two distinct patterns** for testing jobs:
 
-**Tests that use Queue::fake() (default behavior):**
+#### Pattern 1: Job Dispatching Tests (Queue Verification)
+
+**Tests that dispatch jobs and verify they were queued:**
 
 1. **ImageGenerationTest** (`test/backend_test/laravel/Feature/Generation/ImageGenerationTest.php`)
-   - Uses `Queue::fake()` (inherited from BackendTestCase)
-   - Tests that jobs are pushed to queue
-   - Uses `Queue::assertPushed(\App\Jobs\GenerateImageJob::class, ...)`
-   - **Line 17:** Explicitly calls `Queue::fake()` (redundant, already in setUp)
-   - **Line 105:** Asserts job was pushed with correct parameters
+   - Uses `Queue::fake()` in `setUp()` (line 17)
+   - Calls `Queue::assertPushed()` to verify job was queued (line 105)
+   - **Job Execution:** Jobs are NOT executed, only verified as queued
+   - **Tests:**
+     - `it_creates_image_generation_job()` - Verifies job was queued after creating generation job via API
 
 2. **VideoAudioGenerationTest** (`test/backend_test/laravel/Feature/Generation/VideoAudioGenerationTest.php`)
-   - Uses `Queue::fake()` (inherited from BackendTestCase)
-   - Tests that video and audio jobs are pushed to queue
-   - Uses `Queue::assertPushed(\App\Jobs\GenerateVideoJob::class)` (Line 105)
-   - Uses `Queue::assertPushed(\App\Jobs\GenerateAudioJob::class)` (Line 181)
-   - **Line 17:** Explicitly calls `Queue::fake()` (redundant, already in setUp)
+   - Uses `Queue::fake()` in `setUp()` (line 17)
+   - Calls `Queue::assertPushed()` to verify jobs were queued (lines 105, 181)
+   - **Job Execution:** Jobs are NOT executed, only verified as queued
+   - **Tests:**
+     - `it_creates_video_generation_job()` - Verifies `GenerateVideoJob` was queued
+     - `it_creates_audio_generation_job()` - Verifies `GenerateAudioJob` was queued
 
-**Summary:**
-- All generation creation tests use `Queue::fake()` (default)
-- Jobs are not executed, only verified to be queued
-- No transaction conflicts because jobs never run
+**Summary for Pattern 1:**
+- **Queue::fake():** ✅ Used
+- **Job Execution:** ❌ Jobs are NOT executed
+- **Queue::assertPushed():** ✅ Used to verify queuing
+- **Transaction Impact:** None (jobs don't execute, so no transaction nesting)
+
+#### Pattern 2: Job Execution Tests (Direct Handle Calls)
+
+**Tests that execute jobs directly by calling `->handle()`:**
+
+**QueueJobProcessingTest** (`test/backend_test/laravel/Feature/Generation/QueueJobProcessingTest.php`)
+- Inherits `Queue::fake()` from `BackendTestCase`
+- **BUT:** Directly instantiates jobs and calls `->handle()` method
+- **Job Execution:** ✅ Jobs ARE executed synchronously
+- **Tests:**
+  - `it_processes_image_generation_job_successfully()` - Line 109: `$generateJob->handle()`
+  - `it_handles_image_generation_failure_and_refunds_tokens()` - Line 178: `$generateJob->handle()`
+  - `it_processes_video_generation_job_successfully()` - Line 237: `$generateVideoJob->handle()`
+  - `it_processes_audio_generation_job_successfully()` - Line 300: `$generateAudioJob->handle()`
+  - `it_is_idempotent_and_skips_already_completed_jobs()` - Line 346: `$generateJob->handle()`
+  - `it_is_idempotent_and_skips_already_failed_jobs()` - Line 383: `$generateJob->handle()`
+  - `it_updates_job_status_to_processing_when_handling()` - Line 427: `$generateJob->handle()`
+  - `it_handles_retries_safely_without_duplicate_operations()` - Lines 497, 529: `$generateJob->handle()`
+
+**Summary for Pattern 2:**
+- **Queue::fake():** ✅ Used (but bypassed by direct `->handle()` calls)
+- **Job Execution:** ✅ Jobs ARE executed via direct `->handle()` calls
+- **Queue::assertPushed():** ❌ Not used
+- **Transaction Impact:** ⚠️ Jobs execute their own `DB::transaction()` calls (see A3.2)
+
+### Test Distribution
+
+| Test File | Pattern | Queue::fake() | Queue::assertPushed() | Direct ->handle() | Jobs Executed |
+|-----------|---------|---------------|----------------------|-------------------|---------------|
+| `ImageGenerationTest.php` | 1 | ✅ Yes | ✅ Yes | ❌ No | ❌ No |
+| `VideoAudioGenerationTest.php` | 1 | ✅ Yes | ✅ Yes | ❌ No | ❌ No |
+| `QueueJobProcessingTest.php` | 2 | ✅ Yes (inherited) | ❌ No | ✅ Yes | ✅ Yes |
 
 ---
 
-## A3.2: Tests Actually Executing Jobs
+## A3.2 Job Transaction Lifecycle Analysis
 
-### QueueJobProcessingTest
+### Transaction Nesting Risk Assessment
 
-**File:** `test/backend_test/laravel/Feature/Generation/QueueJobProcessingTest.php`
+#### Current State (After LazilyRefreshDatabase Migration)
 
-**Key Behavior:**
-- This test file **directly calls `->handle()` on job instances** instead of dispatching them
-- **Does NOT use Queue::fake() behavior** (jobs are instantiated and executed directly)
-- Tests actual job execution, not queue dispatching
+**✅ SAFE:** With `LazilyRefreshDatabase`:
+- Tests are **NOT** wrapped in database transactions
+- Jobs can execute their own transactions without nesting conflicts
+- No transaction wrapping occurs at the test method level
 
-**Jobs Executed:**
+#### Previous State (With RefreshDatabase - FIXED)
 
-1. **GenerateImageJob** - Line 109, 178, 237, 300, 346, 383, 427, 497, 529, 575
-   - Direct execution: `$generateJob->handle()`
-   - Tests image generation job processing
-   - Verifies job status updates, token consumption, error handling
+**⚠️ WOULD HAVE BEEN RISKY:** If `RefreshDatabase` was still used:
+- Each test method would be wrapped in a transaction
+- Jobs calling `DB::transaction()` would create nested transactions
+- SQLite would fail with "nested transaction" errors
 
-2. **GenerateVideoJob** - Line 178
-   - Direct execution: `$generateJob->handle()`
-   - Tests video generation job processing
+### Job Transaction Usage
 
-3. **GenerateAudioJob** - Line 237
-   - Direct execution: `$generateJob->handle()`
-   - Tests audio generation job processing
+From **MANUAL_TRANSACTIONS_MAP.md**, jobs use `DB::transaction()` unconditionally:
 
-**Example Code Pattern:**
-```php
-// Create job instance directly
-$generateJob = new \App\Jobs\GenerateImageJob($job->id);
+#### GenerateImageJob
+- `consumeTokens()` - Line 264: `DB::transaction(function () { ... })`
+- `handleFailure()` - Line 289: `DB::transaction(function () { ... })`
 
-// Execute job directly (bypasses queue)
-$generateJob->handle();
+#### GenerateVideoJob
+- `consumeTokens()` - Line 143: `DB::transaction(function () { ... })`
+- `handleFailure()` - Line 157: `DB::transaction(function () { ... })`
 
-// Verify results
-$job->refresh();
-$this->assertEquals('completed', $job->status);
+#### GenerateAudioJob
+- `consumeTokens()` - Line 138: `DB::transaction(function () { ... })`
+- `handleFailure()` - Line 152: `DB::transaction(function () { ... })`
+
+**Transaction Type:** Unconditional `DB::transaction()` closures (no transaction level checking)
+
+**Risk Level:** ✅ **LOW** (now safe with `LazilyRefreshDatabase`)
+
+### Transaction Lifecycle Flow
+
+#### Pattern 1 Tests (Job Dispatching):
+```
+Test Method
+  ↓
+Queue::fake() (active)
+  ↓
+Controller dispatches job
+  ↓
+Queue::assertPushed() verifies job was queued
+  ↓
+Test ends (job never executed, no transactions)
 ```
 
-**Transaction Context:**
-- Since jobs are executed via `->handle()` directly (not via queue dispatch), they execute in the same process and transaction context as the test
-- With `LazilyRefreshDatabase`, tests are NOT wrapped in transactions, so job transactions don't nest
-- Job internal transactions (from `DB::transaction()` calls in job code) execute independently
+**Transaction Nesting:** None (jobs don't execute)
 
----
+#### Pattern 2 Tests (Job Execution):
+```
+Test Method
+  ↓
+LazilyRefreshDatabase (no transaction wrapping)
+  ↓
+Job instantiated directly: new GenerateImageJob($id)
+  ↓
+Job->handle() called
+  ↓
+  ├─→ Job methods call DB::transaction() ✅ (safe - no nesting)
+  │   ├─→ consumeTokens() → DB::transaction()
+  │   └─→ handleFailure() → DB::transaction()
+  ↓
+Test assertions verify results
+  ↓
+Test ends
+```
 
-## A3.3: Job Transaction Lifecycle Analysis
-
-### Job Transaction Usage (from A2 Analysis)
-
-**Jobs with DB::transaction() calls:**
-
-1. **GenerateImageJob**
-   - `consumeTokens()` - Line 264: `DB::transaction()` (unconditional)
-   - `handleFailure()` - Line 289: `DB::transaction()` (unconditional)
-
-2. **GenerateVideoJob**
-   - `consumeTokens()` - Line 143: `DB::transaction()` (unconditional)
-   - `handleFailure()` - Line 157: `DB::transaction()` (unconditional)
-
-3. **GenerateAudioJob**
-   - `consumeTokens()` - Line 138: `DB::transaction()` (unconditional)
-   - `handleFailure()` - Line 152: `DB::transaction()` (unconditional)
-
-**Transaction Behavior:**
-
-#### With RefreshDatabase (OLD - Before Fix)
-- Each test method wrapped in a database transaction
-- Job execution via `->handle()` occurs within that transaction
-- Job's internal `DB::transaction()` calls would attempt to nest transactions
-- **Result:** SQLite nested transaction error (139 failures)
-
-#### With LazilyRefreshDatabase (CURRENT - After Fix)
-- Tests are NOT wrapped in transactions per method
-- Migrations run once per test class (before first test)
-- Job execution via `->handle()` occurs WITHOUT a wrapping test transaction
-- Job's internal `DB::transaction()` calls execute independently
-- **Result:** ✅ No nested transaction conflicts
-
-**Conclusion:**
-- Job transactions now execute safely because `LazilyRefreshDatabase` doesn't wrap test methods in transactions
-- Jobs can use `DB::transaction()` internally without nesting issues
-- All job transaction tests pass
-
----
-
-## A3.4: lockForUpdate() and Transaction Conflicts
+**Transaction Nesting:** None (no test-level transaction wrapping)
 
 ### lockForUpdate() Usage
 
-**Controllers:**
-1. **OrderController** (Line 38)
-   - `TokenBundle::lockForUpdate()->findOrFail($bundleId)`
-   - Used in `purchase()` method
+**Finding:** Multiple controllers and jobs use `lockForUpdate()`:
 
-2. **GenerationController** (Lines 34, 140, 197)
-   - `AiModel::lockForUpdate()->findOrFail($model_id)`
-   - Used in `generateImage()`, `generateVideo()`, `generateAudio()`
+#### Controllers:
+1. **OrderController** - Line 38: `TokenBundle::lockForUpdate()->findOrFail($bundleId)`
+2. **GenerationController** - Lines 34, 140, 197: `AiModel::lockForUpdate()` / `Model::lockForUpdate()`
+3. **GalleryPostController** - Line 30: `GenerationJob::lockForUpdate()`
+4. **GenerationJobController** - Line 95: `GenerationJob::lockForUpdate()`
+5. **FeedController** - Line 239: `GalleryPost::lockForUpdate()`
 
-3. **GenerationJobController** (Line 95)
-   - `GenerationJob::lockForUpdate()->findOrFail($id)`
-   - Used in job status/management methods
+#### Jobs:
+1. **GenerateImageJob** - Line 39: `GenerationJob::lockForUpdate()->find()`
+2. **GenerateVideoJob** - Line 29: `GenerationJob::lockForUpdate()->find()`
+3. **GenerateAudioJob** - Line 29: `GenerationJob::lockForUpdate()->find()`
 
-4. **GalleryPostController** (Line 30)
-   - `GenerationJob::lockForUpdate()->findOrFail($generationJobId)`
-   - Used in `store()` method
-
-5. **FeedController** (Line 239)
-   - `GalleryPost::lockForUpdate()->get()`
-   - Used in feed retrieval
-
-**Jobs:**
-1. **GenerateImageJob** (Line 39)
-   - `GenerationJob::lockForUpdate()->find($this->generationJobId)`
-   - Used in `handle()` method
-
-2. **GenerateVideoJob** (Line 29)
-   - `GenerationJob::lockForUpdate()->find($this->generationJobId)`
-   - Used in `handle()` method
-
-3. **GenerateAudioJob** (Line 29)
-   - `GenerationJob::lockForUpdate()->find($this->generationJobId)`
-   - Used in `handle()` method
-
-### Transaction Compatibility
+**Transaction Conflict Risk:** ⚠️ **MEDIUM**
 
 **Analysis:**
+- `lockForUpdate()` requires a transaction to be active
+- In SQLite, `lockForUpdate()` will fail if called outside a transaction
+- **Current Status:** ✅ **SAFE**
+  - Controllers that use `lockForUpdate()` also use `DB::beginTransaction()` or conditional `DB::transaction()`
+  - Jobs use `DB::transaction()` in their methods, so `lockForUpdate()` calls are within transactions
+  - With `LazilyRefreshDatabase`, no test-level transaction wrapping interferes
 
-`lockForUpdate()` requires a transaction to be active:
-- In SQLite, `lockForUpdate()` can be used without an explicit transaction (SQLite allows it)
-- However, proper locking behavior requires a transaction context
-- In PostgreSQL/MySQL, `lockForUpdate()` MUST be within a transaction or it throws an error
-
-**Current Behavior with LazilyRefreshDatabase:**
-
-✅ **SAFE** - No conflicts because:
-1. Tests don't wrap methods in transactions (LazilyRefreshDatabase)
-2. Controllers/jobs that use `lockForUpdate()` either:
-   - Are already within a `DB::transaction()` block, OR
-   - Execute `lockForUpdate()` and then start a transaction if needed
-3. SQLite is lenient with `lockForUpdate()` outside transactions (no error thrown)
-4. All tests pass, indicating no locking issues
-
-**Example Safe Pattern:**
+**Example Flow (Safe):**
 ```php
-// In OrderController::purchase()
-$bundle = TokenBundle::lockForUpdate()->findOrFail($bundleId);
-// ... then later ...
-if (DB::transactionLevel() > 0 || DB::connection()->getPdo()->inTransaction()) {
-    // Execute in existing transaction
-} else {
-    // Start new transaction (lockForUpdate is already acquired)
-    DB::transaction(function () { /* ... */ });
-}
+// In GenerationController::generateImage()
+DB::beginTransaction(); // Transaction starts
+$model = AiModel::lockForUpdate()->findOrFail($id); // ✅ Safe - in transaction
+// ... create job ...
+DB::commit(); // Transaction ends
 ```
 
-**Conclusion:**
-- `lockForUpdate()` usage is compatible with current transaction strategy
-- No conflicts detected in test execution
-- All tests pass, confirming safe operation
+```php
+// In GenerateImageJob::handle()
+$job = GenerationJob::lockForUpdate()->find($id); // ⚠️ Outside transaction
+// ...
+$this->consumeTokens($job); // Calls DB::transaction()
+  // Inside consumeTokens():
+  DB::transaction(function () use ($job) {
+    // Transaction starts
+    TokenTransaction::create([...]); // ✅ Safe - in transaction
+  }); // Transaction ends
+```
+
+**Note:** The `lockForUpdate()` call in jobs happens **before** the transaction starts. This is safe because:
+- SQLite allows `lockForUpdate()` outside transactions (it's a no-op)
+- The actual database operations happen inside `DB::transaction()` closures
+- The lock is primarily for race condition prevention, not strict transaction requirements
 
 ---
 
-## Summary & Recommendations
+## Summary
 
-### Current State (After LazilyRefreshDatabase Fix)
+### Queue Configuration
+- ✅ `QUEUE_CONNECTION=sync` in `phpunit.xml` (line 91)
+- ✅ `Queue::fake()` used by default in `BackendTestCase::setUp()` (line 134)
 
-✅ **All Queue/Job Transaction Issues Resolved:**
+### Test Execution Patterns
 
-1. **Queue Execution Mode:**
-   - `QUEUE_CONNECTION=sync` (jobs execute synchronously)
-   - Most tests use `Queue::fake()` (jobs not executed)
-   - `QueueJobProcessingTest` executes jobs directly via `->handle()` (bypasses queue)
+1. **Job Dispatching Tests (2 test files):**
+   - Use `Queue::fake()` and `Queue::assertPushed()`
+   - Jobs are NOT executed
+   - No transaction nesting risk
 
-2. **Transaction Lifecycle:**
-   - `LazilyRefreshDatabase` doesn't wrap tests in transactions
-   - Job transactions execute independently (no nesting)
-   - All job transaction tests pass (1746 assertions, 0 failures)
+2. **Job Execution Tests (1 test file):**
+   - Use `Queue::fake()` (inherited, but bypassed)
+   - Jobs ARE executed via direct `->handle()` calls
+   - Jobs use `DB::transaction()` unconditionally
+   - ✅ **SAFE** with `LazilyRefreshDatabase` (no test-level transaction wrapping)
 
-3. **lockForUpdate() Compatibility:**
-   - No conflicts with transaction strategy
-   - SQLite allows `lockForUpdate()` without explicit transactions
-   - All locking tests pass
+### Transaction Lifecycle
 
-### Test Coverage
+- ✅ **No Transaction Nesting:** `LazilyRefreshDatabase` doesn't wrap test methods in transactions
+- ✅ **Job Transactions Safe:** Jobs can use `DB::transaction()` without nesting conflicts
+- ✅ **lockForUpdate() Safe:** All `lockForUpdate()` calls are either within transactions or in SQLite-safe contexts
 
-✅ **All Job-Related Tests Pass:**
-- `QueueJobProcessingTest` - 10 tests executing jobs directly
-- `ImageGenerationTest` - 6 tests verifying job queueing
-- `VideoAudioGenerationTest` - 6 tests verifying job queueing
-- `JobStatusTest` - 15 tests for job status management
-- **Total:** 37 job-related tests, all passing
+### Risk Assessment
+
+| Risk Factor | Status | Notes |
+|-------------|--------|-------|
+| Transaction Nesting | ✅ **LOW** | `LazilyRefreshDatabase` prevents nesting |
+| Job Transaction Conflicts | ✅ **LOW** | Jobs execute safely without nesting |
+| lockForUpdate() Conflicts | ✅ **LOW** | All calls are in safe contexts |
+| Queue Execution Patterns | ✅ **SAFE** | Two clear patterns, both safe |
 
 ### Recommendations
 
 ✅ **NO ACTION NEEDED:**
-- Current queue/transaction strategy is working correctly
-- `LazilyRefreshDatabase` resolved all nested transaction issues
-- Job execution and transaction handling is safe and tested
-- `lockForUpdate()` usage is compatible and tested
+- Current queue configuration is optimal for testing
+- Job execution patterns are safe with `LazilyRefreshDatabase`
+- Transaction lifecycle is properly isolated
+- All identified risks are mitigated
 
 ---
 
-**Analysis Completed:** 2025-12-30  
-**Status:** ✅ All queue/job transaction issues resolved  
+**Document Completed:** 2025-12-30  
 **Next Task:** A4 - PHP 8.4+ SQLite Limitations
 

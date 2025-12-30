@@ -79,14 +79,18 @@
 
 ### A3. Queue Job Transaction Analysis
 - [x] **A3.1** Identify which tests execute jobs synchronously vs asynchronously:
-  - [x] Check `phpunit.xml` for `QUEUE_CONNECTION` setting (currently `sync`) - **Confirmed: `QUEUE_CONNECTION=sync` (line 91)**
-  - [x] Document which tests use `Queue::fake()` vs real queue execution - **Most tests use `Queue::fake()` (default in BackendTestCase), QueueJobProcessingTest executes jobs directly via `->handle()`**
-  - [x] Identify tests that call `Queue::assertPushed()` or execute jobs - **ImageGenerationTest, VideoAudioGenerationTest use `Queue::assertPushed()`, QueueJobProcessingTest executes jobs directly**
+  - [x] Check `phpunit.xml` for `QUEUE_CONNECTION` setting (currently `sync`) - **Line 91: `QUEUE_CONNECTION=sync`**
+  - [x] Document which tests use `Queue::fake()` vs real queue execution
+    - **Pattern 1:** `ImageGenerationTest.php`, `VideoAudioGenerationTest.php` - Use `Queue::fake()` and `Queue::assertPushed()`, jobs NOT executed
+    - **Pattern 2:** `QueueJobProcessingTest.php` - Uses `Queue::fake()` (inherited) but bypasses with direct `->handle()` calls, jobs ARE executed
+  - [x] Identify tests that call `Queue::assertPushed()` or execute jobs
+    - **Queue::assertPushed():** `ImageGenerationTest.php` (line 105), `VideoAudioGenerationTest.php` (lines 105, 181)
+    - **Direct execution:** `QueueJobProcessingTest.php` - 8 tests calling `->handle()` directly
 
 - [x] **A3.2** Analyze job transaction lifecycle:
-  - [x] Determine if job transactions can overlap with test transactions - **No overlap: LazilyRefreshDatabase doesn't wrap tests in transactions, job transactions execute independently**
-  - [x] Check if `RefreshDatabase` wraps job execution in transactions - **N/A: Using LazilyRefreshDatabase (doesn't wrap methods in transactions)**
-  - [x] Document any `lockForUpdate()` usage that conflicts with transactions - **10 usages found (controllers/jobs), all compatible: SQLite allows lockForUpdate() without explicit transactions, all tests pass**
+  - [x] Determine if job transactions can overlap with test transactions - **✅ SAFE:** `LazilyRefreshDatabase` doesn't wrap tests in transactions, so job transactions don't nest
+  - [x] Check if `RefreshDatabase` wraps job execution in transactions - **✅ FIXED:** Now using `LazilyRefreshDatabase`, no test-level transaction wrapping
+  - [x] Document any `lockForUpdate()` usage that conflicts with transactions - **✅ SAFE:** All `lockForUpdate()` calls (10 locations) are in safe contexts, either within transactions or SQLite-safe
 
 ### A4. PHP 8.4+ SQLite Limitations
 - [ ] **A4.1** Research PHP 8.4 SQLite transaction behavior changes:

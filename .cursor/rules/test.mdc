@@ -272,3 +272,27 @@ These rules are **MANDATORY** and **NON-NEGOTIABLE**. Any deviation must be:
 3. Approved as exception (rare cases only)
 
 **Default behavior**: Enforce all rules automatically. User only needs to provide task description; AI enforces workflow, verification, and quality gates.
+
+Deprecation warnings are treated as blockers UNLESS:
+- The warning source is explicitly identified
+- It is a framework/tooling deprecation (e.g., PHPUnit)
+- It is documented once in a central document (e.g., DEPRECATIONS.md)
+- No project code is responsible for it
+
+
+Linter requirement:
+- If a linter is configured in the project, it MUST be run and pass.
+- If no linter is configured, this rule is skipped.
+
+
+Proof must include:
+- Test count and assertion count
+- Counts must be consistent across repeated runs
+- Absolute numbers may change over time, but must match across deterministic runs
+
+
+
+Exception:
+For READ-ONLY or PLANNING tasks explicitly marked as such,
+test execution is not required.
+No code changes are allowed in these phases.
