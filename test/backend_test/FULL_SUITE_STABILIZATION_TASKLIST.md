@@ -522,17 +522,21 @@
 ## E) Full Test Execution Plan
 
 ### E1. Smoke Subset (Infrastructure Sanity)
-- [ ] **E1.1** Run minimal test subset to verify infrastructure:
-  - [ ] Command: `php artisan test --testsuite=BackendTest-Observability`
-  - [ ] Expected runtime: < 10 seconds
-  - [ ] Expected result: All tests pass, zero failures
-  - [ ] Purpose: Verify `LazilyRefreshDatabase` works
+**Status:** ✅ E1 Complete - Smoke subset tests passed
 
-- [ ] **E1.2** Run single test file with manual transactions:
-  - [ ] Command: `php artisan test test/backend_test/laravel/Feature/Payments/CallbackTest.php`
-  - [ ] Expected runtime: < 5 seconds
-  - [ ] Expected result: All tests pass, zero failures
-  - [ ] Purpose: Verify transaction conflicts are resolved
+- [x] **E1.1** Run minimal test subset to verify infrastructure:
+  - [x] Command: `php artisan test --testsuite=BackendTest-Observability` ✅
+  - [x] Expected runtime: < 10 seconds ✅
+  - [x] Expected result: All tests pass, zero failures ✅
+  - [x] Purpose: Verify `LazilyRefreshDatabase` works ✅
+  - [x] Result: 24 tests, 83 assertions - PASSED ✅
+
+- [x] **E1.2** Run single test file with manual transactions:
+  - [x] Command: `php artisan test test/backend_test/laravel/Feature/Payments/CallbackTest.php` ✅
+  - [x] Expected runtime: < 5 seconds ✅
+  - [x] Expected result: All tests pass, zero failures ✅
+  - [x] Purpose: Verify transaction conflicts are resolved ✅
+  - [x] Result: 14 tests, 67 assertions - PASSED ✅
 
 ### E2. Medium Subset (DB-Heavy Tests)
 - [ ] **E2.1** Run Payment tests:
