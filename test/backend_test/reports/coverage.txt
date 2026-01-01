@@ -1,0 +1,170 @@
+
+
+Code Coverage Report:
+  2025-12-30 22:48:49
+
+ Summary:
+  Classes: 37.36% (34/91)
+  Methods: 40.17% (186/463)
+  Lines:   70.39% (3940/5597)
+
+App\Http\Controllers\Api\V1\AdminCostProfitController
+  Methods:   0.00% ( 0/ 2)   Lines:  96.00% (168/175)
+App\Http\Controllers\Api\V1\AdminGalleryController
+  Methods:  14.29% ( 1/ 7)   Lines:  62.10% (154/248)
+App\Http\Controllers\Api\V1\AdminModelsController
+  Methods:   0.00% ( 0/ 2)   Lines:  76.52% (101/132)
+App\Http\Controllers\Api\V1\AdminModerationController
+  Methods:  33.33% ( 2/ 6)   Lines:  69.39% (102/147)
+App\Http\Controllers\Api\V1\AdminSalesController
+  Methods:   0.00% ( 0/ 2)   Lines:  96.36% (106/110)
+App\Http\Controllers\Api\V1\AdminSystemHealthController
+  Methods:   0.00% ( 0/ 1)   Lines:  93.81% (106/113)
+App\Http\Controllers\Api\V1\AdminTokensController
+  Methods:   0.00% ( 0/ 2)   Lines:  95.88% ( 93/ 97)
+App\Http\Controllers\Api\V1\AdminUsersController
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (142/142)
+App\Http\Controllers\Api\V1\AuthController
+  Methods:  85.71% ( 6/ 7)   Lines:  99.56% (224/225)
+App\Http\Controllers\Api\V1\CommentController
+  Methods:   0.00% ( 0/ 2)   Lines:  78.15% ( 93/119)
+App\Http\Controllers\Api\V1\CurrencyController
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 22/ 22)
+App\Http\Controllers\Api\V1\FeedController
+  Methods:  83.33% ( 5/ 6)   Lines:  97.55% (159/163)
+App\Http\Controllers\Api\V1\GalleryPostController
+  Methods:  50.00% ( 3/ 6)   Lines:  83.16% (158/190)
+App\Http\Controllers\Api\V1\GenerationController
+  Methods:   0.00% ( 0/ 3)   Lines:  87.07% (128/147)
+App\Http\Controllers\Api\V1\GenerationJobController
+  Methods:  25.00% ( 1/ 4)   Lines:  82.64% (119/144)
+App\Http\Controllers\Api\V1\LikeController
+  Methods:   0.00% ( 0/ 2)   Lines:  63.48% ( 73/115)
+App\Http\Controllers\Api\V1\NotificationController
+  Methods:  83.33% ( 5/ 6)   Lines:  98.82% ( 84/ 85)
+App\Http\Controllers\Api\V1\OrderController
+  Methods:  33.33% ( 1/ 3)   Lines:  79.37% (177/223)
+App\Http\Controllers\Api\V1\ReportController
+  Methods:   0.00% ( 0/ 1)   Lines:  81.94% ( 59/ 72)
+App\Http\Controllers\Api\V1\TokenBundleController
+  Methods:  42.86% ( 3/ 7)   Lines:  84.67% (127/150)
+App\Http\Controllers\Api\V1\TokenTransactionController
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 33/ 33)
+App\Http\Controllers\Api\V1\UserController
+  Methods:   0.00% ( 0/ 4)   Lines:  87.25% ( 89/102)
+App\Http\Middleware\AdminMiddleware
+  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  6/  6)
+App\Http\Requests\Api\V1\BulkCurationRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 21/ 21)
+App\Http\Requests\Api\V1\CopyModelRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  8/  8)
+App\Http\Requests\Api\V1\CopyPromptRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  8/  8)
+App\Http\Requests\Api\V1\CostProfitSummaryRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 25/ 25)
+App\Http\Requests\Api\V1\FeedListRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  8/  8)
+App\Http\Requests\Api\V1\GenerateAudioRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  9/  9)
+App\Http\Requests\Api\V1\GenerateImageRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 53/ 53)
+App\Http\Requests\Api\V1\GenerateVideoRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 10/ 10)
+App\Http\Requests\Api\V1\GenerationJobListRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  8/  8)
+App\Http\Requests\Api\V1\ModelsUsageRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 19/ 19)
+App\Http\Requests\Api\V1\ModerationActionRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 13/ 13)
+App\Http\Requests\Api\V1\NotificationListRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 18/ 18)
+App\Http\Requests\Api\V1\PurchaseTokenRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 12/ 12)
+App\Http\Requests\Api\V1\RequestOtpRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 16/ 16)
+App\Http\Requests\Api\V1\ResendOtpRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 12/ 12)
+App\Http\Requests\Api\V1\SalesSummaryRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 23/ 23)
+App\Http\Requests\Api\V1\StoreCommentRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 19/ 19)
+App\Http\Requests\Api\V1\StoreGalleryPostRequest
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 54/ 54)
+App\Http\Requests\Api\V1\StoreReportRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 13/ 13)
+App\Http\Requests\Api\V1\StoreTokenBundleRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 42/ 42)
+App\Http\Requests\Api\V1\TokenAnalyticsRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 19/ 19)
+App\Http\Requests\Api\V1\TokenTransactionHistoryRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 30/ 30)
+App\Http\Requests\Api\V1\UpdateGalleryPostRequest
+  Methods: 100.00% ( 4/ 4)   Lines: 100.00% ( 53/ 53)
+App\Http\Requests\Api\V1\UpdateTokenBundleRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 43/ 43)
+App\Http\Requests\Api\V1\UpdateUserRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 21/ 21)
+App\Http\Requests\Api\V1\UploadAvatarRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 15/ 15)
+App\Http\Requests\Api\V1\UsersListRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% ( 33/ 33)
+App\Http\Requests\Api\V1\UsersSummaryRequest
+  Methods: 100.00% ( 2/ 2)   Lines: 100.00% (  8/  8)
+App\Http\Requests\Api\V1\VerifyOtpRequest
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 21/ 21)
+App\Integrations\Melipayamak\ClassicClient
+  Methods:  40.00% ( 2/ 5)   Lines:  40.95% ( 43/105)
+App\Jobs\GenerateAudioJob
+  Methods:  33.33% ( 3/ 9)   Lines:  62.79% ( 54/ 86)
+App\Jobs\GenerateImageJob
+  Methods:  63.64% ( 7/11)   Lines:  76.71% (112/146)
+App\Jobs\GenerateVideoJob
+  Methods:  30.00% ( 3/10)   Lines:  58.33% ( 49/ 84)
+App\Models\Comment
+  Methods:  16.67% ( 1/ 6)   Lines:  16.67% (  1/  6)
+App\Models\CurrencyRate
+  Methods:  25.00% ( 1/ 4)   Lines:  12.50% (  1/  8)
+App\Models\FeedViewLimit
+  Methods:  12.50% ( 1/ 8)   Lines:  33.33% (  4/ 12)
+App\Models\GalleryPost
+  Methods:  20.00% ( 3/15)   Lines:  18.75% (  3/ 16)
+App\Models\GenerationJob
+  Methods:  33.33% ( 6/18)   Lines:  33.33% (  6/ 18)
+App\Models\Model
+  Methods:  16.67% ( 2/12)   Lines:  13.33% (  2/ 15)
+App\Models\ModerationQueue
+  Methods:  50.00% ( 4/ 8)   Lines:  50.00% (  4/  8)
+App\Models\Notification
+  Methods:  66.67% ( 4/ 6)   Lines:  71.43% (  5/  7)
+App\Models\Order
+  Methods:  20.00% ( 2/10)   Lines:  20.00% (  2/ 10)
+App\Models\OtpVerification
+  Methods:  66.67% ( 4/ 6)   Lines:  88.89% ( 24/ 27)
+App\Models\Provider
+  Methods:  44.44% ( 4/ 9)   Lines:  50.00% (  7/ 14)
+App\Models\Report
+  Methods:  44.44% ( 4/ 9)   Lines:  44.44% (  4/  9)
+App\Models\TokenBundle
+  Methods:  80.00% ( 4/ 5)   Lines:  80.00% (  4/  5)
+App\Models\User
+  Methods:  25.00% ( 5/20)   Lines:  36.67% ( 11/ 30)
+App\Services\CurrencyRateService
+  Methods: 100.00% ( 3/ 3)   Lines: 100.00% ( 19/ 19)
+App\Services\ModerationService
+  Methods:   0.00% ( 0/ 5)   Lines:  55.24% ( 58/105)
+App\Services\NotificationService
+  Methods:  42.86% ( 3/ 7)   Lines:  64.49% ( 69/107)
+App\Services\Otp\MelipayamakOtpSender
+  Methods:   0.00% ( 0/ 3)   Lines:  51.02% ( 25/ 49)
+App\Services\Segmind\BaseSegmindService
+  Methods:  28.57% ( 2/ 7)   Lines:  55.08% ( 65/118)
+App\Services\Segmind\SegmindAudioService
+  Methods:  14.29% ( 1/ 7)   Lines:  53.85% ( 21/ 39)
+App\Services\Segmind\SegmindImageService
+  Methods:  40.00% ( 4/10)   Lines:  54.55% ( 36/ 66)
+App\Services\Segmind\SegmindVideoService
+  Methods:  12.50% ( 1/ 8)   Lines:  49.12% ( 28/ 57)
+App\Services\TgjuScraperService
+  Methods:  20.00% ( 1/ 5)   Lines:  70.00% ( 49/ 70)
+App\Services\ZarinpalService
+  Methods:  33.33% ( 1/ 3)   Lines:  69.37% ( 77/111)
