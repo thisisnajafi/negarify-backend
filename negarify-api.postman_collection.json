@@ -1,0 +1,1880 @@
+{
+	"info": {
+		"_postman_id": "negarify-api-collection-2025",
+		"name": "Negarify API Collection",
+		"description": "Complete API collection for Negarify Platform - AI Content Generation Platform with Token-Based Economy\n\n## Authentication Flow\n1. Request OTP: POST /v1/auth/request-otp\n2. Verify OTP: POST /v1/auth/verify-otp (returns token)\n3. Use token in Authorization header: Bearer {token}\n\n## Environment Variables\nSet `base_url` in Postman environment (e.g., http://localhost:8000/api/v1)\n\n## Test Data\nAll requests include realistic test data for Iranian market context.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "negarify-backend"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "01. Authentication (Public)",
+			"item": [
+				{
+					"name": "Request OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.request_id) {",
+									"        pm.environment.set('request_id', jsonData.data.request_id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phone\": \"09121234567\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/request-otp",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "request-otp"]
+						},
+						"description": "Request OTP code via SMS. Returns request_id (UUID) for OTP verification.\n\n**Phone Format:** Iranian format (09121234567 or +989121234567)"
+					},
+					"response": []
+				},
+				{
+					"name": "Verify OTP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.token) {",
+									"        pm.environment.set('auth_token', jsonData.data.token);",
+									"        pm.environment.set('user_id', jsonData.data.user.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"request_id\": \"{{request_id}}\",\n    \"code\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/verify-otp",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "verify-otp"]
+						},
+						"description": "Verify OTP code and receive authentication token.\n\n**Note:** Use request_id from Request OTP response. OTP code is 6 digits sent via SMS."
+					},
+					"response": []
+				},
+				{
+					"name": "Resend OTP",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"request_id\": \"{{request_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/resend-otp",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "resend-otp"]
+						},
+						"description": "Resend OTP code to the same phone number using existing request_id."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["auth", "logout"]
+						},
+						"description": "Logout and invalidate current authentication token. Requires Bearer token."
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints. Request OTP and Verify OTP are public. Logout requires authentication."
+		},
+		{
+			"name": "02. User Profile",
+			"item": [
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user",
+							"host": ["{{base_url}}"],
+							"path": ["user"]
+						},
+						"description": "Get current authenticated user profile with token balance."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"علی محمدی\",\n    \"email\": \"ali.mohammadi@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/user",
+							"host": ["{{base_url}}"],
+							"path": ["user"]
+						},
+						"description": "Update user profile information. Name and email are optional."
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Avatar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": [],
+									"description": "Avatar image file (JPEG, PNG, max 5MB)"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/user/avatar",
+							"host": ["{{base_url}}"],
+							"path": ["user", "avatar"]
+						},
+						"description": "Upload user avatar image. File will be stored in S3 and URL returned."
+					},
+					"response": []
+				}
+			],
+			"description": "User profile management endpoints. All require authentication."
+		},
+		{
+			"name": "03. Tokens & Payments",
+			"item": [
+				{
+					"name": "List Token Bundles (Public)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/tokens/bundles",
+							"host": ["{{base_url}}"],
+							"path": ["tokens", "bundles"]
+						},
+						"description": "Get list of available token bundles with real-time prices in Toman. Public endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Currency Rate (Public)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/currency/rate",
+							"host": ["{{base_url}}"],
+							"path": ["currency", "rate"]
+						},
+						"description": "Get current USD to Toman exchange rate. Public endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Purchase Tokens",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.payment_url) {",
+									"        console.log('Payment URL:', jsonData.data.payment_url);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token_bundle_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/tokens/purchase",
+							"host": ["{{base_url}}"],
+							"path": ["tokens", "purchase"]
+						},
+						"description": "Purchase token bundle. Creates order and returns Zarinpal payment URL.\n\n**Token Bundle IDs:**\n- 1: 100 tokens (Starter)\n- 2: 500 tokens (Standard)\n- 3: 1000 tokens (Premium)\n- 4: 2000 tokens (Ultimate)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Balance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/tokens/balance",
+							"host": ["{{base_url}}"],
+							"path": ["tokens", "balance"]
+						},
+						"description": "Get current user token balance."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transaction History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/tokens/history?page=1&per_page=20&type=purchase",
+							"host": ["{{base_url}}"],
+							"path": ["tokens", "history"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "per_page",
+									"value": "20",
+									"description": "Items per page"
+								},
+								{
+									"key": "type",
+									"value": "purchase",
+									"description": "Transaction type: purchase, consume, refund, bonus, adjustment"
+								},
+								{
+									"key": "start_date",
+									"value": "2024-01-01",
+									"description": "Start date (YYYY-MM-DD)",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "2024-12-31",
+									"description": "End date (YYYY-MM-DD)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get token transaction history with pagination and filters."
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Callback (Public)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/tokens/purchase/callback?Authority=A000000000000000000000000000000000000&Status=OK",
+							"host": ["{{base_url}}"],
+							"path": ["tokens", "purchase", "callback"],
+							"query": [
+								{
+									"key": "Authority",
+									"value": "A000000000000000000000000000000000000",
+									"description": "Zarinpal payment authority"
+								},
+								{
+									"key": "Status",
+									"value": "OK",
+									"description": "Payment status (OK or NOK)"
+								}
+							]
+						},
+						"description": "Zarinpal payment gateway callback endpoint. Called by Zarinpal after payment completion. Public endpoint."
+					},
+					"response": []
+				}
+			],
+			"description": "Token and payment management endpoints. Purchase requires authentication, bundles and currency rate are public."
+		},
+		{
+			"name": "04. Generation",
+			"item": [
+				{
+					"name": "Generate Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.environment.set('generation_job_id', jsonData.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"model_id\": 1,\n    \"prompt\": \"A beautiful sunset over mountains with vibrant colors, cinematic lighting, highly detailed, 4k quality\",\n    \"negative_prompt\": \"blurry, low quality, distorted\",\n    \"size\": \"1024x1024\",\n    \"style\": \"cinematic\",\n    \"seed\": 42,\n    \"steps\": 30,\n    \"guidance_scale\": 7.5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/generate/image",
+							"host": ["{{base_url}}"],
+							"path": ["generate", "image"]
+						},
+						"description": "Generate image using AI model. Creates async job and returns job ID.\n\n**Size formats:** 512x512, 1024x1024, 2048x2048\n**Steps:** 1-100 (default: 30)\n**Guidance Scale:** 0-20 (default: 7.5)"
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Video",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.environment.set('generation_job_id', jsonData.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"model_id\": 2,\n    \"prompt\": \"A cat playing with a ball of yarn in slow motion, cute and playful, high quality video\",\n    \"negative_prompt\": \"blurry, low quality, distorted frames\",\n    \"duration\": 5,\n    \"resolution\": \"1280x720\",\n    \"fps\": 30,\n    \"seed\": 123\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/generate/video",
+							"host": ["{{base_url}}"],
+							"path": ["generate", "video"]
+						},
+						"description": "Generate video using AI model. Creates async job and returns job ID.\n\n**Duration:** 1-60 seconds\n**Resolution:** 1280x720, 1920x1080\n**FPS:** 1-60 (default: 30)"
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Audio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.environment.set('generation_job_id', jsonData.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"model_id\": 3,\n    \"prompt\": \"Relaxing ambient music with nature sounds, peaceful and calming, instrumental\",\n    \"duration\": 60,\n    \"format\": \"mp3\",\n    \"sample_rate\": 44100,\n    \"seed\": 456\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/generate/audio",
+							"host": ["{{base_url}}"],
+							"path": ["generate", "audio"]
+						},
+						"description": "Generate audio using AI model. Creates async job and returns job ID.\n\n**Duration:** 1-300 seconds\n**Format:** mp3, wav, flac\n**Sample Rate:** 22050, 44100, 48000"
+					},
+					"response": []
+				},
+				{
+					"name": "List Jobs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/generate/jobs?page=1&per_page=20&type=image&status=completed",
+							"host": ["{{base_url}}"],
+							"path": ["generate", "jobs"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "per_page",
+									"value": "20",
+									"description": "Items per page"
+								},
+								{
+									"key": "type",
+									"value": "image",
+									"description": "Job type: image, video, audio"
+								},
+								{
+									"key": "status",
+									"value": "completed",
+									"description": "Job status: pending, processing, completed, failed, cancelled"
+								},
+								{
+									"key": "start_date",
+									"value": "2024-01-01",
+									"description": "Start date (YYYY-MM-DD)",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "2024-12-31",
+									"description": "End date (YYYY-MM-DD)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "List user's generation jobs with filters and pagination."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Job Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/generate/jobs/{{generation_job_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["generate", "jobs", "{{generation_job_id}}"]
+						},
+						"description": "Get detailed information about a specific generation job including status and result URL."
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Job",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/generate/jobs/{{generation_job_id}}/cancel",
+							"host": ["{{base_url}}"],
+							"path": ["generate", "jobs", "{{generation_job_id}}", "cancel"]
+						},
+						"description": "Cancel a pending or processing generation job. Tokens will be refunded."
+					},
+					"response": []
+				},
+				{
+					"name": "Retry Job",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/generate/jobs/{{generation_job_id}}/retry",
+							"host": ["{{base_url}}"],
+							"path": ["generate", "jobs", "{{generation_job_id}}", "retry"]
+						},
+						"description": "Retry a failed generation job."
+					},
+					"response": []
+				}
+			],
+			"description": "AI content generation endpoints. All generation requests create async jobs and return job IDs for status tracking."
+		},
+		{
+			"name": "05. Gallery & Feed",
+			"item": [
+				{
+					"name": "Create Gallery Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.environment.set('gallery_post_id', jsonData.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"generation_job_id\": {{generation_job_id}},\n    \"title\": \"Beautiful Mountain Sunset\",\n    \"description\": \"A stunning AI-generated image of a sunset over mountains with vibrant colors\",\n    \"tags\": [\"sunset\", \"mountains\", \"landscape\", \"ai-art\", \"nature\"],\n    \"visibility\": \"public\",\n    \"prompt_visible\": true,\n    \"model_visible\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/gallery/post",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "post"]
+						},
+						"description": "Create a gallery post from a completed generation job.\n\n**Visibility:** public, private\n**Tags:** Max 10 tags, each max 50 characters"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post Details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/gallery/posts/{{gallery_post_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "posts", "{{gallery_post_id}}"]
+						},
+						"description": "Get detailed information about a gallery post including likes, comments, and metadata."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated Title\",\n    \"description\": \"Updated description\",\n    \"tags\": [\"updated\", \"tags\"],\n    \"visibility\": \"private\",\n    \"prompt_visible\": false,\n    \"model_visible\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/gallery/posts/{{gallery_post_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "posts", "{{gallery_post_id}}"]
+						},
+						"description": "Update gallery post information. Only the post owner can update."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/gallery/posts/{{gallery_post_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "posts", "{{gallery_post_id}}"]
+						},
+						"description": "Delete a gallery post. Only the post owner can delete."
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Posts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/gallery/my-posts?page=1&per_page=20",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "my-posts"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "per_page",
+									"value": "20",
+									"description": "Items per page"
+								}
+							]
+						},
+						"description": "Get list of current user's gallery posts with pagination."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Feed",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/gallery/feed?page=1&per_page=20&cursor=",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "feed"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "per_page",
+									"value": "20",
+									"description": "Items per page"
+								},
+								{
+									"key": "cursor",
+									"value": "",
+									"description": "Cursor for pagination (from previous response)"
+								}
+							]
+						},
+						"description": "Get curated public feed. Only shows admin-curated posts (images and videos). Has daily view limits for non-admin users."
+					},
+					"response": []
+				},
+				{
+					"name": "Copy Prompt",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"gallery_post_id\": {{gallery_post_id}}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/gallery/feed/copy-prompt",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "feed", "copy-prompt"]
+						},
+						"description": "Copy prompt from a feed post. Returns prompt text if visible."
+					},
+					"response": []
+				},
+				{
+					"name": "Copy Model",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"gallery_post_id\": {{gallery_post_id}}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/gallery/feed/copy-model",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "feed", "copy-model"]
+						},
+						"description": "Copy model information from a feed post. Returns model details if visible."
+					},
+					"response": []
+				},
+				{
+					"name": "Like Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/gallery/{{gallery_post_id}}/like",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "{{gallery_post_id}}", "like"]
+						},
+						"description": "Like a gallery post. If already liked, removes the like."
+					},
+					"response": []
+				},
+				{
+					"name": "Unlike Post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/gallery/{{gallery_post_id}}/like",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "{{gallery_post_id}}", "like"]
+						},
+						"description": "Remove like from a gallery post."
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData.data && jsonData.data.id) {",
+									"        pm.environment.set('comment_id', jsonData.data.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"body\": \"This is a great piece of AI art! Amazing work.\",\n    \"parent_id\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/gallery/{{gallery_post_id}}/comment",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "{{gallery_post_id}}", "comment"]
+						},
+						"description": "Add a comment to a gallery post. Use parent_id for nested replies."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/gallery/comments/{{comment_id}}",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "comments", "{{comment_id}}"]
+						},
+						"description": "Delete a comment. Only comment owner can delete."
+					},
+					"response": []
+				},
+				{
+					"name": "Report Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"reason\": \"inappropriate_content\",\n    \"description\": \"This post contains inappropriate content that violates community guidelines\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/gallery/posts/{{gallery_post_id}}/report",
+							"host": ["{{base_url}}"],
+							"path": ["gallery", "posts", "{{gallery_post_id}}", "report"]
+						},
+						"description": "Report a gallery post for moderation review."
+					},
+					"response": []
+				}
+			],
+			"description": "Gallery and feed management endpoints. Includes social features like likes and comments."
+		},
+		{
+			"name": "06. Notifications",
+			"item": [
+				{
+					"name": "List Notifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications?page=1&per_page=20&read=false",
+							"host": ["{{base_url}}"],
+							"path": ["notifications"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "per_page",
+									"value": "20",
+									"description": "Items per page"
+								},
+								{
+									"key": "read",
+									"value": "false",
+									"description": "Filter by read status (true/false)"
+								},
+								{
+									"key": "type",
+									"value": "like",
+									"description": "Notification type",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get list of user notifications with pagination and filters."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Notification",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/1",
+							"host": ["{{base_url}}"],
+							"path": ["notifications", "1"]
+						},
+						"description": "Get detailed information about a specific notification."
+					},
+					"response": []
+				},
+				{
+					"name": "Mark as Read",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/1/read",
+							"host": ["{{base_url}}"],
+							"path": ["notifications", "1", "read"]
+						},
+						"description": "Mark a notification as read."
+					},
+					"response": []
+				},
+				{
+					"name": "Mark as Unread",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/1/unread",
+							"host": ["{{base_url}}"],
+							"path": ["notifications", "1", "unread"]
+						},
+						"description": "Mark a notification as unread."
+					},
+					"response": []
+				},
+				{
+					"name": "Mark All as Read",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/notifications/read-all",
+							"host": ["{{base_url}}"],
+							"path": ["notifications", "read-all"]
+						},
+						"description": "Mark all notifications as read."
+					},
+					"response": []
+				}
+			],
+			"description": "User notification management endpoints."
+		},
+		{
+			"name": "07. Admin (Requires Admin Role)",
+			"item": [
+				{
+					"name": "Token Bundles Management",
+					"item": [
+						{
+							"name": "Create Bundle",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Mega Pack\",\n    \"token_amount\": 5000,\n    \"price_usd\": 50.00,\n    \"bonus_tokens\": 500,\n    \"is_active\": true,\n    \"display_order\": 5\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/admin/tokens/bundles",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "tokens", "bundles"]
+								},
+								"description": "Create a new token bundle. Requires admin role."
+							},
+							"response": []
+						},
+						{
+							"name": "Update Bundle",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"Updated Bundle Name\",\n    \"price_usd\": 55.00,\n    \"bonus_tokens\": 600\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/admin/tokens/bundles/1",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "tokens", "bundles", "1"]
+								},
+								"description": "Update an existing token bundle."
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Bundle",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/tokens/bundles/1",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "tokens", "bundles", "1"]
+								},
+								"description": "Delete a token bundle."
+							},
+							"response": []
+						},
+						{
+							"name": "Activate Bundle",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/tokens/bundles/1/activate",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "tokens", "bundles", "1", "activate"]
+								},
+								"description": "Activate a token bundle (make it available for purchase)."
+							},
+							"response": []
+						},
+						{
+							"name": "Deactivate Bundle",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/tokens/bundles/1/deactivate",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "tokens", "bundles", "1", "deactivate"]
+								},
+								"description": "Deactivate a token bundle (hide it from purchase options)."
+							},
+							"response": []
+						}
+					],
+					"description": "Token bundle management endpoints. All require admin role."
+				},
+				{
+					"name": "Gallery Curation",
+					"item": [
+						{
+							"name": "Curate Post",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/gallery/{{gallery_post_id}}/curate",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "gallery", "{{gallery_post_id}}", "curate"]
+								},
+								"description": "Mark a gallery post as curated (appears in public feed)."
+							},
+							"response": []
+						},
+						{
+							"name": "Uncurate Post",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/gallery/{{gallery_post_id}}/uncurate",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "gallery", "{{gallery_post_id}}", "uncurate"]
+								},
+								"description": "Remove curation status from a gallery post (removes from feed)."
+							},
+							"response": []
+						},
+						{
+							"name": "Feature Post",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/gallery/{{gallery_post_id}}/feature",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "gallery", "{{gallery_post_id}}", "feature"]
+								},
+								"description": "Feature a gallery post (highlights it in feed)."
+							},
+							"response": []
+						},
+						{
+							"name": "Unfeature Post",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/gallery/{{gallery_post_id}}/unfeature",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "gallery", "{{gallery_post_id}}", "unfeature"]
+								},
+								"description": "Remove feature status from a gallery post."
+							},
+							"response": []
+						},
+						{
+							"name": "Bulk Curate",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"post_ids\": [1, 2, 3, 4, 5]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/admin/gallery/bulk-curate",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "gallery", "bulk-curate"]
+								},
+								"description": "Curate multiple gallery posts at once."
+							},
+							"response": []
+						},
+						{
+							"name": "Bulk Uncurate",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"post_ids\": [1, 2, 3]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/admin/gallery/bulk-uncurate",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "gallery", "bulk-uncurate"]
+								},
+								"description": "Remove curation from multiple gallery posts at once."
+							},
+							"response": []
+						},
+						{
+							"name": "List Curated Posts",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/gallery/curated?page=1&per_page=20",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "gallery", "curated"],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number"
+										},
+										{
+											"key": "per_page",
+											"value": "20",
+											"description": "Items per page"
+										}
+									]
+								},
+								"description": "Get list of all curated gallery posts for admin review."
+							},
+							"response": []
+						}
+					],
+					"description": "Gallery curation management endpoints. All require admin role."
+				},
+				{
+					"name": "Analytics",
+					"item": [
+						{
+							"name": "Sales Summary",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/sales/summary?range=month&start_date=2024-01-01&end_date=2024-01-31",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "sales", "summary"],
+									"query": [
+										{
+											"key": "range",
+											"value": "month",
+											"description": "Time range: day, week, month, year, custom"
+										},
+										{
+											"key": "start_date",
+											"value": "2024-01-01",
+											"description": "Start date (YYYY-MM-DD) - required if range=custom"
+										},
+										{
+											"key": "end_date",
+											"value": "2024-01-31",
+											"description": "End date (YYYY-MM-DD) - required if range=custom"
+										}
+									]
+								},
+								"description": "Get sales analytics summary including revenue, orders, top bundles, etc."
+							},
+							"response": []
+						},
+						{
+							"name": "Users Summary",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/users/summary?range=month",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "users", "summary"],
+									"query": [
+										{
+											"key": "range",
+											"value": "month",
+											"description": "Time range: day, week, month, year"
+										}
+									]
+								},
+								"description": "Get user analytics summary including DAU, WAU, MAU, top users, etc."
+							},
+							"response": []
+						},
+						{
+							"name": "Users List",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/users/list?page=1&per_page=20&search=",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "users", "list"],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number"
+										},
+										{
+											"key": "per_page",
+											"value": "20",
+											"description": "Items per page"
+										},
+										{
+											"key": "search",
+											"value": "",
+											"description": "Search query (phone, email, name)"
+										},
+										{
+											"key": "role",
+											"value": "user",
+											"description": "Filter by role",
+											"disabled": true
+										}
+									]
+								},
+								"description": "Get paginated list of users with search and filter options."
+							},
+							"response": []
+						},
+						{
+							"name": "Models Usage",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/models/usage?range=month&model_id=",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "models", "usage"],
+									"query": [
+										{
+											"key": "range",
+											"value": "month",
+											"description": "Time range: day, week, month, year"
+										},
+										{
+											"key": "model_id",
+											"value": "",
+											"description": "Filter by specific model ID (optional)"
+										}
+									]
+								},
+								"description": "Get AI model usage statistics including requests, success rate, latency, cost, etc."
+							},
+							"response": []
+						},
+						{
+							"name": "Tokens Summary",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/tokens/summary?range=month",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "tokens", "summary"],
+									"query": [
+										{
+											"key": "range",
+											"value": "month",
+											"description": "Time range: day, week, month, year"
+										}
+									]
+								},
+								"description": "Get token analytics summary including consumption by provider, type, cost, profit, etc."
+							},
+							"response": []
+						},
+						{
+							"name": "Cost Profit Summary",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/cost-profit/summary?range=month",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "cost-profit", "summary"],
+									"query": [
+										{
+											"key": "range",
+											"value": "month",
+											"description": "Time range: day, week, month, year"
+										}
+									]
+								},
+								"description": "Get cost and profit analytics summary including revenue, costs, profit margins, breakdown by model/provider, etc."
+							},
+							"response": []
+						},
+						{
+							"name": "System Health",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/system-health",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "system-health"]
+								},
+								"description": "Get system health metrics including queue length, worker status, failed jobs, API latency, storage usage, error rates, etc."
+							},
+							"response": []
+						}
+					],
+					"description": "Admin analytics endpoints. All require admin role."
+				},
+				{
+					"name": "Moderation",
+					"item": [
+						{
+							"name": "Get Moderation Queue",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/moderation/queue?page=1&per_page=20&status=pending",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "moderation", "queue"],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number"
+										},
+										{
+											"key": "per_page",
+											"value": "20",
+											"description": "Items per page"
+										},
+										{
+											"key": "status",
+											"value": "pending",
+											"description": "Filter by status: pending, approved, rejected"
+										}
+									]
+								},
+								"description": "Get moderation queue for admin review."
+							},
+							"response": []
+						},
+						{
+							"name": "Get Reports",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/moderation/reports?page=1&per_page=20&status=pending",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "moderation", "reports"],
+									"query": [
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number"
+										},
+										{
+											"key": "per_page",
+											"value": "20",
+											"description": "Items per page"
+										},
+										{
+											"key": "status",
+											"value": "pending",
+											"description": "Filter by status: pending, resolved, dismissed"
+										}
+									]
+								},
+								"description": "Get user reports for admin review."
+							},
+							"response": []
+						},
+						{
+							"name": "Approve Post",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/moderation/posts/{{gallery_post_id}}/approve",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "moderation", "posts", "{{gallery_post_id}}", "approve"]
+								},
+								"description": "Approve a post in moderation queue."
+							},
+							"response": []
+						},
+						{
+							"name": "Reject Post",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/moderation/posts/{{gallery_post_id}}/reject",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "moderation", "posts", "{{gallery_post_id}}", "reject"]
+								},
+								"description": "Reject a post in moderation queue."
+							},
+							"response": []
+						},
+						{
+							"name": "Resolve Report",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/moderation/reports/1/resolve",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "moderation", "reports", "1", "resolve"]
+								},
+								"description": "Mark a user report as resolved."
+							},
+							"response": []
+						},
+						{
+							"name": "Dismiss Report",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/admin/moderation/reports/1/dismiss",
+									"host": ["{{base_url}}"],
+									"path": ["admin", "moderation", "reports", "1", "dismiss"]
+								},
+								"description": "Dismiss a user report (mark as invalid/unfounded)."
+							},
+							"response": []
+						}
+					],
+					"description": "Content moderation endpoints. All require admin role."
+				}
+			],
+			"description": "Admin-only endpoints. All require admin role in addition to authentication. Use admin_token variable for admin requests."
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "request_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "admin_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "generation_job_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "gallery_post_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "comment_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "token_bundle_id",
+			"value": "1",
+			"type": "string"
+		}
+	]
+}
+
